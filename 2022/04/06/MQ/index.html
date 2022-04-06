@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="为什么要使用消息队列？ 常见MQ比较ActiveMQ,RabbitMQ吞吐量为万级，RocketMQ，Kafka吞吐量为十万级别， RocketMQ topic可以达到几百，几千个级别吞吐量会有较小幅度的下降，Kafka  topic从几十个到几百个的时候，吞吐量会大幅度下降 ActiveMQ,，RocketMQ，Kafka时效性都为ms，而RabbitMQ时效性为微秒 ActiveMQ,Rab">
+  <meta name="description" content="为什么要使用消息队列？ 常见MQ比较ActiveMQ,RabbitMQ吞吐量为万级，RocketMQ，Kafka吞吐量为十万级别， RocketMQ topic可以达到几百，几千个级别吞吐量会有较小幅度的下降，Kafka  topic从几十个到几百个的时候，吞吐量会大幅度下降 ActiveMQ,，RocketMQ，Kafka时效性都为ms，而RabbitMQ时效性为微秒 ActiveMQ,Rabb">
 <meta property="og:type" content="article">
-<meta property="og:title" content="akurisu">
+<meta property="og:title" content="MQ">
 <meta property="og:url" content="http://example.com/2022/04/06/MQ/index.html">
 <meta property="og:site_name" content="akurisu">
-<meta property="og:description" content="为什么要使用消息队列？ 常见MQ比较ActiveMQ,RabbitMQ吞吐量为万级，RocketMQ，Kafka吞吐量为十万级别， RocketMQ topic可以达到几百，几千个级别吞吐量会有较小幅度的下降，Kafka  topic从几十个到几百个的时候，吞吐量会大幅度下降 ActiveMQ,，RocketMQ，Kafka时效性都为ms，而RabbitMQ时效性为微秒 ActiveMQ,Rab">
+<meta property="og:description" content="为什么要使用消息队列？ 常见MQ比较ActiveMQ,RabbitMQ吞吐量为万级，RocketMQ，Kafka吞吐量为十万级别， RocketMQ topic可以达到几百，几千个级别吞吐量会有较小幅度的下降，Kafka  topic从几十个到几百个的时候，吞吐量会大幅度下降 ActiveMQ,，RocketMQ，Kafka时效性都为ms，而RabbitMQ时效性为微秒 ActiveMQ,Rabb">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220325121554889.png">
 <meta property="og:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220330114518890.png">
@@ -33,7 +33,7 @@
 <meta property="og:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220330114732891.png">
 <meta property="og:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220330115507603.png">
 <meta property="article:published_time" content="2022-04-06T07:16:01.667Z">
-<meta property="article:modified_time" content="2022-04-06T07:24:10.209Z">
+<meta property="article:modified_time" content="2022-04-06T07:40:32.073Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220325121554889.png">
@@ -51,7 +51,7 @@
   };
 </script>
 
-  <title> | akurisu</title>
+  <title>MQ | akurisu</title>
   
 
 
@@ -169,7 +169,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          MQ
         </h1>
 
         <div class="post-meta">
@@ -180,7 +180,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-04-06 15:16:01 / 修改时间：15:24:10" itemprop="dateCreated datePublished" datetime="2022-04-06T15:16:01+08:00">2022-04-06</time>
+              <time title="创建时间：2022-04-06 15:16:01 / 修改时间：15:40:32" itemprop="dateCreated datePublished" datetime="2022-04-06T15:16:01+08:00">2022-04-06</time>
             </span>
 
           
@@ -194,7 +194,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p> 为什么要使用消息队列？</p>
+        <p>为什么要使用消息队列？</p>
 <h3 id="常见MQ比较"><a href="#常见MQ比较" class="headerlink" title="常见MQ比较"></a>常见MQ比较</h3><p>ActiveMQ,RabbitMQ吞吐量为万级，RocketMQ，Kafka吞吐量为十万级别，</p>
 <p>RocketMQ topic可以达到几百，几千个级别吞吐量会有较小幅度的下降，Kafka  topic从几十个到几百个的时候，吞吐量会大幅度下降</p>
 <p>ActiveMQ,，RocketMQ，Kafka时效性都为ms，而RabbitMQ时效性为微秒</p>
@@ -246,12 +246,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/06/JVM/" rel="prev" title="">
-      <i class="fa fa-chevron-left"></i> 
+    <a href="/2022/04/06/JVM/" rel="prev" title="JVM">
+      <i class="fa fa-chevron-left"></i> JVM
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/04/06/mysql%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" rel="next" title="">
-       <i class="fa fa-chevron-right"></i>
+    <a href="/2022/04/06/mysql%E9%9D%A2%E8%AF%95/" rel="next" title="mysql面试">
+      mysql面试 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -325,7 +325,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">10</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
