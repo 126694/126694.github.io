@@ -20,28 +20,38 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="website">
+  <meta name="description" content="为什么要使用消息队列？ 常见MQ比较ActiveMQ,RabbitMQ吞吐量为万级，RocketMQ，Kafka吞吐量为十万级别， RocketMQ topic可以达到几百，几千个级别吞吐量会有较小幅度的下降，Kafka  topic从几十个到几百个的时候，吞吐量会大幅度下降 ActiveMQ,，RocketMQ，Kafka时效性都为ms，而RabbitMQ时效性为微秒 ActiveMQ,Rab">
+<meta property="og:type" content="article">
 <meta property="og:title" content="akurisu">
-<meta property="og:url" content="http://example.com/index.html">
+<meta property="og:url" content="http://example.com/2022/04/06/MQ/index.html">
 <meta property="og:site_name" content="akurisu">
+<meta property="og:description" content="为什么要使用消息队列？ 常见MQ比较ActiveMQ,RabbitMQ吞吐量为万级，RocketMQ，Kafka吞吐量为十万级别， RocketMQ topic可以达到几百，几千个级别吞吐量会有较小幅度的下降，Kafka  topic从几十个到几百个的时候，吞吐量会大幅度下降 ActiveMQ,，RocketMQ，Kafka时效性都为ms，而RabbitMQ时效性为微秒 ActiveMQ,Rab">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://example.com/MQ.assets/image-20220325121554889.png">
+<meta property="og:image" content="http://example.com/MQ.assets/image-20220330114518890.png">
+<meta property="og:image" content="http://example.com/MQ.assets/image-20220330114300040.png">
+<meta property="og:image" content="http://example.com/MQ.assets/image-20220330114732891.png">
+<meta property="og:image" content="http://example.com/MQ.assets/image-20220330115507603.png">
+<meta property="article:published_time" content="2022-04-06T02:29:59.545Z">
+<meta property="article:modified_time" content="2022-03-30T13:55:36.547Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/MQ.assets/image-20220325121554889.png">
 
-<link rel="canonical" href="http://example.com/">
+<link rel="canonical" href="http://example.com/2022/04/06/MQ/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>akurisu</title>
+  <title> | akurisu</title>
   
 
 
@@ -139,9 +149,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -157,10 +168,9 @@
       <meta itemprop="name" content="akurisu">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
+        <h1 class="post-title" itemprop="name headline">
           
-            <a href="/2022/04/06/MQ/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -190,7 +200,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p> 为什么要使用消息队列？</p>
+        <p> 为什么要使用消息队列？</p>
 <h3 id="常见MQ比较"><a href="#常见MQ比较" class="headerlink" title="常见MQ比较"></a>常见MQ比较</h3><p>ActiveMQ,RabbitMQ吞吐量为万级，RocketMQ，Kafka吞吐量为十万级别，</p>
 <p>RocketMQ topic可以达到几百，几千个级别吞吐量会有较小幅度的下降，Kafka  topic从几十个到几百个的时候，吞吐量会大幅度下降</p>
 <p>ActiveMQ,，RocketMQ，Kafka时效性都为ms，而RabbitMQ时效性为微秒</p>
@@ -228,91 +238,30 @@
 <p>修复原来生产者的问题，并停掉，然后新建一些生产者，快速消费消息，并不做耗时的处理，那么 这些消息如何快速消费呢？扩展集群，零时征用 10 倍的机器部署消费者，消费前边消费者转发过来 的消息，这样就很快消费掉队列里边堆积的消息了。</p>
 <p><img src="/MQ.assets/image-20220330115507603.png" alt="image-20220330115507603"></p>
 
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/06/hello-world/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="akurisu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/04/06/hello-world/" class="post-title-link" itemprop="url">Hello World</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-04-06 08:58:35" itemprop="dateCreated datePublished" datetime="2022-04-06T08:58:35+08:00">2022-04-06</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2022/04/06/hello-world/" rel="prev" title="Hello World">
+      <i class="fa fa-chevron-left"></i> Hello World
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-
   
 
 
@@ -365,6 +314,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81MQ%E6%AF%94%E8%BE%83"><span class="nav-number">1.</span> <span class="nav-text">常见MQ比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RabbitMQ%E9%AB%98%E5%8F%AF%E7%94%A8%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">RabbitMQ高可用的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RabbitMQ%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E4%B8%8D%E8%A2%AB%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9"><span class="nav-number">3.</span> <span class="nav-text">RabbitMQ如何保证消息不被重复消费</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7%E4%BC%A0%E8%BE%93"><span class="nav-number">4.</span> <span class="nav-text">如何保证消息的可靠性传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E7%9A%84%E6%B6%88%E8%B4%B9%E9%A1%BA%E5%BA%8F"><span class="nav-number">5.</span> <span class="nav-text">如何保证消息的消费顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%BB%B6%E6%97%B6%E4%BB%A5%E5%8F%8A%E8%BF%87%E6%9C%9F%E5%A4%B1%E6%95%88%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">如何解决消息队列的延时以及过期失效的问题？</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
