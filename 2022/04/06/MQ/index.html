@@ -27,16 +27,16 @@
 <meta property="og:site_name" content="akurisu">
 <meta property="og:description" content="为什么要使用消息队列？ 常见MQ比较ActiveMQ,RabbitMQ吞吐量为万级，RocketMQ，Kafka吞吐量为十万级别， RocketMQ topic可以达到几百，几千个级别吞吐量会有较小幅度的下降，Kafka  topic从几十个到几百个的时候，吞吐量会大幅度下降 ActiveMQ,，RocketMQ，Kafka时效性都为ms，而RabbitMQ时效性为微秒 ActiveMQ,Rab">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/MQ.assets/image-20220325121554889.png">
-<meta property="og:image" content="http://example.com/MQ.assets/image-20220330114518890.png">
-<meta property="og:image" content="http://example.com/MQ.assets/image-20220330114300040.png">
-<meta property="og:image" content="http://example.com/MQ.assets/image-20220330114732891.png">
-<meta property="og:image" content="http://example.com/MQ.assets/image-20220330115507603.png">
-<meta property="article:published_time" content="2022-04-06T02:29:59.545Z">
-<meta property="article:modified_time" content="2022-03-30T13:55:36.547Z">
+<meta property="og:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220325121554889.png">
+<meta property="og:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220330114518890.png">
+<meta property="og:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220330114300040.png">
+<meta property="og:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220330114732891.png">
+<meta property="og:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220330115507603.png">
+<meta property="article:published_time" content="2022-04-06T07:16:01.667Z">
+<meta property="article:modified_time" content="2022-04-06T07:24:10.209Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/MQ.assets/image-20220325121554889.png">
+<meta name="twitter:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220325121554889.png">
 
 <link rel="canonical" href="http://example.com/2022/04/06/MQ/">
 
@@ -178,16 +178,10 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2022-04-06 10:29:59" itemprop="dateCreated datePublished" datetime="2022-04-06T10:29:59+08:00">2022-04-06</time>
+              <time title="创建时间：2022-04-06 15:16:01 / 修改时间：15:24:10" itemprop="dateCreated datePublished" datetime="2022-04-06T15:16:01+08:00">2022-04-06</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-03-30 21:55:36" itemprop="dateModified" datetime="2022-03-30T21:55:36+08:00">2022-03-30</time>
-              </span>
 
           
 
@@ -206,7 +200,7 @@
 <p>ActiveMQ,，RocketMQ，Kafka时效性都为ms，而RabbitMQ时效性为微秒</p>
 <p>ActiveMQ,RabbitMQ可用性高，基于主从架构实现高可用性，RocketMQ和Kafka可用性非常高，采用的都是分布式架构</p>
 <p>消息可靠性，ActiveMQ有较低概率丢失数据，RocketMQ，Kafka经过参数优化匹配，消息可以做到0丢失。</p>
-<h3 id="RabbitMQ高可用的实现"><a href="#RabbitMQ高可用的实现" class="headerlink" title="RabbitMQ高可用的实现"></a>RabbitMQ高可用的实现</h3><p><img src="/MQ.assets/image-20220325121554889.png" alt="image-20220325121554889"></p>
+<h3 id="RabbitMQ高可用的实现"><a href="#RabbitMQ高可用的实现" class="headerlink" title="RabbitMQ高可用的实现"></a>RabbitMQ高可用的实现</h3><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220325121554889.png" alt="image-20220325121554889"></p>
 <p>这种模式，才是所谓的 rabbitmq 的高可用模式，跟普通集群模式不一样的是，你创建的queue，无论元数据还是 queue 里的消息都会存在于多个实例上，然后每次你写消息到 queue 的时候，都会自动把消息到多个实例的 queue 里进行消息同步。类似 Redis 的主从复制。</p>
 <p>这样的话，好处在于，你任何一个机器宕机了，没事儿，别的机器都可以用。坏处在于，第一，这个性能开销也太大了吧，，消息同步所有机器，导致网络带宽压力和消耗很重！第二，这么玩儿，就没有扩展性可言了，如果某个 queue 负载很重，你加机器，新增的机器也包含个queue的所有数据，并没有办法线性扩展你的 queue。<br>那么怎么开启这个镜像集群模式呢？我这里简单说一下，避免面试人家问你你不知道，其实很简单rabbitmq 有很好的管理控制台，就是在后台新增一个策略，这个策略是镜像集群模式的策略，指定的时候可以要求数据同步到所有节点的，也可以要求就同步到指定数量的节点，然后你再次创建queue的时候，应用这个策略，就会自动将数据同步到其他的节点上去了。</p>
 <h3 id="RabbitMQ如何保证消息不被重复消费"><a href="#RabbitMQ如何保证消息不被重复消费" class="headerlink" title="RabbitMQ如何保证消息不被重复消费"></a>RabbitMQ如何保证消息不被重复消费</h3><ol>
@@ -217,10 +211,10 @@
 </ol>
 <h3 id="如何保证消息的可靠性传输"><a href="#如何保证消息的可靠性传输" class="headerlink" title="如何保证消息的可靠性传输"></a>如何保证消息的可靠性传输</h3><h3 id="如何保证消息的消费顺序"><a href="#如何保证消息的消费顺序" class="headerlink" title="如何保证消息的消费顺序"></a>如何保证消息的消费顺序</h3><p>先看看顺序会错乱的俩场景 </p>
 <p>（1）rabbitmq：一个 queue，多个 consumer，这不明显乱了，因为消费数据的顺序不同，有可能 2,3,1， 按正常来说应该 1,2,3 进行消费，如下图：</p>
-<p><img src="/MQ.assets/image-20220330114518890.png" alt="image-20220330114518890"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220330114518890.png" alt="image-20220330114518890"></p>
 <p>（1）如何保证消息的顺序性呢？<br>拆分多个queue，每个queue一个consumer，就是多一些queue而已，确实是麻烦点；或者就一个 queue但是对应一个consumer，然后这个consumer 内部用内存队列做排队，然后分发给底层不同的 worker 来处理。如下图所示：</p>
-<p><img src="/MQ.assets/image-20220330114300040.png" alt="image-20220330114300040"></p>
-<h3 id="如何解决消息队列的延时以及过期失效的问题？"><a href="#如何解决消息队列的延时以及过期失效的问题？" class="headerlink" title="如何解决消息队列的延时以及过期失效的问题？"></a>如何解决消息队列的延时以及过期失效的问题？</h3><p><img src="/MQ.assets/image-20220330114732891.png" alt="image-20220330114732891"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220330114300040.png" alt="image-20220330114300040"></p>
+<h3 id="如何解决消息队列的延时以及过期失效的问题？"><a href="#如何解决消息队列的延时以及过期失效的问题？" class="headerlink" title="如何解决消息队列的延时以及过期失效的问题？"></a>如何解决消息队列的延时以及过期失效的问题？</h3><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220330114732891.png" alt="image-20220330114732891"></p>
 <p>（1）大量消息在 mq 里积压了几个小时了还没解决</p>
 <p>几千万条数据在 MQ 里积压了七八个小时，从下午 4 点多，积压到了晚上很晚，10 点多，11 点多 </p>
 <p>这个是我们真实遇到过的一个场景，确实是线上故障了，这个时候要不然就是修复 consumer 的问题， 让他恢复消费速度，然后傻傻的等待几个小时消费完毕。这个肯定不能在面试的时候说吧。 </p>
@@ -236,7 +230,7 @@
 </ol>
 <p>上面的 topic，partition，queue 的关系弄不清楚，所以我总结如下：</p>
 <p>修复原来生产者的问题，并停掉，然后新建一些生产者，快速消费消息，并不做耗时的处理，那么 这些消息如何快速消费呢？扩展集群，零时征用 10 倍的机器部署消费者，消费前边消费者转发过来 的消息，这样就很快消费掉队列里边堆积的消息了。</p>
-<p><img src="/MQ.assets/image-20220330115507603.png" alt="image-20220330115507603"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/MQ.assets/image-20220330115507603.png" alt="image-20220330115507603"></p>
 
     </div>
 
@@ -252,10 +246,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/06/hello-world/" rel="prev" title="Hello World">
-      <i class="fa fa-chevron-left"></i> Hello World
+    <a href="/2022/04/06/JVM/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/06/mysql%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -328,7 +325,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
