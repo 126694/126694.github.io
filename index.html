@@ -1895,7 +1895,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-04-06 15:16:01 / 修改时间：15:45:39" itemprop="dateCreated datePublished" datetime="2022-04-06T15:16:01+08:00">2022-04-06</time>
+              <time title="创建时间：2022-04-06 15:16:01 / 修改时间：15:53:12" itemprop="dateCreated datePublished" datetime="2022-04-06T15:16:01+08:00">2022-04-06</time>
             </span>
 
           
@@ -1911,7 +1911,7 @@
       
           <meta name="referrer" content="no-referrer" />
 
-<h3 id="Java内存区域"><a href="#Java内存区域" class="headerlink" title="Java内存区域"></a>Java内存区域</h3><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220315164232268.png" alt="image-20220315164232268"></p>
+<h3 id="Java内存区域"><a href="#Java内存区域" class="headerlink" title="Java内存区域"></a>Java内存区域</h3><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220315164232268.png" alt="img"></p>
 <p><strong>虚拟机栈</strong>描述的是Java方法执行的线程内存模型：每个方法被执行的时候，Java虚拟机都 会同步创建一个栈帧[1]（Stack Frame）用于<strong>存储局部变量表、操作数栈、动态连接、方法出口</strong>等信息。每一个方法被调用直至执行完毕的过程，就对应着一个栈帧在虚拟机栈中从入栈到出栈的过程。</p>
 <p>局部变量表存放了编译期可知的各种Java虚拟机基本数据类型（boolean、byte、char、short、int、 float、long、double）、对象引用（reference类型，它并不等同于对象本身，可能是一个指向对象起始 地址的引用指针，也可能是指向一个代表对象的句柄或者其他与此对象相关的位置）和returnAddress<br>类型（指向了一条字节码指令的地址）。</p>
 <p>Java<strong>堆</strong>是被所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的唯一目的就是存放对象实例。</p>
@@ -1930,14 +1930,14 @@
 <li><strong>永久代</strong>是 Hotspot 虚拟机对 JVM 规范的实现（1.8 之前）</li>
 <li><strong>元空间</strong>是 Hotspot 虚拟机对 JVM 规范的另一种实现（1.8 以后），使用本地内存作为这些信息的存储空间</li>
 </ul>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831170457337.png" alt="image-20210831170457337"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831170457337.png" alt="img"></p>
 <p>从这张图学到三点</p>
 <ul>
 <li>当第一次用到某个类是，由类加载器将 class 文件的类元信息读入，并存储于元空间</li>
 <li>X，Y 的类元信息是存储于元空间中，无法直接访问</li>
 <li>可以用 X.class，Y.class 间接访问类元信息，它们俩属于 java 对象，我们的代码中可以使用</li>
 </ul>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831170512418.png" alt="image-20210831170512418"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831170512418.png" alt="img"></p>
 <p>从这张图可以学到</p>
 <ul>
 <li>堆内存中：当一个<strong>类加载器对象</strong>，这个类加载器对象加载的所有<strong>类对象</strong>，这些类对象对应的所有<strong>实例对象</strong>都没人引用时，GC 时就会对它们占用的对内存进行释放</li>
@@ -1951,9 +1951,9 @@
 <p>-XX:SurvivorRatio 伊甸园区和from部分的占比</p>
 <p>-XX:NewRatio 控制新生代的占比</p>
 <p>新生代分为伊甸园区和from区和to 区，Survivor区是from和to占的大小</p>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316081701537.png" alt="image-20220316081701537"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316081701537.png" alt="img"></p>
 <p><strong>元空间内存设置</strong></p>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831173118634.png" alt="image-20210831173118634"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831173118634.png" alt="img"></p>
 <p>解释：</p>
 <ul>
 <li>class space 存储类的基本信息，最大值受 -XX:CompressedClassSpaceSize 控制</li>
@@ -1965,7 +1965,7 @@
 <li>这里 -XX:CompressedClassSpaceSize 这段空间还与是否开启了指针压缩有关，这里暂不深入展开，可以简单认为指针压缩默认开启</li>
 </ul>
 <p><strong>代码缓存内存设置</strong></p>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316082300452.png" alt="image-20220316082300452"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316082300452.png" alt="img"></p>
 <p>解释：</p>
 <ul>
 <li>如果 -XX:ReservedCodeCacheSize &lt; 240m，所有优化机器代码不加区分存在一起</li>
@@ -1980,21 +1980,21 @@
 <ul>
 <li>强引用是最传统的“引用”的定义，是指在程序代码之中普遍存在的引用赋值，即类似“Object  obj&#x3D;new Object()”这种引用关系。无论任何情况下，只要强引用关系还存在，垃圾收集器就永远不会回 收掉被引用的对象。</li>
 </ul>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220317143558133.png" alt="image-20220317143558133"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220317143558133.png" alt="img"></p>
 <ul>
 <li><p>软引用是用来描述一些还有用，但非必须的对象。只被软引用关联着的对象，<strong>在系统将要发生内存溢出异常前，会把这些对象列进回收范围之中进行第二次回收，如果这次回收还没有足够的内存， 才会抛出内存溢出异常。</strong>在JDK 1.2版之后提供了SoftReference类来实现软引用。</p>
 <p>SoftReference a&#x3D;new SoftReference(new A); 软引用自身内存不会释放，软引用需要配合引用队列来释放，典型例子是反射数据</p>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220317143547828.png" alt="image-20220317143547828"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220317143547828.png" alt="img"></p>
 </li>
 <li><p>弱引用也是用来描述那些非必须对象，但是它的强度比软引用更弱一些，被弱引用关联的对象只能生存到下一次垃圾收集发生为止。<strong>当垃圾收集器开始工作，无论当前内存是否足够，都会回收掉只被弱引用关联的对象。</strong>在JDK 1.2版之后提供了WeakReference类来实现弱引用。</p>
 </li>
 </ul>
 <p>​       WeakReference a&#x3D;new WeakReference(new A);弱引用自身需要配合队列来释放，典型例子是ThreadLocalMap中的Entry对象</p>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220317143612879.png" alt="image-20220317143612879"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220317143612879.png" alt="img"></p>
 <ul>
 <li><p>虚引用也称为“幽灵引用”或者“幻影引用”，它是最弱的一种引用关系。一个对象是否有虚引用的存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象实例。<strong>为一个对象设置虚引用关联的唯一目的只是为了能在这个对象被收集器回收时收到一个系统通知。</strong>在JDK 1.2版之后提供<br>了PhantomReference类来实现虚引用。</p>
 <p>PhantomReference a&#x3D;new PhantomReference(new A());必须配合引用队列一起使用，当虚引用的对象被回收时，会将虚引用对象入队，由Reference Handler线程释放其关联的外部资源，典型例子是Cleaner释放DirectByteBuffer占用的直接内存。</p>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210901112157901.png" alt="image-20210901112157901"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210901112157901.png" alt="img"></p>
 </li>
 </ul>
 <h4 id="finalize方法"><a href="#finalize方法" class="headerlink" title="finalize方法"></a>finalize方法</h4><p>任何一个对象finalize方法都只会被系统调用一次，如果对象面临下一次回收，它的finalize方法不会再次执行。建议使用trl-finally方式代替finalize()</p>
@@ -2007,13 +2007,13 @@
 <li>对 finalize 方法进行处理的核心逻辑位于 java.lang.ref.Finalizer 类中，它包含了名为 unfinalized 的静态变量（双向链表结构），Finalizer 也可被视为另一种引用对象（地位与软、弱、虚相当，只是不对外，无法直接使用）</li>
 <li>当重写了 finalize 方法的对象，在构造方法调用之时，JVM 都会将其包装成一个 Finalizer 对象，并加入 unfinalized 链表中</li>
 </ol>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210901121032813.png" alt="image-20210901121032813"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210901121032813.png" alt="img"></p>
 <ol start="3">
 <li>Finalizer 类中还有另一个重要的静态变量，即 ReferenceQueue 引用队列，刚开始它是空的。当狗对象可以被当作垃圾回收时，就会把这些狗对象对应的 Finalizer 对象加入此引用队列</li>
 <li>但此时 Dog 对象还没法被立刻回收，因为 unfinalized -&gt; Finalizer 这一引用链还在引用它嘛，为的是【先别着急回收啊，等我调完 finalize 方法，再回收】</li>
 <li>FinalizerThread 线程会从 ReferenceQueue 中逐一取出每个 Finalizer 对象，把它们从链表断开并真正调用 finallize 方法</li>
 </ol>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210901122228916.png" alt="image-20210901122228916"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210901122228916.png" alt="img"></p>
 <ol start="6">
 <li>由于整个 Finalizer 对象已经从 unfinalized 链表中断开，这样没谁能引用到它和狗对象，所以下次 gc 时就被回收了</li>
 </ol>
@@ -2025,11 +2025,11 @@
 <li>可以想象gc本就因为内存不足引起，finalize调用又很慢(两个队列的移除操作，都是串行执行的，用来释放连接类的资源也应该不快)，不能及时释放内存，对象释放不及时就会逐渐移入老年代，老年代垃圾积累过多容易引起full gc，full gc后释放速度如果仍然跟不上创建新对象的速度，就会OOM。</li>
 <li>有的文章提到【Finalizer 线程会和我们的主线程进行竞争，不过由于它的优先级较低，获取到的CPU时间较少，因此它永远也赶不上主线程的步伐】这个显然是错误的，FinalizerThread 的优先级较普通线程更高，原因应该是 finalize 串行执行慢等原因综合导致</li>
 </ul>
-<h4 id="分代收集理论"><a href="#分代收集理论" class="headerlink" title="分代收集理论"></a>分代收集理论</h4><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316085947530.png" alt="image-20220316085947530"></p>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316090003045.png" alt="image-20220316090003045"></p>
+<h4 id="分代收集理论"><a href="#分代收集理论" class="headerlink" title="分代收集理论"></a>分代收集理论</h4><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316085947530.png" alt="img"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316090003045.png" alt="img"></p>
 <h4 id="JVM垃圾回收算法"><a href="#JVM垃圾回收算法" class="headerlink" title="JVM垃圾回收算法"></a>JVM垃圾回收算法</h4><p><strong>三种垃圾回收算法</strong></p>
 <p>标记清除法</p>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831211008162.png" alt="image-20210831211008162"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831211008162.png" alt="img"></p>
 <p>解释：</p>
 <ol>
 <li>找到 GC Root 对象，即那些一定不会被回收的对象，如正执行方法内局部变量引用的对象、静态变量引用的对象</li>
@@ -2043,7 +2043,7 @@
 <li>缺点是会产生内存碎片</li>
 </ul>
 <p>标记整理法</p>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831211641241.png" alt="image-20210831211641241"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831211641241.png" alt="img"></p>
 <p>解释：</p>
 <ol>
 <li>前面的标记阶段、清理阶段与标记清除法类似</li>
@@ -2059,7 +2059,7 @@
 </li>
 </ul>
 <p>标记复制法</p>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831212125813.png" alt="image-20210831212125813"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831212125813.png" alt="img"></p>
 <p>解释：</p>
 <ol>
 <li>将整个内存分成两个大小相等的区域，from 和 to，其中 to 总是处于空闲，from 存储新创建的对象</li>
@@ -2096,39 +2096,39 @@
 <h5 id="分代回收"><a href="#分代回收" class="headerlink" title="分代回收"></a><strong>分代回收</strong></h5><ol>
 <li>伊甸园 eden，最初对象都分配到这里，与幸存区 survivor（分成 from 和 to）合称新生代，</li>
 </ol>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213622704.png" alt="image-20210831213622704"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213622704.png" alt="img"></p>
 <ol start="2">
 <li>当伊甸园内存不足，标记伊甸园与 from（现阶段没有）的存活对象</li>
 </ol>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213640110.png" alt="image-20210831213640110"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213640110.png" alt="img"></p>
 <ol start="3">
 <li>将存活对象采用复制算法复制到 to 中，复制完毕后，伊甸园和 from 内存都得到释放</li>
 </ol>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213657861.png" alt="image-20210831213657861"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213657861.png" alt="img"></p>
 <ol start="4">
 <li>将 from 和 to 交换位置</li>
 </ol>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213708776.png" alt="image-20210831213708776"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213708776.png" alt="img"></p>
 <ol start="5">
 <li>经过一段时间后伊甸园的内存又出现不足</li>
 </ol>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213724858.png" alt="image-20210831213724858"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213724858.png" alt="img"></p>
 <ol start="6">
 <li>标记伊甸园与 from（现阶段没有）的存活对象</li>
 </ol>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213737669.png" alt="image-20210831213737669"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213737669.png" alt="img"></p>
 <ol start="7">
 <li>将存活对象采用复制算法复制到 to 中</li>
 </ol>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213804315.png" alt="image-20210831213804315"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213804315.png" alt="img"></p>
 <ol start="8">
 <li>复制完毕后，伊甸园和 from 内存都得到释放</li>
 </ol>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213815371.png" alt="image-20210831213815371"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213815371.png" alt="img"></p>
 <ol start="9">
 <li>将 from 和 to 交换位置</li>
 </ol>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213826017.png" alt="image-20210831213826017"></p>
+<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20210831213826017.png" alt="img"></p>
 <ol start="10">
 <li>老年代 old，当幸存区对象熬过几次回收（最多15次），晋升到老年代（幸存区内存不足或大对象会导致提前晋升）</li>
 </ol>
@@ -2198,9 +2198,9 @@
 </ul>
 </li>
 </ol>
-<h4 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h4><h5 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h5><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316113515282.png" alt="image-20220316113515282"></p>
+<h4 id="垃圾回收器"><a href="#垃圾回收器" class="headerlink" title="垃圾回收器"></a>垃圾回收器</h4><h5 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h5><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316113515282.png" alt="img"></p>
 <p>迄今为止，它依然是HotSpot虚拟机运行在客户端模式下的默认新生 代收集器，有着优于其他收集器的地方，那就是简单而高效（与其他收集器的单线程相比），对于内存资源受限的环境，它是所有收集器里额外内存消耗（Memory Footprint）[1]最小的</p>
-<h5 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h5><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316113853294.png" alt="image-20220316113853294"></p>
+<h5 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h5><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316113853294.png" alt="img"></p>
 <h5 id="垃圾回收器-Parallel-GC"><a href="#垃圾回收器-Parallel-GC" class="headerlink" title="垃圾回收器 - Parallel GC"></a><strong>垃圾回收器 - Parallel GC</strong></h5><ul>
 <li><p>eden 内存不足发生 Minor GC，采用标记复制算法，需要暂停用户线程</p>
 </li>
@@ -2244,7 +2244,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="虚拟机类加载机制"><a href="#虚拟机类加载机制" class="headerlink" title="虚拟机类加载机制"></a>虚拟机类加载机制</h3><h4 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h4><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316183823997.png" alt="image-20220316183823997"></p>
+<h3 id="虚拟机类加载机制"><a href="#虚拟机类加载机制" class="headerlink" title="虚拟机类加载机制"></a>虚拟机类加载机制</h3><h4 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h4><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220316183823997.png" alt="img"></p>
 <h4 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h4><ol>
 <li><p>加载</p>
 <ol>
@@ -2271,8 +2271,8 @@
 </ol>
 </li>
 </ol>
-<h4 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h4><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220317101838367.png" alt="image-20220317101838367"></p>
-<h4 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h4><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220317105643388.png" alt="image-20220317105643388"></p>
+<h4 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h4><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220317101838367.png" alt="img"></p>
+<h4 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h4><p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JVM.assets/image-20220317105643388.png" alt="img"></p>
 <p>代码实现</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">synchronized</span> Class&lt;?&gt; loadClass(String name, <span class="type">boolean</span> resolve) <span class="keyword">throws</span> ClassNotFoundException </span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">// 首先，检查请求的类是否已经被加载过了 </span></span><br><span class="line">    <span class="type">Class</span> <span class="variable">c</span> <span class="operator">=</span> findLoadedClass(name); </span><br><span class="line">    <span class="keyword">if</span> (c == <span class="literal">null</span>) &#123; </span><br><span class="line">        <span class="keyword">try</span> &#123; </span><br><span class="line">            <span class="keyword">if</span> (parent != <span class="literal">null</span>) &#123; </span><br><span class="line">                c = parent.loadClass(name, <span class="literal">false</span>);</span><br><span class="line">             &#125; </span><br><span class="line">            <span class="keyword">else</span> &#123; </span><br><span class="line">                c = findBootstrapClassOrNull(name);</span><br><span class="line">             &#125;        </span><br><span class="line">             &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123; </span><br><span class="line">             <span class="comment">// 如果父类加载器抛出ClassNotFoundException </span></span><br><span class="line">             <span class="comment">// 说明父类加载器无法完成加载请求</span></span><br><span class="line">             &#125; </span><br><span class="line">        <span class="keyword">if</span> (c == <span class="literal">null</span>) &#123; </span><br><span class="line">            <span class="comment">// 在父类加载器无法加载时 </span></span><br><span class="line">            <span class="comment">// 再调用本身的findClass方法来进行类加载 </span></span><br><span class="line">            c = findClass(name);</span><br><span class="line">             &#125;</span><br><span class="line">     &#125; </span><br><span class="line">    <span class="keyword">if</span> (resolve) &#123; </span><br><span class="line">        resolveClass(c);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
