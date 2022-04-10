@@ -20,48 +20,48 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="title: mysql面试  MySQL的逻辑架构图 Server 层包括连接器、查询缓存、分析器、优化器、执行器等，涵盖 MySQL 的大多数核心服务功能，以及所有的内置函数（如日期、时间、数学和加密函数等），所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图等。 查询缓存   可以通过query_cache_type进行开关0是关闭，1是开启，2是按需获取 分析器  词法分析分">
+  <meta name="description" content="MySQL的逻辑架构图 Server 层包括连接器、查询缓存、分析器、优化器、执行器等，涵盖 MySQL 的大多数核心服务功能，以及所有的内置函数（如日期、时间、数学和加密函数等），所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图等。 查询缓存   可以通过query_cache_type进行开关0是关闭，1是开启，2是按需获取 分析器  词法分析分析是否是关键字，语法分析分析语法写">
 <meta property="og:type" content="article">
-<meta property="og:title" content="akurisu">
+<meta property="og:title" content="mysql面试">
 <meta property="og:url" content="http://example.com/2022/04/10/mysql%E9%9D%A2%E8%AF%95/index.html">
 <meta property="og:site_name" content="akurisu">
-<meta property="og:description" content="title: mysql面试  MySQL的逻辑架构图 Server 层包括连接器、查询缓存、分析器、优化器、执行器等，涵盖 MySQL 的大多数核心服务功能，以及所有的内置函数（如日期、时间、数学和加密函数等），所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图等。 查询缓存   可以通过query_cache_type进行开关0是关闭，1是开启，2是按需获取 分析器  词法分析分">
+<meta property="og:description" content="MySQL的逻辑架构图 Server 层包括连接器、查询缓存、分析器、优化器、执行器等，涵盖 MySQL 的大多数核心服务功能，以及所有的内置函数（如日期、时间、数学和加密函数等），所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图等。 查询缓存   可以通过query_cache_type进行开关0是关闭，1是开启，2是按需获取 分析器  词法分析分析是否是关键字，语法分析分析语法写">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets%5Cimage-20220312085136410.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403094200555.png">
-<meta property="og:image" content="c:/Users/86187/AppData/Roaming/Typora/typora-user-images/image-20220312083324081.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403142212814.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404161412581.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404165512887.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404213200554.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404164609021.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404165731384.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404165831731.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403144605645.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403145208350.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403163830215.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404125622828.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404130115771.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404130348676.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403164923369.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403164930546.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403180158929.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403202731069.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403202737106.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403210259912.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403210956771.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403212708066.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404101909756.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404103917912.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404105055504.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404105104463.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404110010359.png">
-<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404110733333.png">
-<meta property="article:published_time" content="2022-04-10T08:06:59.809Z">
-<meta property="article:modified_time" content="2022-04-10T08:08:31.724Z">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220312085136410.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220403094200555.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220312083324081.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220403142212814.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404161412581.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404165512887.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404213200554.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404164609021.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404165731384.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404165831731.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220403144605645.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220403145208350.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220403163830215.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404125622828.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404130115771.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404130348676.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220403164923369.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220403164930546.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220403180158929.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220403202731069.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220403202737106.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220403210259912.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220403210956771.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220403212708066.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404101909756.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404103917912.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404105055504.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404105104463.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404110010359.png">
+<meta property="og:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220404110733333.png">
+<meta property="article:published_time" content="2022-04-10T08:20:23.000Z">
+<meta property="article:modified_time" content="2022-04-10T12:06:23.561Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95.assets%5Cimage-20220312085136410.png">
+<meta name="twitter:image" content="http://example.com/mysql%E9%9D%A2%E8%AF%95/image-20220312085136410.png">
 
 <link rel="canonical" href="http://example.com/2022/04/10/mysql%E9%9D%A2%E8%AF%95/">
 
@@ -76,7 +76,7 @@
   };
 </script>
 
-  <title> | akurisu</title>
+  <title>mysql面试 | akurisu</title>
   
 
 
@@ -194,7 +194,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          mysql面试
         </h1>
 
         <div class="post-meta">
@@ -205,7 +205,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-04-10 16:06:59 / 修改时间：16:08:31" itemprop="dateCreated datePublished" datetime="2022-04-10T16:06:59+08:00">2022-04-10</time>
+              <time title="创建时间：2022-04-10 16:20:23 / 修改时间：20:06:23" itemprop="dateCreated datePublished" datetime="2022-04-10T16:20:23+08:00">2022-04-10</time>
             </span>
 
           
@@ -219,17 +219,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <hr>
-<p>title: mysql面试</p>
-<hr>
-<h3 id="MySQL的逻辑架构图"><a href="#MySQL的逻辑架构图" class="headerlink" title="MySQL的逻辑架构图"></a>MySQL的逻辑架构图</h3><p><img src="/mysql%E9%9D%A2%E8%AF%95.assets%5Cimage-20220312085136410.png" alt="image-20220312085136410"></p>
+        <h3 id="MySQL的逻辑架构图"><a href="#MySQL的逻辑架构图" class="headerlink" title="MySQL的逻辑架构图"></a>MySQL的逻辑架构图</h3><p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220312085136410.png" alt="image-20220312085136410"></p>
 <p>Server 层包括连接器、查询缓存、分析器、优化器、执行器等，涵盖 MySQL 的大多数核心服务功能，以及所有的内置函数（如日期、时间、数学和加密函数等），所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图等。</p>
 <p>查询缓存   可以通过query_cache_type进行开关0是关闭，1是开启，2是按需获取</p>
 <p>分析器  词法分析分析是否是关键字，语法分析分析语法写的是否正确，分析器分析表是否存在列是否存在</p>
 <p>优化器  决定SQL怎么执行是最好的</p>
 <p>执行器 操作对应的引擎，返回结果</p>
 <p>而存储引擎层负责数据的存储和提取。其架构模式是插件式的，支持 InnoDB、MyISAM、Memory 等多个存储引擎。现在最常用的存储引擎是 InnoDB，它从 MySQL 5.5.5 版本开始成为了默认存储引擎。</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403094200555.png" alt="image-20220403094200555"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220403094200555.png" alt="image-20220403094200555"></p>
 <h3 id="MyISAM-和-InnoDB-的区别"><a href="#MyISAM-和-InnoDB-的区别" class="headerlink" title="MyISAM 和 InnoDB 的区别"></a>MyISAM 和 InnoDB 的区别</h3><p><strong>1.是否支持行级锁</strong></p>
 <p>MyISAM 只有表级锁(table-level locking)，而 InnoDB 支持行级锁(row-level locking)和表级锁,默认为行级锁。</p>
 <p>也就说，MyISAM 一锁就是锁住了整张表，这在并发写的情况下是多么滴憨憨啊！这也是为什么 InnoDB 在并发写的时候，性能更牛皮了！</p>
@@ -261,7 +258,7 @@
 <p>使用 InnoDB 的数据库在异常崩溃后，数据库重新启动的时候会保证数据库恢复到崩溃前的状态。这个恢复的过程依赖于 <code>redo log</code> 。</p>
 <h4 id="redolog"><a href="#redolog" class="headerlink" title="redolog"></a><strong>redolog</strong></h4><p><strong>其实就是 MySQL 里经常说到的 WAL 技术，WAL 的全称是 Write-Ahead Logging，</strong>它的关键点就是先写日志，再写磁盘，也就是先写粉板，等不忙的时候再写账本，具体来说，当有一条记录需要更新的时候，InnoDB 引擎就会先把记录写到 redo log（粉板）里面，并更新内存，这个时候更新就算完成了。同时，InnoDB 引擎会在适当的时候，将这个操作记录更新到磁盘里面，而这个更新往往是在系统比较空闲的时候做，这就像打烊以后掌柜做的事。</p>
 <p>与此类似，InnoDB 的 redo log 是固定大小的，比如可以配置为一组 4 个文件，每个文件的大小是 1GB，那么这块“粉板”总共就可以记录 4GB 的操作。从头开始写，写到末尾就又回到开头循环写，如下面这个图所示。</p>
-<p><img src="C:\Users\86187\AppData\Roaming\Typora\typora-user-images\image-20220312083324081.png" alt="image-20220312083324081"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220312083324081.png" alt="image-20220312083324081"></p>
 <p>write pos 是当前记录的位置，一边写一边后移，写到第 3 号文件末尾后就回到 0 号文件开头。checkpoint 是当前要擦除的位置，也是往后推移并且循环的，擦除记录前要把记录更新到数据文件。</p>
 <p><strong>write pos 和 checkpoint</strong> 之间的是“粉板”上还空着的部分，可以用来记录新的操作。如果 write pos 追上 checkpoint，表示“粉板”满了，这时候不能再执行新的更新，得停下来先擦掉一些记录，把 checkpoint 推进一下。</p>
 <p><strong>有了 redo log，InnoDB 就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 crash-safe。</strong></p>
@@ -288,7 +285,7 @@
 <li><p>系统不繁忙的时候。</p>
 </li>
 <li><p>关 闭数据库的时候。</p>
-<p> 其中，第三种情况不会为系统带来过多影响的，第四中情况下不会在乎为系统带来的影响。所以我 们只需要关注第一和第二种情况： 对于第二种情况，由于 mysql 的更新需要先写日志，所以当日志满了的情况下，所有的更新都会停 止，一直到刷完盘日志腾出了空间为止； </p>
+<p>其中，第三种情况不会为系统带来过多影响的，第四中情况下不会在乎为系统带来的影响。所以我 们只需要关注第一和第二种情况： 对于第二种情况，由于 mysql 的更新需要先写日志，所以当日志满了的情况下，所有的更新都会停 止，一直到刷完盘日志腾出了空间为止； </p>
 <p>而对于第一种情况，当查询的数据在内存中的数据页没有的时候，就需要淘汰旧页释放内存以读入 新页，所以当一次查询导致需要淘汰的脏页过多的时候，就需要先等待较长的刷盘时间，然后才能 获取响应。 </p>
 <p>为了避免上述两种情况，必须要控制脏页在内存中的比例。</p>
 </li>
@@ -311,7 +308,7 @@
 <li><strong>可重复读</strong>是指，一个事务执行过程中看到的数据，总是跟这个事务在启动时看到的数据是一致的。当然在可重复读隔离级别下，未提交变更对其他事务也是不可见的。</li>
 <li><strong>串行化</strong>，顾名思义是对于同一行记录，“写”会加“写锁”，“读”会加“读锁”。当出现读写锁冲突的时候，后访问的事务必须等前一个事务执行完成，才能继续执行。</li>
 </ul>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403142212814.png" alt="image-20220403142212814"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220403142212814.png" alt="image-20220403142212814"></p>
 <ul>
 <li>脏读：脏读就是指当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中，这时，另外一个事务也访问这个数据，然后使用了这个数据。</li>
 <li>不可重复读：是指在一个事务内，多次读同一数据。在这个事务还没有结束时，另外一个事务也访问该同一数据。那么，在第一个事务中的两次读数据之间，由于第二个事务的修改，那么第一个事务两次读到的的数据可能是不一样的。这样就发生了在一个事务内两次读到的数据是不一样的，因此称为是不可重复读。</li>
@@ -319,7 +316,7 @@
 </ul>
 <h3 id="多版本并发控制"><a href="#多版本并发控制" class="headerlink" title="多版本并发控制"></a>多版本并发控制</h3><h4 id="什么是MVCC"><a href="#什么是MVCC" class="headerlink" title="什么是MVCC"></a>什么是MVCC</h4><p>MVCC(Multiversion Concurrency Control)),多版本并发控制。顾名思义，MVcc是通过数据行的多个版本管理来实现数据库的并发控制。这项技术使得在InnoDB的事务隔离级别下执行一致性读操作有了保证。换言之，<strong>就是为了查询一些正在被另一个事务更新的行，并且可以看到它们被更新之前的值</strong>，这样在做查询的时候就不用等待另一个事务释放锁。</p>
 <h4 id="快照读与当前读"><a href="#快照读与当前读" class="headerlink" title="快照读与当前读"></a>快照读与当前读</h4><p>所谓的MVCC,就是生成一个ReadView,通过ReadView找到符合条件的记录版本（历史版本由undo日志构建)。查询语句只能读到在生成ReadView,之前己提交事务所做的更改，在生成ReadView之前未提交的事务或者之后才开启的事务所做的更改是看不到的。而写操作肯定针对的是最新版本的记录，读记录的历史版本和改动记录的最新版本本身并不冲突，也就是采用MVCC时，读-写操作并不冲突。</p>
-<h4 id="再谈隔离级别"><a href="#再谈隔离级别" class="headerlink" title="再谈隔离级别"></a>再谈隔离级别</h4><p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404161412581.png" alt="image-20220404161412581"></p>
+<h4 id="再谈隔离级别"><a href="#再谈隔离级别" class="headerlink" title="再谈隔离级别"></a>再谈隔离级别</h4><p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404161412581.png" alt="image-20220404161412581"></p>
 <p>​                                                                                                          SQL标准下的隔离级别</p>
 <p>SQL标准下的隔离级别，在MySQL下是不一样的，MySQL默认的隔离级别<strong>可重复读</strong>不仅解决了脏读、不可重复读，<strong>也解决了幻读</strong>，主要原因是因为使用了MVCC，在MVCC相当于使用了快照。</p>
 <p>MCC可以不采用锁机制，而是通过乐观锁的方式来解决不可重复读和幻读问题！它可以在大多数情况下替代行级锁，降低系统的开销。</p>
@@ -328,8 +325,8 @@
 <li>trx_id：每次一个事务对某条聚簇索引记录进行改动时，都会把该事务的事务1d赋值给trx_1d隐藏列。</li>
 <li>roll_pointer:每次对某条聚簇索引记录进行改动时，都会把I旧的版本写入到undo日志中，然后这个隐藏列就相当于一个指针，可以通过它来找到该记录修改前的信息。指向上一个版本快照。</li>
 </ul>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404165512887.png" alt="image-20220404165512887"></p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404213200554.png" alt="image-20220404213200554"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404165512887.png" alt="image-20220404165512887"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404213200554.png" alt="image-20220404213200554"></p>
 <h4 id="ReadView"><a href="#ReadView" class="headerlink" title="ReadView"></a>ReadView</h4><h5 id="什么是ReadView"><a href="#什么是ReadView" class="headerlink" title="什么是ReadView"></a>什么是ReadView</h5><p>在MVCC机制中，多个事务对同一个行记录进行更新会产生多个历史快照，这些历史快照保存在Undo Log里。如果一个事务想要查询这个行记录，需要读取哪个版本的行记录呢？这时就需要用到ReadView了，它帮我们解决了行的可见性问题。<br>ReadView就是事务A在使用MVCC机制进行快照读操作时产生的读视图。当事务启动时，会生成数据库系统当前的一个快照，InnoDB为每个事务构造了一个数组，用来记录并维护系统当前<strong>活跃事务</strong>的ID(“活跃”指的就是，启动了但还没提交)</p>
 <h5 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h5><p>使用READ UNCOMMITTED隔离级别的事务，由于可以读到未提交事务修改过的记录，所以直接读取记录的最新版本就好了。<br>使用SERIALIZABLE隔离级别的事务，InnoDB规定使用加锁的方式来访问记录。<br>使用READ COMMITTED和REPEATABLE READ隔离级别的事务，都必须保证读到<strong>已经提交了的</strong>事务修改过的记录。假如另一个事务已经修改了记录但是尚未提交，是不能直接读取最新版本的记录的，核心问题就是需要判断一下版本链中的哪个版本是当前事务可见的，这是ReadView要解决的主要问题。<br>这个ReadView中主要包含4个比较重要的内容，分别如下：</p>
 <p>1.creator_trx_id&#96;,创建这个Read View的事务ID。</p>
@@ -341,7 +338,7 @@
 <p>注意：low_limit_.id并不是trx_ids中的最大值，事务id是递增分配的。比如，现在有id为1,2,3这三个事务，之后id为3的事务提交了。那么一个新的读事务在生成ReadView时，trX_ids就包括1和2，up_limit_.id的值就是1，low_limit_id的值就是4。</p>
 </blockquote>
 <p>举例</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404164609021.png" alt="image-20220404164609021"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404164609021.png" alt="image-20220404164609021"></p>
 <h5 id="ReadView的规则"><a href="#ReadView的规则" class="headerlink" title="ReadView的规则"></a>ReadView的规则</h5><p>有了这个ReadView,这样在访问某条记录时，只需要按照下边的步骤判断记录的某个版本是否可见。</p>
 <ul>
 <li><p>如果被访问版本的trx_id,属性值与ReadView中的creator_trx_id值相同，意味着当前事务在访问它自己修改过的记录，所以该版本可以被当前事务访问。</p>
@@ -351,7 +348,7 @@
 <li><p>如果被访问版本的trx_id属性值大于或等于ReadView中的Iow_limit_id值，表明生成该版本的事务在当前事务生成ReadView,后才开启，所以该版本不可以被当前事务访问。</p>
 </li>
 <li><p>如果被访问版本的trx_id,属性值在ReadView的up_limit_id和low_limit_id之间，那就需要判断一下trx_id属性值是不是在trx_ids列表中。</p>
-<p>  如果在，说明创建ReadViewl时生成该版本的事务还是活跃的，该版本不可以被访问。<br>  如果不在，说明创建ReadViewl时生成该版本的事务已经被提交，该版本可以被访问。</p>
+<p>如果在，说明创建ReadViewl时生成该版本的事务还是活跃的，该版本不可以被访问。<br>如果不在，说明创建ReadViewl时生成该版本的事务已经被提交，该版本可以被访问。</p>
 </li>
 </ul>
 <h4 id="MVCC整体操作流程"><a href="#MVCC整体操作流程" class="headerlink" title="MVCC整体操作流程"></a>MVCC整体操作流程</h4><p>了解了这些概念之后，我们来看下当查询一条记录的时候，系统如何通过MVCC找到它：</p>
@@ -367,9 +364,9 @@
 <p>InnoDB中，MVCC是通过Undo Log+Read View进行数据读取，Undo Log保存了历史快照，而Read View规则帮我们判断当前版本的数据是否可见。</p>
 </blockquote>
 <p>读已提交个隔离级别，一个事务每一次SELECT查询都会重新获取一次Read View</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404165731384.png" alt="image-20220404165731384"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404165731384.png" alt="image-20220404165731384"></p>
 <p>当隔离级别为可重复读的时候，就避免了不可重复读，这是因为一个事务只在第一次SELECT的时候会获取一次Read View,而后面所有的SELECT都会复用这个Read View,如下表所示：</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404165831731.png" alt="image-20220404165831731"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404165831731.png" alt="image-20220404165831731"></p>
 <h4 id="MVCC在可重复读情况下解决幻读"><a href="#MVCC在可重复读情况下解决幻读" class="headerlink" title="MVCC在可重复读情况下解决幻读"></a>MVCC在可重复读情况下解决幻读</h4><p>每次查询可以看到的ReadView都是一个ReadView，所以连续两次读不会结果不同。</p>
 <h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这里介绍了MVCC在READ COMMITTD、REPEATABLE READ这两种隔离级别的事务在执行快照读操作时访问记录的版本链的过程。这样使不同事务的读-写、写-读操作并发执行，从而提升系统性能。<br>核心点在于ReadView的原理，READ COMMITTD、REPEATABLE READ这两个隔离级别的一个很大不同就是生成ReadView的时机不同：</p>
 <ul>
@@ -399,17 +396,17 @@
 <p>（3）所有叶子节点均在同一层、叶子节点除了包含了关键字和关键字记录的指针外也有指向其子节点的指针只不过其指针地址都为null对应下图最后一层节点的空格子</p>
 <p>（4）如果一个非叶节点有N个子节点，则该节点的关键字数等于N-1;</p>
 <p>（5）所有节点关键字是按递增次序排列，并遵循左小右大原则；</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403144605645.png" alt="image-20220403144605645"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220403144605645.png" alt="image-20220403144605645"></p>
 <h4 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h4><p>B+树是B树的一个升级版，相对于B树来说B+树更充分的利用了节点的空间，让查询速度更加稳定，其速度完全接近于二分法查找。为什么说B+树查找的效率要比B树更高、更稳定；我们先看看两者的区别</p>
 <p>（1）B+跟B树不同B+树的非叶子节点不保存关键字记录的指针，这样使得B+树每个节点所能保存的关键字大大增加；</p>
 <p>（2）B+树叶子节点保存了父节点的所有关键字和关键字记录的指针，每个叶子节点的关键字从小到大链接；</p>
 <p>（3）B+树的根节点关键字数量和其子节点个数相等;</p>
 <p>（4）B+的非叶子节点只进行数据索引，不会存实际的关键字记录的指针，所有数据地址必须要到叶子节点才能获取到，所以每次数据查询的次数都一样；</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403145208350.png" alt="image-20220403145208350"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220403145208350.png" alt="image-20220403145208350"></p>
 <p>特点：在B树的基础上每个节点存储的关键字数更多，树的层级更少所以查询数据更快，所有指关键字指针都存在叶子节点，所以每次查找的次数都相同所以查询速度更稳定;</p>
 <h4 id="InnoDB索引模型"><a href="#InnoDB索引模型" class="headerlink" title="InnoDB索引模型"></a>InnoDB索引模型</h4><p>在 InnoDB 中，表都是根据主键顺序以索引的形式存放的，这种存储方式的表称为索引组织表。又因为前面我们提到的，InnoDB 使用了 B+ 树索引模型，所以数据都是存储在 B+ 树中的。</p>
 <p>每一个索引在 InnoDB 里面对应一棵 B+ 树。</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">create</span> <span class="keyword">table</span> T(</span><br><span class="line">id <span class="type">int</span> <span class="keyword">primary</span> key, </span><br><span class="line">k <span class="type">int</span> <span class="keyword">not</span> <span class="keyword">null</span>, </span><br><span class="line">name <span class="type">varchar</span>(<span class="number">16</span>),</span><br><span class="line">index (k))engine<span class="operator">=</span>InnoDB;</span><br></pre></td></tr></table></figure>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">create</span> <span class="keyword">table</span> T(</span><br><span class="line">id <span class="type">int</span> <span class="keyword">primary</span> key, </span><br><span class="line">k <span class="type">int</span> <span class="keyword">not</span> <span class="keyword">null</span>, </span><br><span class="line">name <span class="type">varchar</span>(<span class="number">16</span>),</span><br><span class="line">index (k))engine<span class="operator">=</span>InnoDB;</span><br></pre></td></tr></table></figure>
 
 <h4 id="回表"><a href="#回表" class="headerlink" title="回表"></a>回表</h4><p>基于主键索引和普通索引的查询有什么区别？</p>
 <ul>
@@ -426,14 +423,14 @@
 <h4 id="最左前缀原则"><a href="#最左前缀原则" class="headerlink" title="最左前缀原则"></a>最左前缀原则</h4><p>顾名思义：最左优先，以最左边的为起点任何连续的索引都能匹配上。同时遇到范围查询(&gt;、&lt;、between、like)就会停止匹配。例如：b &#x3D; 2 如果建立(a,b)顺序的索引，是匹配不到(a,b)索引的；但是如果查询条件是a &#x3D; 1 and b &#x3D; 2或者a&#x3D;1(又或者是b &#x3D; 2 and b &#x3D; 1)就可以，因为优化器会自动调整a,b的顺序。再比如a &#x3D; 1 and b &#x3D; 2 and c &gt; 3 and d &#x3D; 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，因为c字段是一个范围查询，它之后的字段会停止匹配</p>
 <p>最左匹配原则都是针对联合索引来说的，所以我们有必要了解一下联合索引的原理。了解了联合索引，那么为什么会有最左匹配原则这种说法也就理解了。</p>
 <p>我们都知道索引的底层是一颗B+树，那么联合索引当然还是一颗B+树，只不过联合索引的健值数量不是一个，而是多个。构建一颗B+树只能根据一个值来构建，因此数据库依据联合索引最左的字段来构建B+树。<br>例子：假如创建一个（a,b)的联合索引，那么它的索引树是这样的</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403163830215.png" alt="image-20220403163830215"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220403163830215.png" alt="image-20220403163830215"></p>
 <p>可以看到a的值是有顺序的，1，1，2，2，3，3，而b的值是没有顺序的1，2，1，4，1，2。所以b &#x3D; 2这种查询条件没有办法利用索引，因为联合索引首先是按a排序的，b是无序的。</p>
 <h4 id="索引失效"><a href="#索引失效" class="headerlink" title="索引失效"></a>索引失效</h4><p>如有索引 (a,b,c,d)，查询条件 a&#x3D;1 and b&#x3D;2 and c&gt;3 and d&#x3D;4，则会在每个节点依次命中 a、b、c，无 法命中 d。(c 已经是范围查询了，d 肯定是排不了序了)</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404125622828.png" alt="image-20220404125622828"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404125622828.png" alt="image-20220404125622828"></p>
 <h5 id="范围查询右边失效的情况"><a href="#范围查询右边失效的情况" class="headerlink" title="范围查询右边失效的情况"></a>范围查询右边失效的情况</h5><p>举例</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404130115771.png" alt="image-20220404130115771"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404130115771.png" alt="image-20220404130115771"></p>
 <p>分析如下：<br>首先字段在B+树上是有序的，所以可以用二分查找法定位到1，然后将所有大于1的数据取出来，a可以用到索引。<br>b有序的前提是a是确定的值，那么现在a的值是取大于1的，可能有10个大于1的a,也可能有一百个a。<br>大于1的那部分的B+树里，b字段是无序的（开局一张图），所以b不能在无序的B+树里用二分查找来查询，b用不到索引。</p>
-<h5 id="模糊查询索引失效问题"><a href="#模糊查询索引失效问题" class="headerlink" title="模糊查询索引失效问题"></a>模糊查询索引失效问题</h5><p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404130348676.png" alt="image-20220404130348676"></p>
+<h5 id="模糊查询索引失效问题"><a href="#模糊查询索引失效问题" class="headerlink" title="模糊查询索引失效问题"></a>模糊查询索引失效问题</h5><p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404130348676.png" alt="image-20220404130348676"></p>
 <p>我们先来了解一下%的用途</p>
 <ul>
 <li>%放在右边，代表查询以”a”开头的数据，如：abc</li>
@@ -452,14 +449,14 @@
 <p>在 MySQL 5.6 之前，只能从 ID3 开始一个个回表。到主键索引上找出数据行，再对比字段值。</p>
 <p>而 MySQL 5.6 引入的索引下推优化（index condition pushdown)， 可以在索引遍历过程中，对索引中包含的字段先做判断，直接过滤掉不满足条件的记录，减少回表次数。</p>
 <p>图 4 跟图 3 的区别是，InnoDB 在 (name,age) 索引内部就判断了 age 是否等于 10，对于不等于 10 的记录，直接判断并跳过。在我们的这个例子中，只需要对 ID4、ID5 这两条记录回表取数据判断，就只需要回表 2 次。</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403164923369.png" alt="image-20220403164923369"></p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403164930546.png" alt="image-20220403164930546"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220403164923369.png" alt="image-20220403164923369"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220403164930546.png" alt="image-20220403164930546"></p>
 <h4 id="前缀索引"><a href="#前缀索引" class="headerlink" title="前缀索引"></a>前缀索引</h4><p>前缀索引也叫局部索引，比如给身份证的前 10 位添加索引，类似这种给某列部分信息添加索 引的方式叫做前缀索引。前缀索引能有效减小索引文件的大小，让每个索引页可以保存更多的索引 值，从而提高了索引查询的速度。但前缀索引也有它的缺点，不能在 order by 或者 group by 中触 发前缀索引，也不能把它们用于覆盖索引。目的就是为了降低重复的索引提高每个节点存放索引的 数量。减少 IO 次数提高查询速度。</p>
 <h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><h4 id="共享锁（S-Lock-读锁）和排他锁（X-Lcok-写锁）"><a href="#共享锁（S-Lock-读锁）和排他锁（X-Lcok-写锁）" class="headerlink" title="共享锁（S Lock 读锁）和排他锁（X Lcok 写锁）"></a>共享锁（S Lock 读锁）和排他锁（X Lcok 写锁）</h4><ul>
 <li>读锁 ：也称为 共享锁 、英文用 S 表示。针对同一份数据，多个事务的读操作可以同时进行而不会 互相影响，相互不阻塞的。</li>
 <li>写锁 ：也称为 排他锁 、英文用 X 表示。当前写操作没有完成前，它会阻断其他写锁和读锁。这样 就能确保在给定的时间里，只有一个事务能执行写入，并防止其他用户读取正在写入的同一资源。</li>
 </ul>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403180158929.png" alt="image-20220403180158929"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220403180158929.png" alt="image-20220403180158929"></p>
 <p>默认情况下，写锁比读锁具有更高的优先级：当一个锁释放时，这个锁会优先给写锁队列中等候的 获取锁请求，然后再给读锁队列中等候的获取锁请求</p>
 <p>可以设置改变读锁和写锁的优先级</p>
 <ul>
@@ -487,8 +484,8 @@
 <li>IX，IS是表级锁，不会和行级的X，S锁发生冲突。只会和表级的X，S发生冲突。 </li>
 <li>意向锁在保证并发性的前提下，实现了 行锁和表锁共存 且 满足事务隔离性 的要求。</li>
 </ul>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403202731069.png" alt="image-20220403202731069"></p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403202737106.png" alt="image-20220403202737106"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220403202731069.png" alt="image-20220403202731069"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220403202737106.png" alt="image-20220403202737106"></p>
 <h6 id="自增锁-AUTO-INC锁"><a href="#自增锁-AUTO-INC锁" class="headerlink" title="自增锁(AUTO-INC锁)"></a>自增锁(AUTO-INC锁)</h6><h6 id="元数据锁（MDL锁）"><a href="#元数据锁（MDL锁）" class="headerlink" title="元数据锁（MDL锁）"></a>元数据锁（MDL锁）</h6><p>MySQL5.5引入了meta data lock，简称MDL锁，属于表锁范畴。MDL 的作用是，保证读写的正确性。比 如，如果一个查询正在遍历一个表中的数据，而执行期间另一个线程对这个表结构做变更 ，增加了一 列，那么查询线程拿到的结果跟表结构对不上，肯定是不行的。 </p>
 <p><strong>因此，当对一个表做增删改查操作的时候，加 MDL读锁；当要对表做结构变更操作的时候，加 MDL 写 锁。</strong></p>
 <p>读锁之间不互斥，因此你可以有多个线程同时对-张表增删改查。读写锁之间、写锁之间是互斥的，用来保证变更表结构操作的安全性，解决了DML和DDL操作之间的一致性问题。不需要显式使用，在访问一个表的时候会被自动加上。</p>
@@ -501,18 +498,18 @@
 <li>由于 MySQL 的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然多个 session 是访问不同行的记录，<strong>但是如果是使用相同的索引键，是会出现锁冲突的（后使用这些索引的 session 需要等待先使用索引的 session 释放锁后，才能获取锁）</strong>。应用设计的时候要注意这一点。</li>
 </ul>
 <h6 id="记录锁"><a href="#记录锁" class="headerlink" title="记录锁"></a>记录锁</h6><p>记录锁也就是仅仅把一条记录锁上，官方的类型名称为：LOCK_REC_NOT_GAP。比如我们把id值为8的那条记录加一个记录锁的示意图如图所示。仅仅是锁住了i值为8的记录，对周围的数据没有影响。</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403210259912.png" alt="image-20220403210259912"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220403210259912.png" alt="image-20220403210259912"></p>
 <p>记录锁是有S锁和X锁之分的，称之为S型记录锁和型记录锁。</p>
 <ul>
 <li>当一个事务获取了一条记录的S型记录锁后，其他事务也可以继续获取该记录的$型记录锁，但不可以继续获取X型记录锁，</li>
 <li>当一个事务获取了一条记录的X型记录锁后，其他事务既不可以继续获取该记录的S型记录锁，也不可以继续获取X型记录锁。</li>
 </ul>
-<h6 id="间隙锁"><a href="#间隙锁" class="headerlink" title="间隙锁"></a>间隙锁</h6><p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403210956771.png" alt="image-20220403210956771"></p>
+<h6 id="间隙锁"><a href="#间隙锁" class="headerlink" title="间隙锁"></a>间隙锁</h6><p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220403210956771.png" alt="image-20220403210956771"></p>
 <p>图中id值为8的记录加了gap锁，间隙锁可以是4567，<strong>意味着不允许别的事务在id值为8的记录前边的间隙插入新记录，其实就是id列的值(3,8)这个区间的新记录是不允许立即插入的。</strong>比如，有另外一个事务再想插入一条d值为4的新记录，它定位到该条新记录的下一条记录的id值为8，而这条记录上又有一个gp锁，所以就会阻塞插入操作，直到拥有这个gap锁的事务提交了之后，id列的值在区间(3,8)中的新记录才可以被插入。<br>gap锁的提出仅仅是为了防止插入幻影记录而提出的。<strong>虽然有共享gap锁和独占gap锁这样的说法，但是它们起到的作用是相同的。</strong>而且如果对一条记录加了gap锁（不论是共享gap锁还是独占gap锁），并不会限制其他事务对这条记录加记录锁或者继续加gap锁。</p>
 <p>最后一位为20，之后加了一个25的间隙锁，则大于20的都不能插入。</p>
 <p>可能会出现死锁问题。</p>
 <h6 id="临键锁（Next-Keys-Locks）"><a href="#临键锁（Next-Keys-Locks）" class="headerlink" title="临键锁（Next-Keys Locks）"></a>临键锁（Next-Keys Locks）</h6><p>有时候我们<strong>既想锁住某条记录</strong>，又想&#96;<strong>阻止</strong>其他事务在该记录前边的<strong>间隙插入新记录</strong>，所以InnoDB就提出了一种称之为Next-Key Locks的锁，官方的类型名称为：LOCK_ORDINARY,我们也可以简称为next-key锁。NextKey Locks是在存储擎innodb、事务级别在<strong>可重复读</strong>的情况下使用的数据库锁，innodb默认的锁就是Next-Keylocks。比如，我们把id值为8的那条记录加一个next-key锁的示意图如下：</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220403212708066.png" alt="image-20220403212708066"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220403212708066.png" alt="image-20220403212708066"></p>
 <p>next-key锁的本质就是一个记录锁和一个gap锁的合体，它既能保护该条记录，又能阻止别的事务将新记录插入被保护记录前边的间隙。</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">begin</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> student <span class="keyword">where</span> id <span class="operator">&lt;=</span><span class="number">8</span> <span class="keyword">and</span> id <span class="operator">&gt;</span> <span class="number">3</span> <span class="keyword">for</span> <span class="keyword">update</span>;</span><br></pre></td></tr></table></figure>
 
@@ -526,8 +523,8 @@
 <li>乐观锁适合读操作多的场景，相对来说写的操比较少。它的优点在于程序实现，不存在死锁问题，不过适用场景也会相对乐观，因为它阻止不了除了程序以外的数据库操作。</li>
 <li>悲观锁适合写操作多的场景，因为写的操作具有排它性。采用悲观锁的方式，可以在数据库层面阻止其他事务对该数据的操作权限，防止读-写和写-写的冲突。<br>我们把乐观锁和悲观锁总结如下图所示。</li>
 </ol>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404101909756.png" alt="image-20220404101909756"></p>
-<h3 id="显示锁和隐式锁"><a href="#显示锁和隐式锁" class="headerlink" title="显示锁和隐式锁"></a>显示锁和隐式锁</h3><h4 id="隐式锁"><a href="#隐式锁" class="headerlink" title="隐式锁"></a>隐式锁</h4><h4 id="显示锁"><a href="#显示锁" class="headerlink" title="显示锁"></a>显示锁</h4><p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404103917912.png" alt="image-20220404103917912"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404101909756.png" alt="image-20220404101909756"></p>
+<h3 id="显示锁和隐式锁"><a href="#显示锁和隐式锁" class="headerlink" title="显示锁和隐式锁"></a>显示锁和隐式锁</h3><h4 id="隐式锁"><a href="#隐式锁" class="headerlink" title="隐式锁"></a>隐式锁</h4><h4 id="显示锁"><a href="#显示锁" class="headerlink" title="显示锁"></a>显示锁</h4><p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404103917912.png" alt="image-20220404103917912"></p>
 <h3 id="全局锁"><a href="#全局锁" class="headerlink" title="全局锁"></a>全局锁</h3><p>全局锁就是对整个数据库实例加锁。<strong>当你需要让整个库处于只读状态的时候</strong>，可以使用这个命令，之后其他线程的以下语句会被阻塞：数据更新语句（数据的增删改）、数据定义语句（包括建表、修改表结构等）和更新类事务的提交语句。全局锁的典型使用场景是：做全库逻辑备份。<br>全局锁的命令：</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Flush tables <span class="keyword">with</span> read lock</span><br></pre></td></tr></table></figure>
 
@@ -539,8 +536,8 @@
 </ol>
 <h4 id="如何处理死锁"><a href="#如何处理死锁" class="headerlink" title="如何处理死锁"></a>如何处理死锁</h4><p>方式1：等待，直到超时(innodb_lock_wait_timeout&#x3D;50s)。<br>即当两个事务互相等待时，当一个事务等待时间超过设置的阈值时，就将其回滚，另外事务继续进行。这种方法简单有效，在innodb中，参数<strong>innodb_lock_wait_timeout</strong>用来设置超时时间。<br>缺点：对于在线服务来说，这个等待时间往往是无法接受的。<br>那将此值修改短一些，比如1s,0.1s是否合适？不合适，容易误伤到普通的锁等待。</p>
 <p>方式2：使用死锁检测进行死锁处理<br>方式1检测死锁太过被动，innodb还提供了wait-for graph算法来主动进行死锁检测，每当加锁请求无法立即<br>满足需要并进入等待时，wait-for graph.算法都会被触发。<br>这是一种较为主动的死锁检测机制，要求数据库保存锁的信息链表和事务等待链表两部分信息。</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404105055504.png" alt="image-20220404105055504"></p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404105104463.png" alt="image-20220404105104463"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404105055504.png" alt="image-20220404105055504"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404105104463.png" alt="image-20220404105104463"></p>
 <p>一旦检测到回路、有死锁，这时候InnoDB存储引擎会选择回滚undo量最小的事务，让其他事务继续执行(innodb._dead1ock_detect&#x3D;on表示开启这个逻辑)。<br>缺点：每个新的被阻塞的线程，都要判断是不是由于自己的加入导致了死锁，这个操作时间复杂度是0(n)。如果100个并发线程同时更新同一行，意味着要检测100*100&#x3D;1万次，1万个线程就会有1千万次检测：</p>
 <p>如何解决？</p>
 <ul>
@@ -562,9 +559,9 @@
 <li>等待状态是一样的</li>
 </ul>
 <p>InnoDB存储引擎锁结构如下</p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404110010359.png" alt="image-20220404110010359"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404110010359.png" alt="image-20220404110010359"></p>
 <h3 id="锁监控"><a href="#锁监控" class="headerlink" title="锁监控"></a>锁监控</h3><p>关于MySQL锁的监控，我们一般可以通过检查InnoDB._row_Iock等状态变量来分析系统上的行锁的争夺情况 </p>
-<p><img src="/mysql%E9%9D%A2%E8%AF%95.assets/image-20220404110733333.png" alt="image-20220404110733333"></p>
+<p><img src="/mysql%E9%9D%A2%E8%AF%95/image-20220404110733333.png" alt="image-20220404110733333"></p>
 <p>各个状态量的说明</p>
 <ul>
 <li>Innodb_row_lock_current_waits:当前正在等待锁定的数量：</li>
@@ -622,6 +619,13 @@
 
 
         
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/04/10/Redis/" rel="next" title="Redis">
+      Redis <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
     
   </article>
@@ -693,7 +697,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
