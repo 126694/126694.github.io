@@ -22,21 +22,21 @@
 
   <meta name="description" content="线程有哪几种状态六种状态及转换  分别是  新建 当一个线程对象被创建，但还未调用 start 方法时处于新建状态 此时未与操作系统底层线程关联   可运行 调用了 start 方法，就会由新建进入可运行 此时与底层线程关联，由操作系统调度执行   终结 线程内代码已经执行完毕，由可运行进入终结 此时会取消与底层线程关联   阻塞 当获取锁失败后，由可运行进入 Monitor 的阻塞队列阻塞，此时">
 <meta property="og:type" content="article">
-<meta property="og:title" content="akurisu">
-<meta property="og:url" content="http://example.com/2022/04/06/JUC/index.html">
+<meta property="og:title" content="JUC">
+<meta property="og:url" content="http://example.com/2022/04/21/JUC/index.html">
 <meta property="og:site_name" content="akurisu">
 <meta property="og:description" content="线程有哪几种状态六种状态及转换  分别是  新建 当一个线程对象被创建，但还未调用 start 方法时处于新建状态 此时未与操作系统底层线程关联   可运行 调用了 start 方法，就会由新建进入可运行 此时与底层线程关联，由操作系统调度执行   终结 线程内代码已经执行完毕，由可运行进入终结 此时会取消与底层线程关联   阻塞 当获取锁失败后，由可运行进入 Monitor 的阻塞队列阻塞，此时">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/JUC.assets/image-20210831090722658.png">
-<meta property="og:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/JUC.assets/image-20220322100227889.png">
-<meta property="og:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/JUC.assets/image-20220322111243513.png">
-<meta property="article:published_time" content="2022-04-06T07:16:01.661Z">
-<meta property="article:modified_time" content="2022-04-06T07:18:34.782Z">
+<meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20210831090722658.png">
+<meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220322100227889.png">
+<meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220322111243513.png">
+<meta property="article:published_time" content="2022-04-21T03:52:21.452Z">
+<meta property="article:modified_time" content="2022-04-21T03:50:50.465Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://r9wfwrw6c.hb-bkt.clouddn.com/JUC.assets/image-20210831090722658.png">
+<meta name="twitter:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20210831090722658.png">
 
-<link rel="canonical" href="http://example.com/2022/04/06/JUC/">
+<link rel="canonical" href="http://example.com/2022/04/21/JUC/">
 
 
 <script id="page-configurations">
@@ -49,7 +49,7 @@
   };
 </script>
 
-  <title> | akurisu</title>
+  <title>JUC | akurisu</title>
   
 
 
@@ -154,7 +154,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/06/JUC/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/21/JUC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -167,7 +167,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          
+          JUC
         </h1>
 
         <div class="post-meta">
@@ -178,7 +178,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-04-06 15:16:01 / 修改时间：15:18:34" itemprop="dateCreated datePublished" datetime="2022-04-06T15:16:01+08:00">2022-04-06</time>
+              <time title="创建时间：2022-04-21 11:52:21 / 修改时间：11:50:50" itemprop="dateCreated datePublished" datetime="2022-04-21T11:52:21+08:00">2022-04-21</time>
             </span>
 
           
@@ -193,7 +193,7 @@
 
       
         <h2 id="线程有哪几种状态"><a href="#线程有哪几种状态" class="headerlink" title="线程有哪几种状态"></a>线程有哪几种状态</h2><p><strong>六种状态及转换</strong></p>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JUC.assets/image-20210831090722658.png" alt="image-20210831090722658"></p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20210831090722658.png" alt="image-20210831090722658"></p>
 <p>分别是</p>
 <ul>
 <li>新建<ul>
@@ -236,8 +236,7 @@
 <li>park，unpark 等方法也可以让线程等待和唤醒</li>
 </ul>
 </blockquote>
-<h2 id="线程池的核心参数"><a href="#线程池的核心参数" class="headerlink" title="线程池的核心参数"></a>线程池的核心参数</h2><p>七大参数</p>
-<ol>
+<h2 id="线程池的核心参数"><a href="#线程池的核心参数" class="headerlink" title="线程池的核心参数"></a>线程池的核心参数</h2><h3 id="七大参数"><a href="#七大参数" class="headerlink" title="七大参数"></a>七大参数</h3><ol>
 <li>corePoolSize 核心线程数目 - 池中会保留的最多线程数</li>
 <li>maximumPoolSize 最大线程数目 - 核心线程+救急线程的最大数目</li>
 <li>keepAliveTime 生存时间 - 救急线程的生存时间，生存时间内没有新任务，此线程资源会释放</li>
@@ -245,12 +244,67 @@
 <li>workQueue - 当没有空闲核心线程时，新来任务会加入到此队列排队，队列满会创建救急线程执行任务</li>
 <li>threadFactory 线程工厂 - 可以定制线程对象的创建，例如设置线程名字、是否是守护线程等</li>
 <li>handler 拒绝策略 - 当所有线程都在繁忙，workQueue 也放满时，会触发拒绝策略<ol>
-<li>抛异常 java.util.concurrent.ThreadPoolExecutor.AbortPolicy</li>
-<li>由调用者执行任务 java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy</li>
-<li>丢弃任务 java.util.concurrent.ThreadPoolExecutor.DiscardPolicy</li>
-<li>丢弃最早排队任务并执行当前任务 java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy</li>
+<li>丢弃任务并抛异常 java.util.concurrent.ThreadPoolExecutor.AbortPolicy</li>
+<li>由调用者线程执行任务 java.util.concurrent.ThreadPoolExecutor.CallerRunsPolicy</li>
+<li>丢弃任务并不抛出异常 java.util.concurrent.ThreadPoolExecutor.DiscardPolicy</li>
+<li>丢弃队列最前面的任务，然后重新尝试执行任务（重复此过程） java.util.concurrent.ThreadPoolExecutor.DiscardOldestPolicy</li>
 </ol>
 </li>
+</ol>
+<h3 id="线程池原理"><a href="#线程池原理" class="headerlink" title="线程池原理"></a>线程池原理</h3><ol>
+<li>线程池中刚开始没有线程，当一个任务提交给线程池后，线程池会创建一个新线程来执行任务。</li>
+<li>当线程数达到 corePoolSize 并没有线程空闲，这时再加入任务，新加的任务会被加入workQueue 队列排<br>队，直到有空闲的线程。</li>
+<li>如果队列选择了<strong>有界队列</strong>，那么任务超过了队列大小时，会创建 maximumPoolSize - corePoolSize 数目的线程来救急。</li>
+<li>如果线程到达 maximumPoolSize 仍然有新任务这时会执行拒绝策略。拒绝策略 jdk 提供了 下面的前4 种实现，其它著名框架也提供了实现<ol>
+<li>ThreadPoolExecutor.AbortPolicy让调用者抛出 RejectedExecutionException 异常，这是默认策略</li>
+<li>ThreadPoolExecutor.CallerRunsPolicy 让调用者运行任务</li>
+<li>ThreadPoolExecutor.DiscardPolicy 放弃本次任务</li>
+<li>ThreadPoolExecutor.DiscardOldestPolicy 放弃队列中最早的任务，本任务取而代之</li>
+<li>Dubbo 的实现，在抛出 RejectedExecutionException 异常之前会记录日志，并 dump 线程栈信息，方便定位问题</li>
+<li>Netty 的实现，是创建一个新线程来执行任务</li>
+<li>ActiveMQ 的实现，带超时等待（60s）尝试放入队列，类似我们之前自定义的拒绝策略</li>
+<li>PinPoint 的实现，它使用了一个拒绝策略链，会逐一尝试策略链中每种拒绝策略</li>
+</ol>
+</li>
+<li>当高峰过去后，超过corePoolSize 的救急线程如果一段时间没有任务做，需要结束节省资源，这个时间由<br>keepAliveTime 和 unit 来控制。</li>
+</ol>
+<h3 id="三个实现类"><a href="#三个实现类" class="headerlink" title="三个实现类"></a>三个实现类</h3><h4 id="newFixedThreadPool"><a href="#newFixedThreadPool" class="headerlink" title="newFixedThreadPool"></a>newFixedThreadPool</h4><ol>
+<li>核心线程数 &#x3D;&#x3D; 最大线程数（没有救急线程被创建），因此也无需超时时间</li>
+<li>阻塞队列是无界的，可以放任意数量的任务</li>
+<li>适用于任务量已知，相对耗时的任务</li>
+</ol>
+<h4 id="newCachedThreadPool"><a href="#newCachedThreadPool" class="headerlink" title="newCachedThreadPool"></a>newCachedThreadPool</h4><ol>
+<li>核心线程数是 0， 最大线程数是 Integer.MAX_VALUE，救急线程的空闲生存时间是 60s，意味着<ol>
+<li>全部都是救急线程（60s 后可以回收）</li>
+<li>救急线程可以无限创建</li>
+</ol>
+</li>
+<li>队列采用了 SynchronousQueue 实现特点是，它没有容量，没有线程来取是放不进去的（一手交钱、一手交货）SynchronousQueue</li>
+</ol>
+<h4 id="newSingleThreadExecutor"><a href="#newSingleThreadExecutor" class="headerlink" title="newSingleThreadExecutor"></a>newSingleThreadExecutor</h4><p>使用场景：</p>
+<ol>
+<li><p>希望多个任务排队执行。线程数固定为 1，任务数多于 1 时，会放入无界队列排队。任务执行完毕，这唯一的线程也不会被释放。</p>
+</li>
+<li><p>区别：</p>
+<ol>
+<li><p>和自己创建单线程执行任务的区别：自己创建一个单线程串行执行任务，如果任务执行失败而终止那么没有任何补救措施，而线程池还会新建一个线程，保证池的正常工作</p>
+</li>
+<li><p>Executors.newSingleThreadExecutor() <strong>线程个数始终为1，不能修改</strong></p>
+<ol>
+<li>FinalizableDelegatedExecutorService 应用的是装饰器模式，只对外暴露了 ExecutorService 接口，因此不能调用 ThreadPoolExecutor 中特有的方法</li>
+</ol>
+</li>
+<li><p>和Executors.newFixedThreadPool(1) 初始时为1时的区别：</p>
+<p>Executors.newFixedThreadPool(1) 初始时为1，以后还可以修改，对外暴露的是 ThreadPoolExecutor 对象，可以强转后调用 setCorePoolSize 等方法进行修改</p>
+</li>
+</ol>
+</li>
+</ol>
+<p>说白了就是：使用有界队列，控制线程创建数量。</p>
+<p>除了避免 OOM 的原因之外，不推荐使用 <code>Executors</code>提供的两种快捷的线程池的原因还有：</p>
+<ol>
+<li>实际使用中需要根据自己机器的性能、业务场景来手动配置线程池的参数比如核心线程数、使用的任务队列、饱和策略等等。</li>
+<li>我们应该显示地给我们的线程池命名，这样有助于我们定位问题。</li>
 </ol>
 <h2 id="wait-vs-sleep"><a href="#wait-vs-sleep" class="headerlink" title="wait vs sleep"></a>wait vs sleep</h2><p><strong>一个共同点，三个不同点</strong></p>
 <p>共同点</p>
@@ -280,13 +334,7 @@
 </ul>
 </li>
 </ul>
-<h2 id="lock-vs-synchronized"><a href="#lock-vs-synchronized" class="headerlink" title="lock vs synchronized"></a>lock vs synchronized</h2><p><strong>要求</strong></p>
-<ul>
-<li>掌握 lock 与 synchronized 的区别</li>
-<li>理解 ReentrantLock 的公平、非公平锁</li>
-<li>理解 ReentrantLock 中的条件变量</li>
-</ul>
-<p>synchronized</p>
+<h2 id="lock-vs-synchronized"><a href="#lock-vs-synchronized" class="headerlink" title="lock vs synchronized"></a>lock vs synchronized</h2><p>synchronized</p>
 <ul>
 <li>对于普通同步方法，锁是当前实例对象</li>
 <li>对于静态同步方法，锁是当前类的Class对象</li>
@@ -305,6 +353,8 @@
 <li>二者均属于悲观锁、都具备基本的互斥、同步、锁重入功能</li>
 <li>Lock 提供了许多 synchronized 不具备的功能，例如获取等待状态、公平锁、可打断、可超时、多条件变量</li>
 <li>Lock 有适合不同场景的实现，如 ReentrantLock， ReentrantReadWriteLock</li>
+<li>snchronized是非公平锁，lock可以设置为公平锁或者非公平锁</li>
+<li>synchronized修饰的代码在执行异常时，jdk会自动释放线程占有的锁，不需要程序员去控制释放锁，因此不会导致死锁现象发生；但是，当Lock发生异常时，如果程序没有通过unLock()去释放锁，则很可能造成死锁现象，因此Lock一般都是在finally块中释放锁；</li>
 </ul>
 </li>
 <li>性能层面<ul>
@@ -363,7 +413,7 @@
 </ul>
 </li>
 </ul>
-<p><img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JUC.assets/image-20220322100227889.png" alt="image-20220322100227889"></p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220322100227889.png" alt="image-20220322100227889"></p>
 <h2 id="6-悲观锁-vs-乐观锁"><a href="#6-悲观锁-vs-乐观锁" class="headerlink" title="6. 悲观锁 vs 乐观锁"></a>6. 悲观锁 vs 乐观锁</h2><p><strong>对比悲观锁与乐观锁</strong></p>
 <ul>
 <li><p>悲观锁的代表是 synchronized 和 Lock 锁</p>
@@ -407,7 +457,7 @@
 <p><strong>ConcurrentHashMap 1.7</strong></p>
 <ul>
 <li>数据结构：<code>Segment(大数组容量clevel并发度不能扩容) + HashEntry(小数组) + 链表</code>，每个 Segment 对应一把锁，如果多个线程访问不同的 Segment，则不会冲突</li>
-<li>*<em>capacity</em>loadfactor 为小数组的扩容值，一旦大于就扩容，各自小数组分别扩容，小数组等价于原来的HashMap的数组，<img src="http://r9wfwrw6c.hb-bkt.clouddn.com/JUC.assets/image-20220322111243513.png" alt="image-20220322111243513">，初始segmment[0]小数组的容量为capacity&#x2F;clevel（最小值为2)**，其他小数组初始化根据这个[0]数组初始化</li>
+<li>*<em>capacity</em>loadfactor 为小数组的扩容值，一旦大于就扩容，各自小数组分别扩容，小数组等价于原来的HashMap的数组，<img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220322111243513.png" alt="image-20220322111243513">，初始segmment[0]小数组的容量为capacity&#x2F;clevel（最小值为2)**，其他小数组初始化根据这个[0]数组初始化</li>
 <li>并发度：Segment 数组大小即并发度，决定了同一时刻最多能有多少个线程并发访问。Segment 数组不能扩容，意味着并发度在 ConcurrentHashMap 创建时就固定了</li>
 <li>索引计算<ul>
 <li>假设大数组长度是 $2^m$，key 在大数组内的索引是 key 的二次 hash 值的高 m 位</li>
@@ -496,12 +546,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/04/06/hello-world/" rel="prev" title="Hello World">
-      <i class="fa fa-chevron-left"></i> Hello World
+    <a href="/2022/04/21/Java%E5%9F%BA%E7%A1%80/" rel="prev" title="">
+      <i class="fa fa-chevron-left"></i> 
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/04/06/JVM/" rel="next" title="JVM">
-      JVM <i class="fa fa-chevron-right"></i>
+    <a href="/2022/04/21/Redis/" rel="next" title="">
+       <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -561,7 +611,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E7%8A%B6%E6%80%81"><span class="nav-number">1.</span> <span class="nav-text">线程有哪几种状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8F%82%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">线程池的核心参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait-vs-sleep"><span class="nav-number">3.</span> <span class="nav-text">wait vs sleep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lock-vs-synchronized"><span class="nav-number">4.</span> <span class="nav-text">lock vs synchronized</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile"><span class="nav-number">5.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%82%B2%E8%A7%82%E9%94%81-vs-%E4%B9%90%E8%A7%82%E9%94%81"><span class="nav-number">6.</span> <span class="nav-text">6. 悲观锁 vs 乐观锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Hashtable-vs-ConcurrentHashMap"><span class="nav-number">7.</span> <span class="nav-text">7. Hashtable vs ConcurrentHashMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-ThreadLocal"><span class="nav-number">8.</span> <span class="nav-text">8. ThreadLocal</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E7%8A%B6%E6%80%81"><span class="nav-number">1.</span> <span class="nav-text">线程有哪几种状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8F%82%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">线程池的核心参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%83%E5%A4%A7%E5%8F%82%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">七大参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8E%9F%E7%90%86"><span class="nav-number">2.2.</span> <span class="nav-text">线程池原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E4%B8%AA%E5%AE%9E%E7%8E%B0%E7%B1%BB"><span class="nav-number">2.3.</span> <span class="nav-text">三个实现类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#newFixedThreadPool"><span class="nav-number">2.3.1.</span> <span class="nav-text">newFixedThreadPool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#newCachedThreadPool"><span class="nav-number">2.3.2.</span> <span class="nav-text">newCachedThreadPool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#newSingleThreadExecutor"><span class="nav-number">2.3.3.</span> <span class="nav-text">newSingleThreadExecutor</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait-vs-sleep"><span class="nav-number">3.</span> <span class="nav-text">wait vs sleep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lock-vs-synchronized"><span class="nav-number">4.</span> <span class="nav-text">lock vs synchronized</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile"><span class="nav-number">5.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%82%B2%E8%A7%82%E9%94%81-vs-%E4%B9%90%E8%A7%82%E9%94%81"><span class="nav-number">6.</span> <span class="nav-text">6. 悲观锁 vs 乐观锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Hashtable-vs-ConcurrentHashMap"><span class="nav-number">7.</span> <span class="nav-text">7. Hashtable vs ConcurrentHashMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-ThreadLocal"><span class="nav-number">8.</span> <span class="nav-text">8. ThreadLocal</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -575,7 +625,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
