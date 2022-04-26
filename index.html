@@ -145,6 +145,105 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/28/%E6%95%B0%E7%BB%84%E6%9F%A5%E6%89%BE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="akurisu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/28/%E6%95%B0%E7%BB%84%E6%9F%A5%E6%89%BE/" class="post-title-link" itemprop="url">数据结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-28 23:47:44" itemprop="dateCreated datePublished" datetime="2022-03-28T23:47:44+08:00">2022-03-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-26 16:01:56" itemprop="dateModified" datetime="2022-04-26T16:01:56+08:00">2022-04-26</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A0/" itemprop="url" rel="index"><span itemprop="name">算法学习</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="Leetcode704-二分查找"><a href="#Leetcode704-二分查找" class="headerlink" title="Leetcode704 二分查找"></a>Leetcode704 二分查找</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/%E9%A1%B9%E7%9B%AE/image-20220426112026398.png" alt="image-20220426112026398"></p>
+<p>解法一</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">search</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">           <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> <span class="number">0</span>,right = nums.length - <span class="number">1</span>;</span><br><span class="line">           <span class="keyword">while</span>(left &lt; right)&#123;</span><br><span class="line">               <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> left + right + <span class="number">1</span> &gt;&gt; <span class="number">1</span>;</span><br><span class="line">               <span class="keyword">if</span>(nums[mid] &lt;= target) left = mid;</span><br><span class="line">               <span class="keyword">else</span> right = mid - <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">return</span> nums[right] == target ? right : -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解法二</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">search</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> target)</span> &#123;</span><br><span class="line">           <span class="type">int</span> <span class="variable">left</span> <span class="operator">=</span> <span class="number">0</span>,right = nums.length - <span class="number">1</span>;</span><br><span class="line">           <span class="keyword">while</span>(left &lt; right)&#123;</span><br><span class="line">               <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> left + right &gt;&gt; <span class="number">1</span>;</span><br><span class="line">               <span class="keyword">if</span>(nums[mid] &gt;= target) right = mid;</span><br><span class="line">               <span class="keyword">else</span> left = mid + <span class="number">1</span>;</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">return</span> nums[left] == target ? left : -<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Leetcode27-移除元素"><a href="#Leetcode27-移除元素" class="headerlink" title="Leetcode27 移除元素"></a>Leetcode27 移除元素</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/%E9%A1%B9%E7%9B%AE/image-20220426112250153.png" alt="image-20220426112250153"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">removeElement</span><span class="params">(<span class="type">int</span>[] nums, <span class="type">int</span> val)</span> &#123;</span><br><span class="line">          <span class="type">int</span> <span class="variable">idx</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">          <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++)&#123;</span><br><span class="line">              <span class="keyword">if</span>(nums[i] != val)&#123;</span><br><span class="line">                  nums[idx++] = nums[i];  <span class="comment">//不同idx才加一，相同直接跳过该元素</span></span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">return</span> idx;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Leetcode977-有序数组的平方"><a href="#Leetcode977-有序数组的平方" class="headerlink" title="Leetcode977 有序数组的平方"></a>Leetcode977 有序数组的平方</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/%E9%A1%B9%E7%9B%AE/image-20220426112611025.png" alt="image-20220426112611025"></p>
+<h4 id="暴力法"><a href="#暴力法" class="headerlink" title="暴力法"></a>暴力法</h4><p>思路，先将所有平方求出来，然后进行排序，时间复杂度O（nlog n）</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] sortedSquares(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">          <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; nums.length; i++)&#123;</span><br><span class="line">              nums[i] *= nums[i];</span><br><span class="line">          &#125;</span><br><span class="line">          Arrays.sort(nums);</span><br><span class="line">          <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="双指针"><a href="#双指针" class="headerlink" title="双指针"></a>双指针</h4><p>思路：开辟一个新数组，左右边分别都是大的值，只需把最大的值依次放到从右到左的方向即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[] sortedSquares(<span class="type">int</span>[] nums) &#123;</span><br><span class="line">        <span class="type">int</span>[] arr = <span class="keyword">new</span> <span class="title class_">int</span>[nums.length];</span><br><span class="line">        <span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> nums.length - <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>, j = nums.length - <span class="number">1</span> ; i &lt;= j ;)&#123;</span><br><span class="line">            <span class="keyword">if</span>(nums[i] * nums[i] &lt;= nums[j] * nums[j])&#123;</span><br><span class="line">               arr[k--] = nums[j] * nums[j--];</span><br><span class="line">            &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                arr[k--] = nums[i] * nums[i++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> arr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Leetcode-209-长度最小的子数组"><a href="#Leetcode-209-长度最小的子数组" class="headerlink" title="Leetcode 209 长度最小的子数组"></a>Leetcode 209 长度最小的子数组</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/%E9%A1%B9%E7%9B%AE/image-20220426145829992.png" alt="image-20220426145829992"></p>
+<h4 id="双指针-x2F-滑动窗口"><a href="#双指针-x2F-滑动窗口" class="headerlink" title="双指针&#x2F;滑动窗口"></a>双指针&#x2F;滑动窗口</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">minSubArrayLen</span><span class="params">(<span class="type">int</span> target, <span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">minLength</span> <span class="operator">=</span> Integer.MAX_VALUE;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>, j = <span class="number">0</span>;j &lt; nums.length; j++)&#123;</span><br><span class="line">            sum += nums[j];</span><br><span class="line">            <span class="keyword">while</span>(sum &gt;= target)&#123;</span><br><span class="line">                minLength = Math.min(minLength, j - i + <span class="number">1</span>);</span><br><span class="line">                sum -= nums[i++];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">return</span> <span class="variable">minLength</span> <span class="operator">=</span>= Integer.MAX_VALUE ? <span class="number">0</span> : minLength;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Leetcode59-螺旋矩阵Ⅱ"><a href="#Leetcode59-螺旋矩阵Ⅱ" class="headerlink" title="Leetcode59 螺旋矩阵Ⅱ"></a>Leetcode59 螺旋矩阵Ⅱ</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/%E9%A1%B9%E7%9B%AE/image-20220426151906672.png" alt="image-20220426151906672"></p>
+<p>左闭右开的原则进行填充</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span>[][] generateMatrix(<span class="type">int</span> n) &#123;</span><br><span class="line">        <span class="type">int</span>[][] res = <span class="keyword">new</span> <span class="title class_">int</span>[n][n];</span><br><span class="line">        <span class="type">int</span> <span class="variable">loop</span> <span class="operator">=</span> n/<span class="number">2</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">startX</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">startY</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">index</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">mid</span> <span class="operator">=</span> n/<span class="number">2</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">while</span>(loop &gt; <span class="number">0</span>)&#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> startX;</span><br><span class="line">            <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> startY;</span><br><span class="line">            <span class="keyword">for</span>(; j &lt; startY + n - index; j++)&#123;</span><br><span class="line">                res[startX][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span>(; i &lt; startX + n - index; i++)&#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span>(; j &gt; startY; j--)&#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span>(; i &gt; startX; i--)&#123;</span><br><span class="line">                res[i][j] = count++;</span><br><span class="line">            &#125;</span><br><span class="line">            loop -= <span class="number">1</span>;</span><br><span class="line">            startX += <span class="number">1</span>;</span><br><span class="line">            startY += <span class="number">1</span>;</span><br><span class="line">            index += <span class="number">2</span>;</span><br><span class="line">        &#125;</span><br><span class="line">         <span class="keyword">if</span> (n % <span class="number">2</span> == <span class="number">1</span>) &#123;</span><br><span class="line">            res[mid][mid] = count;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/JUC/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1538,92 +1637,6 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="akurisu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">数据结构</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-01 23:47:44" itemprop="dateCreated datePublished" datetime="2022-03-01T23:47:44+08:00">2022-03-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-21 13:57:59" itemprop="dateModified" datetime="2022-04-21T13:57:59+08:00">2022-04-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">Java知识</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h3><p> R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊的<strong>二叉查找树</strong>。红黑树的每个节点上都有存储位表示节点的颜色，可以是红(Red)或黑(Black)。</p>
-<p><strong>红黑树的特性</strong>:</p>
-<ol>
-<li><strong>每个节点或者是黑色，或者是红色。</strong></li>
-<li><strong>根节点是黑色。</strong></li>
-<li><strong>每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！]</strong></li>
-<li><strong>如果一个节点是红色的，则它的子节点必须是黑色的。</strong></li>
-<li><strong>从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点</strong></li>
-<li><strong>对于任意节点而言，其到叶子点树NULL指针的每条路径都包含相同数目的黑节点</strong></li>
-</ol>
-<p>(01) 特性(3)中的叶子节点，是只为空(NIL或null)的节点。</p>
-<p>(02) 特性(5)，<strong>确保没有一条路径会比其他路径长出俩倍</strong>。因而，红黑树是相对是接近平衡的二叉树。</p>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220405160645933.png" alt="image-20220405160645933"></p>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/Redis/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2019,6 +2032,447 @@
 <p>  那为什么脑裂会导致数据的丢失呢？ </p>
 <p>  主从切换后，从库一旦升级为新主库，哨兵就会让原主库执行 slave of 命令，和新主库重新进行全量同步。而在全量同步执行的最后阶段，原主库需要清空本地的数据，加载新主库发送的 RDB  文件，这样一来，原主库在主从切换期间保存的新写数据就丢失了。</p>
 <h3 id="如何实现分布式锁"><a href="#如何实现分布式锁" class="headerlink" title="如何实现分布式锁"></a>如何实现分布式锁</h3><p>这样一来，我们就可以得出实现分布式锁的两个要求。 要求一：分布式锁的加锁和释放锁的过程，涉及多个操作。所以，在实现分布式锁时，我们需 要保证这些锁操作的原子性； 要求二：共享存储系统保存了锁变量，如果共享存储系统发生故障或宕机，那么客户端也就无 法进行锁操作了。在实现分布式锁时，我们需要考虑保证共享存储系统的可靠性，进而保证锁的可 靠性。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="akurisu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">操作系统</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-01 23:47:44" itemprop="dateCreated datePublished" datetime="2022-03-01T23:47:44+08:00">2022-03-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-21 14:02:18" itemprop="dateModified" datetime="2022-04-21T14:02:18+08:00">2022-04-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">Java知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-1-什么是操作系统？"><a href="#1-1-什么是操作系统？" class="headerlink" title="1.1 什么是操作系统？"></a>1.1 什么是操作系统？</h3><p>👨‍💻<strong>面试官</strong> ： 先来个简单问题吧！<strong>什么是操作系统？</strong></p>
+<p>🙋 <strong>我</strong> ：我通过以下四点向您介绍一下什么是操作系统吧！</p>
+<ol>
+<li><strong>操作系统（Operating System，简称 OS）是管理计算机硬件与软件资源的程序，是计算机的基石。</strong></li>
+<li><strong>操作系统本质上是一个运行在计算机上的软件程序 ，用于管理计算机硬件和软件资源。</strong> 举例：运行在你电脑上的所有应用程序都通过操作系统来调用系统内存以及磁盘等等硬件。</li>
+<li><strong>操作系统存在屏蔽了硬件层的复杂性。</strong> 操作系统就像是硬件使用的负责人，统筹着各种相关事项。</li>
+<li><strong>操作系统的内核（Kernel）是操作系统的核心部分，它负责系统的内存管理，硬件设备的管理，文件系统的管理以及应用程序的管理</strong>。 内核是连接应用程序和硬件的桥梁，决定着系统的性能和稳定性。</li>
+</ol>
+<h3 id="1-2-系统调用"><a href="#1-2-系统调用" class="headerlink" title="1.2 系统调用"></a>1.2 系统调用</h3><p>👨‍💻<strong>面试官</strong> ：<strong>什么是系统调用呢？</strong> 能不能详细介绍一下。</p>
+<p>🙋 <strong>我</strong> ：介绍系统调用之前，我们先来了解一下用户态和系统态。</p>
+<p>根据进程访问资源的特点，我们可以把进程在系统上的运行分为两个级别：</p>
+<ol>
+<li>用户态(user mode) : 用户态运行的进程可以直接读取用户程序的数据，在用户态下运行的代码会受到限制。</li>
+<li>系统态(kernel mode):可以简单的理解系统态运行的进程或程序几乎可以访问计算机的任何资源，不受限制。</li>
+</ol>
+<p>说了用户态和系统态之后，那么什么是系统调用呢？</p>
+<p>我们运行的程序基本都是运行在用户态，如果我们调用操作系统提供的系统态级别的子功能咋办呢？那就需要系统调用了！要执行系统调用，程序必须执行特殊的陷阱（trap）指令，该指令同时跳入内核并将特权级别提升到内核模式。</p>
+<p>也就是说在我们运行的用户程序中，凡是与系统态级别的资源有关的操作（如文件管理、进程控制、内存管理等)，都必须通过系统调用方式向操作系统提出服务请求，并由操作系统代为完成。</p>
+<p>这些系统调用按功能大致可分为如下几类：</p>
+<ul>
+<li>设备管理。完成设备的请求或释放，以及设备启动等功能。</li>
+<li>文件管理。完成文件的读、写、创建及删除等功能。</li>
+<li>进程控制。完成进程的创建、撤销、阻塞及唤醒等功能。</li>
+<li>进程通信。完成进程之间的消息传递或信号传递等功能。</li>
+<li>内存管理。完成内存的分配、回收以及获取作业占用内存区大小及地址等功能。</li>
+</ul>
+<h2 id="二-进程和线程"><a href="#二-进程和线程" class="headerlink" title="#二 进程和线程"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E4%BA%8C-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B">#</a>二 进程和线程</h2><h3 id="2-1-进程和线程的区别"><a href="#2-1-进程和线程的区别" class="headerlink" title="#2.1 进程和线程的区别"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-1-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB">#</a>2.1 进程和线程的区别</h3><p>👨‍💻<strong>面试官</strong>: 好的！我明白了！那你再说一下： <strong>进程和线程的区别</strong>。</p>
+<p>🙋 <strong>我：</strong> 好的！ 下图是 Java 内存区域，我们从 JVM 的角度来说一下线程和进程之间的关系吧！</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/up-cd8ac705f6f004c01e0a1312f1599430ba5.png" alt="img"></p>
+<p>从上图可以看出：一个进程中可以有多个线程，多个线程共享进程的<strong>堆</strong>和<strong>方法区 (JDK1.8 之后的元空间)**资源，但是每个线程有自己的**程序计数器**、</strong>虚拟机栈** 和 <strong>本地方法栈</strong>。</p>
+<p><strong>总结：</strong> 线程是进程划分成的更小的运行单位,一个进程在其执行的过程中可以产生多个线程。线程和进程最大的不同在于基本上各进程是独立的，而各线程则不一定，因为同一进程中的线程极有可能会相互影响。进程：系统进行资源调度和分配的基本单位，进程间独享内存，一个系统至少一个进程；线程。cpu进行资源调度和分配的基本单位，线程间共享进程的内存，一个进程至少一个线程，线程执行开销小，但不利于资源的管理和保护；而进程正相反。</p>
+<h4 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h4><p>是一种<strong>用户态的轻量级线程</strong>、协程的调度完全由用户控制。协程拥有自己的寄存器上下文和 栈。协程调度切换时，将寄存器上下文和栈栈保存到其他地方，在切换回来的时候，回复先前保存 的寄存器上下文和栈，<strong>没有内核切换开销所以非常快</strong>。</p>
+<h3 id="2-2-进程有哪几种状态"><a href="#2-2-进程有哪几种状态" class="headerlink" title="#2.2 进程有哪几种状态?"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-2-%E8%BF%9B%E7%A8%8B%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E7%8A%B6%E6%80%81">#</a>2.2 进程有哪几种状态?</h3><p>👨‍💻<strong>面试官</strong> ： 那你再说说<strong>进程有哪几种状态?</strong></p>
+<p>🙋 <strong>我</strong> ：我们一般把进程大致分为 5 种状态，这一点和<a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Multithread/JavaConcurrencyBasicsCommonInterviewQuestionsSummary.md#6-%E8%AF%B4%E8%AF%B4%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8C%E7%8A%B6%E6%80%81">线程open in new window</a>很像！</p>
+<ul>
+<li><strong>创建状态(new)</strong> ：进程正在被创建，尚未到就绪状态。</li>
+<li><strong>就绪状态(ready)</strong> ：进程已处于准备运行状态，即进程获得了除了处理器之外的一切所需资源，一旦得到处理器资源(处理器分配的时间片)即可运行。</li>
+<li><strong>运行状态(running)</strong> ：进程正在处理器上上运行(单核 CPU 下任意时刻只有一个进程处于运行状态)。</li>
+<li><strong>阻塞状态(waiting)</strong> ：又称为等待状态，进程正在等待某一事件而暂停运行如等待某资源为可用或等待 IO 操作完成。即使处理器空闲，该进程也不能运行。</li>
+<li><strong>结束状态(terminated)</strong> ：进程正在从系统中消失。可能是进程正常结束或其他原因中断退出运行。</li>
+</ul>
+<blockquote>
+<p>订正：下图中 running 状态被 interrupt 向 ready 状态转换的箭头方向反了。</p>
+</blockquote>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/d38202593012b457debbcd74994c6292.png" alt="process-state"></p>
+<h3 id="2-3-进程间的通信方式"><a href="#2-3-进程间的通信方式" class="headerlink" title="#2.3 进程间的通信方式"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-3-%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F">#</a>2.3 进程间的通信方式</h3><p>👨‍💻<strong>面试官</strong> ：<strong>进程间的通信常见的的有哪几种方式呢?</strong></p>
+<p>🙋 <strong>我</strong> ：大概有 7 种常见的进程间的通信方式。</p>
+<blockquote>
+<p>下面这部分总结参考了:<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c1015f5ffa74">《进程间通信 IPC (InterProcess Communication)》open in new window</a> 这篇文章，推荐阅读，总结的非常不错。</p>
+</blockquote>
+<ol>
+<li><strong>管道&#x2F;匿名管道(Pipes)</strong> ：用于具有亲缘关系的父子进程间或者兄弟进程之间的通信。                                                                                                                  管道的实质是一个内核缓冲区，进程以先进先出的方式从缓冲区存取数据，管道一端的进程顺序的将数据写入缓冲区，另一端的进程则顺序的读出数据。该缓冲区可以看做是一个循环队列，读和写的位置都是自动增长的，不能随意改变，一个数据只能被读一次，读出来以后在缓冲区就不复存在了。 当缓冲区读空或者写满时，有一定的规则控制相应的读进程或者写进程进入等待队列，当空的缓冲区有新数据写入或者满的缓冲区有数据读出来时，就唤醒等待队列中的进程继续读写。</li>
+<li><strong>有名管道(Names Pipes)</strong> : 匿名管道由于没有名字，只能用于亲缘关系的进程间通信。为了克服这个缺点，提出了有名管道。有名管道严格遵循**先进先出(first in first out)**。有名管道以磁盘文件的方式存在，可以实现本机任意两个进程通信。</li>
+<li><strong>信号(Signal)</strong> ：信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生；</li>
+<li><strong>消息队列(Message Queuing)</strong> ：消息队列是消息的链表,具有特定的格式,存放在内存中并由消息队列标识符标识。管道和消息队列的通信数据都是先进先出的原则。与管道（无名管道：只存在于内存中的文件；命名管道：存在于实际的磁盘介质或者文件系统）不同的是消息队列存放在内核中，只有在内核重启(即，操作系统重启)或者显式地删除一个消息队列时，该消息队列才会被真正的删除。消息队列可以实现消息的随机查询,消息不一定要以先进先出的次序读取,也可以按消息的类型读取.比 FIFO 更有优势。<strong>消息队列克服了信号承载信息量少，管道只能承载无格式字 节流以及缓冲区大小受限等缺点。</strong></li>
+<li><strong>信号量(Semaphores)</strong> ：信号量是一个计数器，用于多进程对共享数据的访问，信号量的意图在于进程间同步。这种通信方式主要用于解决与同步相关的问题并避免竞争条件。</li>
+<li><strong>共享内存(Shared memory)</strong> ：使得多个进程可以访问同一块内存空间，不同进程可以及时看到对方进程中对共享内存中数据的更新。这种方式需要依靠某种同步操作，如互斥锁和信号量等。可以说这是最有用的进程间通信方式。</li>
+<li><strong>套接字(Sockets)</strong> : 此方法主要用于在客户端和服务器之间通过网络进行通信。套接字是支持 TCP&#x2F;IP 的网络通信的基本操作单元，可以看做是不同主机之间的进程进行双向通信的端点，简单的说就是通信的两方的一种约定，用套接字中的相关函数来完成通信过程。</li>
+</ol>
+<h3 id="2-4-线程间的同步的方式"><a href="#2-4-线程间的同步的方式" class="headerlink" title="#2.4 线程间的同步的方式"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-4-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F">#</a>2.4 线程间的同步的方式</h3><p>👨‍💻<strong>面试官</strong> ：<strong>那线程间的同步的方式有哪些呢?</strong></p>
+<p>🙋 <strong>我</strong> ：线程同步是两个或多个共享关键资源的线程的并发执行。应该同步线程以避免关键的资源使用冲突。操作系统一般有下面三种线程同步的方式：</p>
+<ol>
+<li>**互斥量(Mutex)**：采用互斥对象机制，只有拥有互斥对象的线程才有访问公共资源的权限。因为互斥对象只有一个，所以可以保证公共资源不会被多个线程同时访问。比如 Java 中的 synchronized 关键词和各种 Lock 都是这种机制。</li>
+<li><strong>信号量(Semphares)</strong> ：它允许同一时刻多个线程访问同一资源，但是需要控制同一时刻访问此资源的最大线程数量。</li>
+<li><strong>事件(Event)</strong> :Wait&#x2F;Notify：通过通知操作的方式来保持多线程同步，还可以方便的实现多线程优先级的比较操作。</li>
+</ol>
+<h3 id="2-5-进程的调度算法"><a href="#2-5-进程的调度算法" class="headerlink" title="#2.5 进程的调度算法"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-5-%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95">#</a>2.5 进程的调度算法</h3><p>👨‍💻<strong>面试官</strong> ：<strong>你知道操作系统中进程的调度算法有哪些吗?</strong></p>
+<p>🙋 <strong>我</strong> ：嗯嗯！这个我们大学的时候学过，是一个很重要的知识点！</p>
+<p>为了确定首先执行哪个进程以及最后执行哪个进程以实现最大 CPU 利用率，计算机科学家已经定义了一些算法，它们是：</p>
+<ul>
+<li><strong>先到先服务(FCFS)调度算法</strong> : 从就绪队列中选择一个最先进入该队列的进程为之分配资源，使它立即执行并一直执行到完成或发生某事件而被阻塞放弃占用 CPU 时再重新调度。</li>
+<li><strong>短作业优先(SJF)的调度算法</strong> : 从就绪队列中选出一个估计运行时间最短的进程为之分配资源，使它立即执行并一直执行到完成或发生某事件而被阻塞放弃占用 CPU 时再重新调度。</li>
+<li><strong>时间片轮转调度算法</strong> : 时间片轮转调度是一种最古老，最简单，最公平且使用最广的算法，又称 RR(Round robin)调度。每个进程被分配一个时间段，称作它的时间片，即该进程允许运行的时间。</li>
+<li><strong>多级反馈队列调度算法</strong> ：前面介绍的几种进程调度的算法都有一定的局限性。如<strong>短进程优先的调度算法，仅照顾了短进程而忽略了长进程</strong> 。属于最高优先级类的进程运行一个时间片，属于次高优先级类的进程运行两个时间片，再次一级运行四个时间片，以此类推，多级反馈队列调度算法既能使高优先级的作业得到响应又能使短作业（进程）迅速完成。因而它是目前<strong>被公认的一种较好的进程调度算法</strong>，UNIX 操作系统采取的便是这种调度算法。</li>
+<li><strong>优先级调度</strong> ： 为每个流程分配优先级，首先执行具有最高优先级的进程，依此类推。具有相同优先级的进程以 FCFS 方式执行。可以根据内存要求，时间要求或任何其他资源要求来确定优先级。</li>
+</ul>
+<h3 id="2-6-什么是死锁"><a href="#2-6-什么是死锁" class="headerlink" title="#2.6 什么是死锁"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-6-%E4%BB%80%E4%B9%88%E6%98%AF%E6%AD%BB%E9%94%81">#</a>2.6 什么是死锁</h3><p>👨‍💻<strong>面试官</strong> ：<strong>你知道什么是死锁吗?</strong></p>
+<p>🙋 <strong>我</strong> ：多个进程可以竞争有限数量的资源。当一个进程申请资源时，如果这时没有可用资源，那么这个进程进入等待状态。有时，如果所申请的资源被其他等待进程占有，那么该等待进程有可能再也无法改变状态。这种情况称为 <strong>死锁</strong>。</p>
+<h3 id="2-7-死锁的四个条件"><a href="#2-7-死锁的四个条件" class="headerlink" title="#2.7 死锁的四个条件"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-7-%E6%AD%BB%E9%94%81%E7%9A%84%E5%9B%9B%E4%B8%AA%E6%9D%A1%E4%BB%B6">#</a>2.7 死锁的四个条件</h3><p>👨‍💻<strong>面试官</strong> ：<strong>产生死锁的四个必要条件是什么?</strong></p>
+<p>🙋 <strong>我</strong> ：如果系统中以下四个条件同时成立，那么就能引起死锁：</p>
+<ul>
+<li><strong>互斥</strong>：资源必须处于非共享模式，即一次只有一个进程可以使用。如果另一进程申请该资源，那么必须等待直到该资源被释放为止。</li>
+<li><strong>占有并等待</strong>：一个进程至少应该占有一个资源，并等待另一资源，而该资源被其他进程所占有。</li>
+<li><strong>非抢占</strong>：资源不能被抢占。只能在持有资源的进程完成任务后，该资源才会被释放。</li>
+<li><strong>循环等待</strong>：有一组等待进程 <code>&#123;P0, P1,..., Pn&#125;</code>， <code>P0</code> 等待的资源被 <code>P1</code> 占有，<code>P1</code> 等待的资源被 <code>P2</code> 占有，……，<code>Pn-1</code> 等待的资源被 <code>Pn</code> 占有，<code>Pn</code> 等待的资源被 <code>P0</code> 占有。</li>
+</ul>
+<p>注意，只有四个条件同时成立时，死锁才会出现。</p>
+<h3 id="2-8-解决死锁的方法"><a href="#2-8-解决死锁的方法" class="headerlink" title="#2.8 解决死锁的方法"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-8-%E8%A7%A3%E5%86%B3%E6%AD%BB%E9%94%81%E7%9A%84%E6%96%B9%E6%B3%95">#</a>2.8 解决死锁的方法</h3><p>解决死锁的方法可以从多个角度去分析，一般的情况下，有<strong>预防，避免，检测和解除四种</strong>。</p>
+<ul>
+<li><strong>预防</strong> 是采用某种策略，<strong>限制并发进程对资源的请求</strong>，从而使得死锁的必要条件在系统执行的任何时间上都不满足。</li>
+<li><strong>避免</strong>则是系统在分配资源时，根据资源的使用情况<strong>提前做出预测</strong>，从而<strong>避免死锁的发生</strong></li>
+<li><strong>检测</strong>是指系统设有<strong>专门的机构</strong>，当死锁发生时，该机构能够检测死锁的发生，并精确地确定与死锁有关的进程和资源。</li>
+<li><strong>解除</strong> 是与检测相配套的一种措施，用于<strong>将进程从死锁状态下解脱出来</strong>。</li>
+</ul>
+<h4 id="死锁的预防"><a href="#死锁的预防" class="headerlink" title="#死锁的预防"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E7%9A%84%E9%A2%84%E9%98%B2">#</a>死锁的预防</h4><p>死锁四大必要条件上面都已经列出来了，很显然，只要破坏四个必要条件中的任何一个就能够预防死锁的发生。</p>
+<p>破坏第一个条件 <strong>互斥条件</strong>：使得资源是可以同时访问的，这是种简单的方法，磁盘就可以用这种方法管理，但是我们要知道，有很多资源 <strong>往往是不能同时访问的</strong> ，所以这种做法在大多数的场合是行不通的。</p>
+<p>破坏第三个条件 <strong>非抢占</strong> ：也就是说可以采用 <strong>剥夺式调度算法</strong>，但剥夺式调度方法目前一般仅适用于 <strong>主存资源</strong> 和 <strong>处理器资源</strong> 的分配，并不适用于所以的资源，会导致 <strong>资源利用率下降</strong>。</p>
+<p>所以一般比较实用的 <strong>预防死锁的方法</strong>，是通过考虑破坏第二个条件和第四个条件。</p>
+<p><strong>1、静态分配策略</strong></p>
+<p>静态分配策略可以破坏死锁产生的第二个条件（占有并等待）。所谓静态分配策略，就是指一个进程必须在执行前就申请到它所需要的全部资源，并且知道它所要的资源都得到满足之后才开始执行。进程要么占有所有的资源然后开始执行，要么不占有资源，不会出现占有一些资源等待一些资源的情况。</p>
+<p>静态分配策略逻辑简单，实现也很容易，但这种策略 <strong>严重地降低了资源利用率</strong>，因为在每个进程所占有的资源中，有些资源是在比较靠后的执行时间里采用的，甚至有些资源是在额外的情况下才是用的，这样就可能造成了一个进程占有了一些 <strong>几乎不用的资源而使其他需要该资源的进程产生等待</strong> 的情况。</p>
+<p><strong>2、层次分配策略</strong></p>
+<p>层次分配策略破坏了产生死锁的第四个条件(循环等待)。在层次分配策略下，所有的资源被分成了多个层次，一个进程得到某一次的一个资源后，它只能再申请较高一层的资源；当一个进程要释放某层的一个资源时，必须先释放所占用的较高层的资源，按这种策略，是不可能出现循环等待链的，因为那样的话，就出现了已经申请了较高层的资源，反而去申请了较低层的资源，不符合层次分配策略，证明略。</p>
+<h4 id="死锁的避免"><a href="#死锁的避免" class="headerlink" title="#死锁的避免"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E7%9A%84%E9%81%BF%E5%85%8D">#</a>死锁的避免</h4><p>上面提到的 <strong>破坏</strong> 死锁产生的四个必要条件之一就可以成功 <strong>预防系统发生死锁</strong> ，但是会导致 <strong>低效的进程运行</strong> 和 <strong>资源使用率</strong> 。而死锁的避免相反，它的角度是允许系统中<strong>同时存在四个必要条件</strong> ，只要掌握并发进程中与每个进程有关的资源动态申请情况，做出 <strong>明智和合理的选择</strong> ，仍然可以避免死锁，因为四大条件仅仅是产生死锁的必要条件。</p>
+<p>我们将系统的状态分为 <strong>安全状态</strong> 和 <strong>不安全状态</strong> ，每当在未申请者分配资源前先测试系统状态，若把系统资源分配给申请者会产生死锁，则拒绝分配，否则接受申请，并为它分配资源。</p>
+<blockquote>
+<p>如果操作系统能够保证所有的进程在有限的时间内得到需要的全部资源，则称系统处于安全状态，否则说系统是不安全的。很显然，系统处于安全状态则不会发生死锁，系统若处于不安全状态则可能发生死锁。</p>
+</blockquote>
+<p>那么如何保证系统保持在安全状态呢？通过算法，其中最具有代表性的 <strong>避免死锁算法</strong> 就是 Dijkstra 的银行家算法，银行家算法用一句话表达就是：当一个进程申请使用资源的时候，<strong>银行家算法</strong> 通过先 <strong>试探</strong> 分配给该进程资源，然后通过 <strong>安全性算法</strong> 判断分配后系统是否处于安全状态，若不安全则试探分配作废，让该进程继续等待，若能够进入到安全的状态，则就 <strong>真的分配资源给该进程</strong>。</p>
+<p>银行家算法详情可见：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33414271/article/details/80245715">《一句话+一张图说清楚——银行家算法》open in new window</a> 。</p>
+<p>操作系统教程树中讲述的银行家算法也比较清晰，可以一看.</p>
+<p>死锁的避免(银行家算法)改善解决了 <strong>资源使用率低的问题</strong> ，但是它要不断地检测每个进程对各类资源的占用和申请情况，以及做 <strong>安全性检查</strong> ，需要花费较多的时间。</p>
+<h4 id="死锁的检测"><a href="#死锁的检测" class="headerlink" title="#死锁的检测"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E7%9A%84%E6%A3%80%E6%B5%8B">#</a>死锁的检测</h4><p>对资源的分配加以限制可以 <strong>预防和避免</strong> 死锁的发生，但是都不利于各进程对系统资源的<strong>充分共享</strong>。解决死锁问题的另一条途径是 <strong>死锁检测和解除</strong> (这里突然联想到了乐观锁和悲观锁，感觉死锁的检测和解除就像是 <strong>乐观锁</strong> ，分配资源时不去提前管会不会发生死锁了，等到真的死锁出现了再来解决嘛，而 <strong>死锁的预防和避免</strong> 更像是悲观锁，总是觉得死锁会出现，所以在分配资源的时候就很谨慎)。</p>
+<p>这种方法对资源的分配不加以任何限制，也不采取死锁避免措施，但系统 <strong>定时地运行一个 “死锁检测”</strong> 的程序，判断系统内是否出现死锁，如果检测到系统发生了死锁，再采取措施去解除它。</p>
+<h5 id="进程-资源分配图"><a href="#进程-资源分配图" class="headerlink" title="#进程-资源分配图"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E8%BF%9B%E7%A8%8B-%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE">#</a>进程-资源分配图</h5><p>操作系统中的每一刻时刻的<strong>系统状态</strong>都可以用<strong>进程-资源分配图</strong>来表示，进程-资源分配图是描述进程和资源申请及分配关系的一种有向图，可用于<strong>检测系统是否处于死锁状态</strong>。</p>
+<p>用一个方框表示每一个资源类，方框中的黑点表示该资源类中的各个资源，每个键进程用一个圆圈表示，用 <strong>有向边</strong> 来表示<strong>进程申请资源和资源被分配的情况</strong>。</p>
+<p>图中 2-21 是<strong>进程-资源分配图</strong>的一个例子，其中共有三个资源类，每个进程的资源占有和申请情况已清楚地表示在图中。在这个例子中，由于存在 <strong>占有和等待资源的环路</strong> ，导致一组进程永远处于等待资源的状态，发生了 <strong>死锁</strong>。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/%E8%BF%9B%E7%A8%8B-%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE.31e353df.jpg" alt="进程-资源分配图"></p>
+<p>进程-资源分配图中存在环路并不一定是发生了死锁。因为循环等待资源仅仅是死锁发生的必要条件，而不是充分条件。图 2-22 便是一个有环路而无死锁的例子。虽然进程 P1 和进程 P3 分别占用了一个资源 R1 和一个资源 R2，并且因为等待另一个资源 R2 和另一个资源 R1 形成了环路，但进程 P2 和进程 P4 分别占有了一个资源 R1 和一个资源 R2，它们申请的资源得到了满足，在有限的时间里会归还资源，于是进程 P1 或 P3 都能获得另一个所需的资源，环路自动解除，系统也就不存在死锁状态了。</p>
+<h5 id="死锁检测步骤"><a href="#死锁检测步骤" class="headerlink" title="#死锁检测步骤"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B%E6%AD%A5%E9%AA%A4">#</a>死锁检测步骤</h5><p>知道了死锁检测的原理，我们可以利用下列步骤编写一个 <strong>死锁检测</strong> 程序，检测系统是否产生了死锁。</p>
+<ol>
+<li>如果进程-资源分配图中无环路，则此时系统没有发生死锁</li>
+<li>如果进程-资源分配图中有环路，且每个资源类仅有一个资源，则系统中已经发生了死锁。</li>
+<li>如果进程-资源分配图中有环路，且涉及到的资源类有多个资源，此时系统未必会发生死锁。如果能在进程-资源分配图中找出一个 <strong>既不阻塞又非独立的进程</strong> ，该进程能够在有限的时间内归还占有的资源，也就是把边给消除掉了，重复此过程，直到能在有限的时间内 <strong>消除所有的边</strong> ，则不会发生死锁，否则会发生死锁。(消除边的过程类似于 <strong>拓扑排序</strong>)</li>
+</ol>
+<h4 id="死锁的解除"><a href="#死锁的解除" class="headerlink" title="#死锁的解除"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E7%9A%84%E8%A7%A3%E9%99%A4">#</a>死锁的解除</h4><p>当死锁检测程序检测到存在死锁发生时，应设法让其解除，让系统从死锁状态中恢复过来，常用的解除死锁的方法有以下四种：</p>
+<ol>
+<li><strong>立即结束所有进程的执行，重新启动操作系统</strong> ：这种方法简单，但以前所在的工作全部作废，损失很大。</li>
+<li><strong>撤销涉及死锁的所有进程，解除死锁后继续运行</strong> ：这种方法能彻底打破<strong>死锁的循环等待</strong>条件，但将付出很大代价，例如有些进程可能已经计算了很长时间，由于被撤销而使产生的部分结果也被消除了，再重新执行时还要再次进行计算。</li>
+<li><strong>逐个撤销涉及死锁的进程，回收其资源直至死锁解除。</strong></li>
+<li><strong>抢占资源</strong> ：从涉及死锁的一个或几个进程中抢占资源，把夺得的资源再分配给涉及死锁的进程直至死锁解除。</li>
+</ol>
+<h3 id="2-9协程"><a href="#2-9协程" class="headerlink" title="2.9协程"></a>2.9协程</h3><p><strong>协程，英文Coroutines，是一种比线程更加轻量级的存在。</strong>正如一个进程可以拥有多个线程一样，一个线程也可以拥有多个<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%8D%8F%E7%A8%8B&spm=1001.2101.3001.7020">协程</a>。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/6765e36cc4604fba897976638af03524.jpeg" alt="img"></p>
+<p>最重要的是，协程不是被操作系统内核所管理，而完全是由程序所控制（也就是在用户态执行）。</p>
+<p>这样带来的好处就是性能得到了很大的提升，不会像线程切换那样消耗资源。</p>
+<h2 id="三-操作系统内存管理基础"><a href="#三-操作系统内存管理基础" class="headerlink" title="#三 操作系统内存管理基础"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E4%B8%89-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%9F%BA%E7%A1%80">#</a>三 操作系统内存管理基础</h2><h3 id="3-1-内存管理介绍"><a href="#3-1-内存管理介绍" class="headerlink" title="#3.1 内存管理介绍"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-1-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E4%BB%8B%E7%BB%8D">#</a>3.1 内存管理介绍</h3><p>👨‍💻 <strong>面试官</strong>: <strong>操作系统的内存管理主要是做什么？</strong></p>
+<p>🙋 <strong>我：</strong> 操作系统的内存管理主要负责内存的分配与回收（malloc 函数：申请内存，free 函数：释放内存），另外地址转换也就是将逻辑地址转换成相应的物理地址等功能也是操作系统内存管理做的事情。</p>
+<h3 id="3-2-常见的几种内存管理机制"><a href="#3-2-常见的几种内存管理机制" class="headerlink" title="#3.2 常见的几种内存管理机制"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-2-%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E7%A7%8D%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6">#</a>3.2 常见的几种内存管理机制</h3><p>👨‍💻 <strong>面试官</strong>: <strong>操作系统的内存管理机制了解吗？内存管理有哪几种方式?</strong></p>
+<p>🙋 <strong>我：</strong> 这个在学习操作系统的时候有了解过。</p>
+<p>简单分为<strong>连续分配管理方式</strong>和<strong>非连续分配管理方式</strong>这两种。连续分配管理方式是指为一个用户程序分配一个连续的内存空间，常见的如 <strong>块式管理</strong> 。同样地，非连续分配管理方式允许一个程序使用的内存分布在离散或者说不相邻的内存中，常见的如<strong>页式管理</strong> 和 <strong>段式管理</strong>。</p>
+<ol>
+<li><strong>块式管理</strong> ： 远古时代的计算机操作系统的内存管理方式。将内存分为几个固定大小的块，每个块中只包含一个进程。如果程序运行需要内存的话，操作系统就分配给它一块，如果程序运行只需要很小的空间的话，分配的这块内存很大一部分几乎被浪费了。这些在每个块中未被利用的空间，我们称之为碎片。</li>
+<li><strong>页式管理</strong> ：把主存分为大小相等且固定的一页一页的形式，页较小，相对相比于块式管理的划分力度更大，提高了内存利用率，减少了碎片。页式管理通过页表对应逻辑地址和物理地址。</li>
+<li><strong>段式管理</strong> ： 页式管理虽然提高了内存利用率，但是页式管理其中的页实际并无任何实际意义。 段式管理把主存分为一段段的，段是有实际意义的，每个段定义了一组逻辑信息，例如,有主程序段 MAIN、子程序段 X、数据段 D 及栈段 S 等。 段式管理通过段表对应逻辑地址和物理地址。</li>
+</ol>
+<p>简单来说：页是物理单位，段是逻辑单位。分页可以有效提高内存利用率，分段可以更好满足用户需求。</p>
+<p>👨‍💻<strong>面试官</strong> ： 回答的还不错！不过漏掉了一个很重要的 <strong>段页式管理机制</strong> 。段页式管理机制结合了段式管理和页式管理的优点。简单来说段页式管理机制就是把主存先分成若干段，每个段又分成若干页，也就是说 <strong>段页式管理机制</strong> 中段与段之间以及段的内部的都是离散的。</p>
+<p>🙋 <strong>我</strong> ：谢谢面试官！刚刚把这个给忘记了～</p>
+<h3 id="3-3-快表和多级页表"><a href="#3-3-快表和多级页表" class="headerlink" title="#3.3 快表和多级页表"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-3-%E5%BF%AB%E8%A1%A8%E5%92%8C%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8">#</a>3.3 快表和多级页表</h3><p>👨‍💻<strong>面试官</strong> ： 页表管理机制中有两个很重要的概念：快表和多级页表，这两个东西分别解决了页表管理中很重要的两个问题。你给我简单介绍一下吧！</p>
+<p>🙋 <strong>我</strong> ：在分页内存管理中，很重要的两点是：</p>
+<ol>
+<li>虚拟地址到物理地址的转换要快。</li>
+<li>解决虚拟地址空间大，页表也会很大的问题。</li>
+</ol>
+<h4 id="快表"><a href="#快表" class="headerlink" title="#快表"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E5%BF%AB%E8%A1%A8">#</a>快表</h4><p>为了解决虚拟地址到物理地址的转换速度，操作系统在 <strong>页表方案</strong> 基础之上引入了 <strong>快表</strong> 来加速虚拟地址到物理地址的转换。我们可以把快表理解为一种特殊的高速缓冲存储器（Cache），其中的内容是页表的一部分或者全部内容（虚拟页号，页面的修改位，修改位，保护位，页框号）。作为页表的 Cache，它的作用与页表相似，但是提高了访问速率。由于采用页表做地址转换，读写内存数据时 CPU 要访问两次主存。有了快表，有时只要访问一次高速缓冲存储器，一次主存，这样可加速查找并提高指令执行速度。</p>
+<p>使用快表之后的地址转换流程是这样的：</p>
+<ol>
+<li>根据虚拟地址中的页号查快表；</li>
+<li>如果该页在快表中，直接从快表中读取相应的物理地址；</li>
+<li>如果该页不在快表中，就访问内存中的页表，再从页表中得到物理地址，同时将页表中的该映射表项添加到快表中；</li>
+<li>当快表填满后，又要登记新页时，就按照一定的淘汰策略淘汰掉快表中的一个页。</li>
+</ol>
+<p>看完了之后你会发现快表和我们平时经常在我们开发的系统使用的缓存（比如 Redis）很像，的确是这样的，操作系统中的很多思想、很多经典的算法，你都可以在我们日常开发使用的各种工具或者框架中找到它们的影子。</p>
+<h4 id="多级页表"><a href="#多级页表" class="headerlink" title="#多级页表"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8">#</a>多级页表</h4><p>引入多级页表的主要目的是为了避免把全部页表一直放在内存中占用过多空间，特别是那些根本就不需要的页表就不需要保留在内存中。多级页表属于时间换空间的典型场景，具体可以查看下面这篇文章</p>
+<ul>
+<li>多级页表如何节约内存：<a target="_blank" rel="noopener" href="https://www.polarxiong.com/archives/%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8%E5%A6%82%E4%BD%95%E8%8A%82%E7%BA%A6%E5%86%85%E5%AD%98.html">https://www.polarxiong.com/archives/多级页表如何节约内存.htmlopen in new window</a></li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="#总结"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%80%BB%E7%BB%93">#</a>总结</h4><p>为了提高内存的空间性能，提出了多级页表的概念；但是提到空间性能是以浪费时间性能为基础的，因此为了补充损失的时间性能，提出了快表（即 TLB）的概念。 不论是快表还是多级页表实际上都利用到了<strong>程序的局部性原理</strong>，局部性原理在后面的虚拟内存这部分会介绍到。</p>
+<h3 id="3-4-分页机制和分段机制的共同点和区别"><a href="#3-4-分页机制和分段机制的共同点和区别" class="headerlink" title="#3.4 分页机制和分段机制的共同点和区别"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-4-%E5%88%86%E9%A1%B5%E6%9C%BA%E5%88%B6%E5%92%8C%E5%88%86%E6%AE%B5%E6%9C%BA%E5%88%B6%E7%9A%84%E5%85%B1%E5%90%8C%E7%82%B9%E5%92%8C%E5%8C%BA%E5%88%AB">#</a>3.4 分页机制和分段机制的共同点和区别</h3><p>👨‍💻<strong>面试官</strong> ： <strong>分页机制和分段机制有哪些共同点和区别呢？</strong></p>
+<p>🙋 <strong>我</strong> ：</p>
+<ol>
+<li><p>共同点</p>
+<p>：</p>
+<ul>
+<li>分页机制和分段机制都是为了提高内存利用率，减少内存碎片。</li>
+<li>页和段都是离散存储的，所以两者都是离散分配内存的方式。但是，每个页和段中的内存是连续的。</li>
+</ul>
+</li>
+<li><p>区别</p>
+<p>：</p>
+<ul>
+<li>页的大小是固定的，由操作系统决定；而段的大小不固定，取决于我们当前运行的程序。</li>
+<li>分页仅仅是为了满足操作系统内存管理的需求，而段是逻辑信息的单位，在程序中可以体现为代码段，数据段，能够更好满足用户的需要。</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-5-逻辑-虚拟-地址和物理地址"><a href="#3-5-逻辑-虚拟-地址和物理地址" class="headerlink" title="#3.5 逻辑(虚拟)地址和物理地址"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-5-%E9%80%BB%E8%BE%91-%E8%99%9A%E6%8B%9F-%E5%9C%B0%E5%9D%80%E5%92%8C%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80">#</a>3.5 逻辑(虚拟)地址和物理地址</h3><p>👨‍💻<strong>面试官</strong> ：你刚刚还提到了<strong>逻辑地址和物理地址</strong>这两个概念，我不太清楚，你能为我解释一下不？</p>
+<p>🙋 <strong>我：</strong> em…好的嘛！我们编程一般只有可能和逻辑地址打交道，比如在 C 语言中，指针里面存储的数值就可以理解成为内存里的一个地址，这个地址也就是我们说的逻辑地址，逻辑地址由操作系统决定。物理地址指的是真实物理内存中地址，更具体一点来说就是内存地址寄存器中的地址。物理地址是内存单元真正的地址。</p>
+<h3 id="3-6-CPU-寻址了解吗-为什么需要虚拟地址空间"><a href="#3-6-CPU-寻址了解吗-为什么需要虚拟地址空间" class="headerlink" title="#3.6 CPU 寻址了解吗?为什么需要虚拟地址空间?"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-6-cpu-%E5%AF%BB%E5%9D%80%E4%BA%86%E8%A7%A3%E5%90%97-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4">#</a>3.6 CPU 寻址了解吗?为什么需要虚拟地址空间?</h3><p>👨‍💻<strong>面试官</strong> ：<strong>CPU 寻址了解吗?为什么需要虚拟地址空间?</strong></p>
+<p>🙋 <strong>我</strong> ：这部分我真不清楚！</p>
+<p>于是面试完之后我默默去查阅了相关文档！留下了没有技术的泪水。。。</p>
+<blockquote>
+<p>这部分内容参考了 Microsoft 官网的介绍，地址：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows-hardware/drivers/gettingstarted/virtual-address-spaces?redirectedfrom=MSDN">https://docs.microsoft.com/zh-cn/windows-hardware/drivers/gettingstarted/virtual-address-spaces?redirectedfrom=MSDNopen in new window</a></p>
+</blockquote>
+<p>现代处理器使用的是一种称为 <strong>虚拟寻址(Virtual Addressing)</strong> 的寻址方式。<strong>使用虚拟寻址，CPU 需要将虚拟地址翻译成物理地址，这样才能访问到真实的物理内存。</strong> 实际上完成虚拟地址转换为物理地址转换的硬件是 CPU 中含有一个被称为 <strong>内存管理单元（Memory Management Unit, MMU）</strong> 的硬件。如下图所示：</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/2b27dac8cc647f8aac989da2d1166db2.png" alt="MMU_principle_updated"></p>
+<p><strong>为什么要有虚拟地址空间呢？</strong></p>
+<p>先从没有虚拟地址空间的时候说起吧！没有虚拟地址空间的时候，<strong>程序都是直接访问和操作的都是物理内存</strong> 。但是这样有什么问题呢？</p>
+<ol>
+<li>用户程序可以访问任意内存，寻址内存的每个字节，这样就很容易（有意或者无意）破坏操作系统，造成操作系统崩溃。</li>
+<li>想要同时运行多个程序特别困难，比如你想同时运行一个微信和一个 QQ 音乐都不行。为什么呢？举个简单的例子：微信在运行的时候给内存地址 1xxx 赋值后，QQ 音乐也同样给内存地址 1xxx 赋值，那么 QQ 音乐对内存的赋值就会覆盖微信之前所赋的值，这就造成了微信这个程序就会崩溃。</li>
+</ol>
+<p><strong>总结来说：如果直接把物理地址暴露出来的话会带来严重问题，比如可能对操作系统造成伤害以及给同时运行多个程序造成困难。</strong></p>
+<p>通过虚拟地址访问内存有以下优势：</p>
+<ul>
+<li>程序可以使用一系列相邻的虚拟地址来访问物理内存中不相邻的大内存缓冲区。</li>
+<li>程序可以使用一系列虚拟地址来访问大于可用物理内存的内存缓冲区。当物理内存的供应量变小时，内存管理器会将物理内存页（通常大小为 4 KB）保存到磁盘文件。数据或代码页会根据需要在物理内存与磁盘之间移动。</li>
+<li>不同进程使用的虚拟地址彼此隔离。一个进程中的代码无法更改正在由另一进程或操作系统使用的物理内存。</li>
+</ul>
+<h2 id="四-虚拟内存"><a href="#四-虚拟内存" class="headerlink" title="#四 虚拟内存"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E5%9B%9B-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98">#</a>四 虚拟内存</h2><h3 id="4-1-什么是虚拟内存-Virtual-Memory"><a href="#4-1-什么是虚拟内存-Virtual-Memory" class="headerlink" title="#4.1 什么是虚拟内存(Virtual Memory)?"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-1-%E4%BB%80%E4%B9%88%E6%98%AF%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98-virtual-memory">#</a>4.1 什么是虚拟内存(Virtual Memory)?</h3><p>👨‍💻<strong>面试官</strong> ：再问你一个常识性的问题！<strong>什么是虚拟内存(Virtual Memory)?</strong></p>
+<p>🙋 <strong>我</strong> ：这个在我们平时使用电脑特别是 Windows 系统的时候太常见了。很多时候我们使用点开了很多占内存的软件，这些软件占用的内存可能已经远远超出了我们电脑本身具有的物理内存。<strong>为什么可以这样呢？</strong> 正是因为 <strong>虚拟内存</strong> 的存在，通过 <strong>虚拟内存</strong> 可以让程序可以拥有超过系统物理内存大小的可用内存空间。另外，<strong>虚拟内存为每个进程提供了一个一致的、私有的地址空间，它让每个进程产生了一种自己在独享主存的错觉（每个进程拥有一片连续完整的内存空间）</strong>。这样会更加有效地管理内存并减少出错。</p>
+<p><strong>虚拟内存</strong>是计算机系统内存管理的一种技术，我们可以手动设置自己电脑的虚拟内存。不要单纯认为虚拟内存只是“使用硬盘空间来扩展内存“的技术。<strong>虚拟内存的重要意义是它定义了一个连续的虚拟地址空间</strong>，并且 <strong>把内存扩展到硬盘空间</strong>。推荐阅读：<a target="_blank" rel="noopener" href="https://juejin.im/post/59f8691b51882534af254317">《虚拟内存的那点事儿》open in new window</a></p>
+<p>维基百科中有几句话是这样介绍虚拟内存的。</p>
+<blockquote>
+<p><strong>虚拟内存</strong> 使得应用程序认为它拥有连续的可用的内存（一个连续完整的地址空间），而实际上，它通常是被分隔成多个物理内存碎片，还有部分暂时存储在外部磁盘存储器上，在需要时进行数据交换。与没有使用虚拟内存技术的系统相比，使用这种技术的系统使得大型程序的编写变得更容易，对真正的物理内存（例如 RAM）的使用也更有效率。目前，大多数操作系统都使用了虚拟内存，如 Windows 家族的“虚拟内存”；Linux 的“交换空间”等。From:<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98">https://zh.wikipedia.org/wiki/虚拟内存open in new window</a></p>
+</blockquote>
+<h3 id="4-2-局部性原理"><a href="#4-2-局部性原理" class="headerlink" title="#4.2 局部性原理"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-2-%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86">#</a>4.2 局部性原理</h3><p>👨‍💻<strong>面试官</strong> ：要想更好地理解虚拟内存技术，必须要知道计算机中著名的<strong>局部性原理</strong>。另外，局部性原理既适用于程序结构，也适用于数据结构，是非常重要的一个概念。</p>
+<p>🙋 <strong>我</strong> ：局部性原理是虚拟内存技术的基础，正是因为程序运行具有局部性原理，才可以只装入部分程序到内存就开始运行。</p>
+<blockquote>
+<p>以下内容摘自《计算机操作系统教程》 第 4 章存储器管理。</p>
+</blockquote>
+<p>早在 1968 年的时候，就有人指出我们的程序在执行的时候往往呈现局部性规律，也就是说在某个较短的时间段内，程序执行局限于某一小部分，程序访问的存储空间也局限于某个区域。</p>
+<p>局部性原理表现在以下两个方面：</p>
+<ol>
+<li><strong>时间局部性</strong> ：如果程序中的某条指令一旦执行，不久以后该指令可能再次执行；如果某数据被访问过，不久以后该数据可能再次被访问。产生时间局部性的典型原因，是由于在程序中存在着大量的循环操作。</li>
+<li><strong>空间局部性</strong> ：一旦程序访问了某个存储单元，在不久之后，其附近的存储单元也将被访问，即程序在一段时间内所访问的地址，可能集中在一定的范围之内，这是因为指令通常是顺序存放、顺序执行的，数据也一般是以向量、数组、表等形式簇聚存储的。</li>
+</ol>
+<p>时间局部性是通过将近来使用的指令和数据保存到高速缓存存储器中，并使用高速缓存的层次结构实现。空间局部性通常是使用较大的高速缓存，并将预取机制集成到高速缓存控制逻辑中实现。虚拟内存技术实际上就是建立了 “内存一外存”的两级存储器的结构，利用局部性原理实现髙速缓存。</p>
+<h3 id="4-3-虚拟存储器"><a href="#4-3-虚拟存储器" class="headerlink" title="#4.3 虚拟存储器"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-3-%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8%E5%99%A8">#</a>4.3 虚拟存储器</h3><blockquote>
+<p><strong>勘误：虚拟存储器又叫做虚拟内存，都是 Virtual Memory 的翻译，属于同一个概念。</strong></p>
+</blockquote>
+<p>👨‍💻<strong>面试官</strong> ：都说了虚拟内存了。你再讲讲<strong>虚拟存储器</strong>把！</p>
+<p>🙋 <strong>我</strong> ：</p>
+<blockquote>
+<p>这部分内容来自：<a target="_blank" rel="noopener" href="https://wizardforcel.gitbooks.io/wangdaokaoyan-os/content/13.html">王道考研操作系统知识点整理open in new window</a>。</p>
+</blockquote>
+<p>基于局部性原理，在程序装入时，可以将程序的一部分装入内存，而将其他部分留在外存，就可以启动程序执行。由于外存往往比内存大很多，所以我们运行的软件的内存大小实际上是可以比计算机系统实际的内存大小大的。在程序执行过程中，当所访问的信息不在内存时，由操作系统将所需要的部分调入内存，然后继续执行程序。另一方面，操作系统将内存中暂时不使用的内容换到外存上，从而腾出空间存放将要调入内存的信息。这样，计算机好像为用户提供了一个比实际内存大的多的存储器——<strong>虚拟存储器</strong>。</p>
+<p>实际上，我觉得虚拟内存同样是一种时间换空间的策略，你用 CPU 的计算时间，页的调入调出花费的时间，换来了一个虚拟的更大的空间来支持程序的运行。不得不感叹，程序世界几乎不是时间换空间就是空间换时间。</p>
+<h3 id="4-4-虚拟内存的技术实现"><a href="#4-4-虚拟内存的技术实现" class="headerlink" title="#4.4 虚拟内存的技术实现"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-4-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%9A%84%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0">#</a>4.4 虚拟内存的技术实现</h3><p>👨‍💻<strong>面试官</strong> ：<strong>虚拟内存技术的实现呢？</strong></p>
+<p>🙋 <strong>我</strong> ：<strong>虚拟内存的实现需要建立在离散分配的内存管理方式的基础上。</strong> 虚拟内存的实现有以下三种方式：</p>
+<ol>
+<li><strong>请求分页存储管理</strong> ：建立在分页管理之上，为了支持虚拟存储器功能而增加了请求调页功能和页面置换功能。请求分页是目前最常用的一种实现虚拟存储器的方法。请求分页存储管理系统中，在作业开始运行之前，仅装入当前要执行的部分段即可运行。假如在作业运行的过程中发现要访问的页面不在内存，则由处理器通知操作系统按照对应的页面置换算法将相应的页面调入到主存，同时操作系统也可以将暂时不用的页面置换到外存中。</li>
+<li><strong>请求分段存储管理</strong> ：建立在分段存储管理之上，增加了请求调段功能、分段置换功能。请求分段储存管理方式就如同请求分页储存管理方式一样，在作业开始运行之前，仅装入当前要执行的部分段即可运行；在执行过程中，可使用请求调入中断动态装入要访问但又不在内存的程序段；当内存空间已满，而又需要装入新的段时，根据置换功能适当调出某个段，以便腾出空间而装入新的段。</li>
+<li><strong>请求段页式存储管理</strong></li>
+</ol>
+<p><strong>这里多说一下？很多人容易搞混请求分页与分页存储管理，两者有何不同呢？</strong></p>
+<p>请求分页存储管理建立在分页管理之上。他们的根本区别是是否将程序全部所需的全部地址空间都装入主存，这也是请求分页存储管理可以提供虚拟内存的原因，我们在上面已经分析过了。</p>
+<p>它们之间的根本区别在于是否将一作业的全部地址空间同时装入主存。请求分页存储管理不要求将作业全部地址空间同时装入主存。基于这一点，请求分页存储管理可以提供虚存，而分页存储管理却不能提供虚存。</p>
+<p>不管是上面那种实现方式，我们一般都需要：</p>
+<ol>
+<li>一定容量的内存和外存：在载入程序的时候，只需要将程序的一部分装入内存，而将其他部分留在外存，然后程序就可以执行了；</li>
+<li><strong>缺页中断</strong>：如果<strong>需执行的指令或访问的数据尚未在内存</strong>（称为缺页或缺段），则由处理器通知操作系统将相应的页面或段<strong>调入到内存</strong>，然后继续执行程序；</li>
+<li><strong>虚拟地址空间</strong> ：逻辑地址到物理地址的变换。</li>
+</ol>
+<h3 id="4-5-页面置换算法"><a href="#4-5-页面置换算法" class="headerlink" title="#4.5 页面置换算法"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-5-%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95">#</a>4.5 页面置换算法</h3><p>👨‍💻<strong>面试官</strong> ：虚拟内存管理很重要的一个概念就是页面置换算法。那你说一下 <strong>页面置换算法的作用?常见的页面置换算法有哪些?</strong></p>
+<p>🙋 <strong>我</strong> ：</p>
+<blockquote>
+<p>这个题目经常作为笔试题出现，网上已经给出了很不错的回答，我这里只是总结整理了一下。</p>
+</blockquote>
+<p>地址映射过程中，若在页面中发现所要访问的页面不在内存中，则发生缺页中断 。</p>
+<blockquote>
+<p><strong>缺页中断</strong> 就是要访问的<strong>页</strong>不在主存，需要操作系统将其调入主存后再进行访问。 在这个时候，被内存映射的文件实际上成了一个分页交换文件。</p>
+</blockquote>
+<p>当发生缺页中断时，如果当前内存中并没有空闲的页面，操作系统就必须在内存选择一个页面将其移出内存，以便为即将调入的页面让出空间。用来选择淘汰哪一页的规则叫做页面置换算法，我们可以把页面置换算法看成是淘汰页面的规则。</p>
+<p>相同例子：服务器可以把经常访问的一些Web页面存在存储器的高速缓存中。</p>
+<ul>
+<li><p><strong>OPT 页面置换算法（最佳页面置换算法）</strong> ：最佳(Optimal, OPT)置换算法所选择的被淘汰页面将是以后永不使用的，或者是在最长时间内不再被访问的页面,这样可以保证获得最低的缺页率。但由于人们目前无法预知进程在内存下的若千页面中哪个是未来最长时间内不再被访问的，因而该算法无法实现。一般作为衡量其他置换算法的方法。</p>
+</li>
+<li><p><strong>FIFO（First In First Out） 页面置换算法（先进先出页面置换算法）</strong> : 总是淘汰最先进入内存的页面，即选择在内存中驻留时间最久的页面进行淘汰。</p>
+</li>
+<li><p><strong>LRU （Least Recently Used）页面置换算法（最近最久未使用页面置换算法）</strong> ：LRU 算法赋予每个页面一个访问字段，用来记录一个页面自上次被访问以来所经历的时间 T，当须淘汰一个页面时，选择现有页面中其 T 值最大的，即最近最久未使用的页面予以淘汰。数据结构双重链表加哈希表。</p>
+</li>
+<li><p><strong>LFU （Least Frequently Used）页面置换算法（最少使用页面置换算法）</strong> : 该置换算法选择在之前时期使用最少的页面作为淘汰页</p>
+</li>
+<li><p>第二次机会算法FIFO 算法可能会把经常使用的页面置换出去，为了避免这一问题，对该算法做一个简单的修改：<br>当页面被访问 (读或写) 时设置该页面的 R 位为 1。当内存不足，需要页面替换的时候，检查链表中最老页面的 R 位。如果 R 位是 0，那么这个页面既老又没有被使用，可以立刻置换掉；如果是1，就将 R 位清 0，并把该页面放到链表的尾端，修改它的装入时间使它就像刚装入的一样，然后继续从链表的头部开始搜索。</p>
+</li>
+</ul>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220325110754388.png" alt="image-20220325110754388"></p>
+<ul>
+<li>第二次机会算需要在链表中移动页面，降低了效率。时钟算法使用和日使用一个指针指向最老的页面。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="akurisu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">数据结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-01 23:47:44" itemprop="dateCreated datePublished" datetime="2022-03-01T23:47:44+08:00">2022-03-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-21 13:57:59" itemprop="dateModified" datetime="2022-04-21T13:57:59+08:00">2022-04-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">Java知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h3><p> R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊的<strong>二叉查找树</strong>。红黑树的每个节点上都有存储位表示节点的颜色，可以是红(Red)或黑(Black)。</p>
+<p><strong>红黑树的特性</strong>:</p>
+<ol>
+<li><strong>每个节点或者是黑色，或者是红色。</strong></li>
+<li><strong>根节点是黑色。</strong></li>
+<li><strong>每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！]</strong></li>
+<li><strong>如果一个节点是红色的，则它的子节点必须是黑色的。</strong></li>
+<li><strong>从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点</strong></li>
+<li><strong>对于任意节点而言，其到叶子点树NULL指针的每条路径都包含相同数目的黑节点</strong></li>
+</ol>
+<p>(01) 特性(3)中的叶子节点，是只为空(NIL或null)的节点。</p>
+<p>(02) 特性(5)，<strong>确保没有一条路径会比其他路径长出俩倍</strong>。因而，红黑树是相对是接近平衡的二叉树。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220405160645933.png" alt="image-20220405160645933"></p>
 
       
     </div>
@@ -2494,679 +2948,11 @@
   
   
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="akurisu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">操作系统</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-01 23:47:44" itemprop="dateCreated datePublished" datetime="2022-03-01T23:47:44+08:00">2022-03-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-21 14:02:18" itemprop="dateModified" datetime="2022-04-21T14:02:18+08:00">2022-04-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">Java知识</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h3 id="1-1-什么是操作系统？"><a href="#1-1-什么是操作系统？" class="headerlink" title="1.1 什么是操作系统？"></a>1.1 什么是操作系统？</h3><p>👨‍💻<strong>面试官</strong> ： 先来个简单问题吧！<strong>什么是操作系统？</strong></p>
-<p>🙋 <strong>我</strong> ：我通过以下四点向您介绍一下什么是操作系统吧！</p>
-<ol>
-<li><strong>操作系统（Operating System，简称 OS）是管理计算机硬件与软件资源的程序，是计算机的基石。</strong></li>
-<li><strong>操作系统本质上是一个运行在计算机上的软件程序 ，用于管理计算机硬件和软件资源。</strong> 举例：运行在你电脑上的所有应用程序都通过操作系统来调用系统内存以及磁盘等等硬件。</li>
-<li><strong>操作系统存在屏蔽了硬件层的复杂性。</strong> 操作系统就像是硬件使用的负责人，统筹着各种相关事项。</li>
-<li><strong>操作系统的内核（Kernel）是操作系统的核心部分，它负责系统的内存管理，硬件设备的管理，文件系统的管理以及应用程序的管理</strong>。 内核是连接应用程序和硬件的桥梁，决定着系统的性能和稳定性。</li>
-</ol>
-<h3 id="1-2-系统调用"><a href="#1-2-系统调用" class="headerlink" title="1.2 系统调用"></a>1.2 系统调用</h3><p>👨‍💻<strong>面试官</strong> ：<strong>什么是系统调用呢？</strong> 能不能详细介绍一下。</p>
-<p>🙋 <strong>我</strong> ：介绍系统调用之前，我们先来了解一下用户态和系统态。</p>
-<p>根据进程访问资源的特点，我们可以把进程在系统上的运行分为两个级别：</p>
-<ol>
-<li>用户态(user mode) : 用户态运行的进程可以直接读取用户程序的数据，在用户态下运行的代码会受到限制。</li>
-<li>系统态(kernel mode):可以简单的理解系统态运行的进程或程序几乎可以访问计算机的任何资源，不受限制。</li>
-</ol>
-<p>说了用户态和系统态之后，那么什么是系统调用呢？</p>
-<p>我们运行的程序基本都是运行在用户态，如果我们调用操作系统提供的系统态级别的子功能咋办呢？那就需要系统调用了！要执行系统调用，程序必须执行特殊的陷阱（trap）指令，该指令同时跳入内核并将特权级别提升到内核模式。</p>
-<p>也就是说在我们运行的用户程序中，凡是与系统态级别的资源有关的操作（如文件管理、进程控制、内存管理等)，都必须通过系统调用方式向操作系统提出服务请求，并由操作系统代为完成。</p>
-<p>这些系统调用按功能大致可分为如下几类：</p>
-<ul>
-<li>设备管理。完成设备的请求或释放，以及设备启动等功能。</li>
-<li>文件管理。完成文件的读、写、创建及删除等功能。</li>
-<li>进程控制。完成进程的创建、撤销、阻塞及唤醒等功能。</li>
-<li>进程通信。完成进程之间的消息传递或信号传递等功能。</li>
-<li>内存管理。完成内存的分配、回收以及获取作业占用内存区大小及地址等功能。</li>
-</ul>
-<h2 id="二-进程和线程"><a href="#二-进程和线程" class="headerlink" title="#二 进程和线程"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E4%BA%8C-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B">#</a>二 进程和线程</h2><h3 id="2-1-进程和线程的区别"><a href="#2-1-进程和线程的区别" class="headerlink" title="#2.1 进程和线程的区别"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-1-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB">#</a>2.1 进程和线程的区别</h3><p>👨‍💻<strong>面试官</strong>: 好的！我明白了！那你再说一下： <strong>进程和线程的区别</strong>。</p>
-<p>🙋 <strong>我：</strong> 好的！ 下图是 Java 内存区域，我们从 JVM 的角度来说一下线程和进程之间的关系吧！</p>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/up-cd8ac705f6f004c01e0a1312f1599430ba5.png" alt="img"></p>
-<p>从上图可以看出：一个进程中可以有多个线程，多个线程共享进程的<strong>堆</strong>和<strong>方法区 (JDK1.8 之后的元空间)**资源，但是每个线程有自己的**程序计数器**、</strong>虚拟机栈** 和 <strong>本地方法栈</strong>。</p>
-<p><strong>总结：</strong> 线程是进程划分成的更小的运行单位,一个进程在其执行的过程中可以产生多个线程。线程和进程最大的不同在于基本上各进程是独立的，而各线程则不一定，因为同一进程中的线程极有可能会相互影响。进程：系统进行资源调度和分配的基本单位，进程间独享内存，一个系统至少一个进程；线程。cpu进行资源调度和分配的基本单位，线程间共享进程的内存，一个进程至少一个线程，线程执行开销小，但不利于资源的管理和保护；而进程正相反。</p>
-<h4 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h4><p>是一种<strong>用户态的轻量级线程</strong>、协程的调度完全由用户控制。协程拥有自己的寄存器上下文和 栈。协程调度切换时，将寄存器上下文和栈栈保存到其他地方，在切换回来的时候，回复先前保存 的寄存器上下文和栈，<strong>没有内核切换开销所以非常快</strong>。</p>
-<h3 id="2-2-进程有哪几种状态"><a href="#2-2-进程有哪几种状态" class="headerlink" title="#2.2 进程有哪几种状态?"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-2-%E8%BF%9B%E7%A8%8B%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E7%8A%B6%E6%80%81">#</a>2.2 进程有哪几种状态?</h3><p>👨‍💻<strong>面试官</strong> ： 那你再说说<strong>进程有哪几种状态?</strong></p>
-<p>🙋 <strong>我</strong> ：我们一般把进程大致分为 5 种状态，这一点和<a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Multithread/JavaConcurrencyBasicsCommonInterviewQuestionsSummary.md#6-%E8%AF%B4%E8%AF%B4%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8C%E7%8A%B6%E6%80%81">线程open in new window</a>很像！</p>
-<ul>
-<li><strong>创建状态(new)</strong> ：进程正在被创建，尚未到就绪状态。</li>
-<li><strong>就绪状态(ready)</strong> ：进程已处于准备运行状态，即进程获得了除了处理器之外的一切所需资源，一旦得到处理器资源(处理器分配的时间片)即可运行。</li>
-<li><strong>运行状态(running)</strong> ：进程正在处理器上上运行(单核 CPU 下任意时刻只有一个进程处于运行状态)。</li>
-<li><strong>阻塞状态(waiting)</strong> ：又称为等待状态，进程正在等待某一事件而暂停运行如等待某资源为可用或等待 IO 操作完成。即使处理器空闲，该进程也不能运行。</li>
-<li><strong>结束状态(terminated)</strong> ：进程正在从系统中消失。可能是进程正常结束或其他原因中断退出运行。</li>
-</ul>
-<blockquote>
-<p>订正：下图中 running 状态被 interrupt 向 ready 状态转换的箭头方向反了。</p>
-</blockquote>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/d38202593012b457debbcd74994c6292.png" alt="process-state"></p>
-<h3 id="2-3-进程间的通信方式"><a href="#2-3-进程间的通信方式" class="headerlink" title="#2.3 进程间的通信方式"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-3-%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F">#</a>2.3 进程间的通信方式</h3><p>👨‍💻<strong>面试官</strong> ：<strong>进程间的通信常见的的有哪几种方式呢?</strong></p>
-<p>🙋 <strong>我</strong> ：大概有 7 种常见的进程间的通信方式。</p>
-<blockquote>
-<p>下面这部分总结参考了:<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c1015f5ffa74">《进程间通信 IPC (InterProcess Communication)》open in new window</a> 这篇文章，推荐阅读，总结的非常不错。</p>
-</blockquote>
-<ol>
-<li><strong>管道&#x2F;匿名管道(Pipes)</strong> ：用于具有亲缘关系的父子进程间或者兄弟进程之间的通信。                                                                                                                  管道的实质是一个内核缓冲区，进程以先进先出的方式从缓冲区存取数据，管道一端的进程顺序的将数据写入缓冲区，另一端的进程则顺序的读出数据。该缓冲区可以看做是一个循环队列，读和写的位置都是自动增长的，不能随意改变，一个数据只能被读一次，读出来以后在缓冲区就不复存在了。 当缓冲区读空或者写满时，有一定的规则控制相应的读进程或者写进程进入等待队列，当空的缓冲区有新数据写入或者满的缓冲区有数据读出来时，就唤醒等待队列中的进程继续读写。</li>
-<li><strong>有名管道(Names Pipes)</strong> : 匿名管道由于没有名字，只能用于亲缘关系的进程间通信。为了克服这个缺点，提出了有名管道。有名管道严格遵循**先进先出(first in first out)**。有名管道以磁盘文件的方式存在，可以实现本机任意两个进程通信。</li>
-<li><strong>信号(Signal)</strong> ：信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生；</li>
-<li><strong>消息队列(Message Queuing)</strong> ：消息队列是消息的链表,具有特定的格式,存放在内存中并由消息队列标识符标识。管道和消息队列的通信数据都是先进先出的原则。与管道（无名管道：只存在于内存中的文件；命名管道：存在于实际的磁盘介质或者文件系统）不同的是消息队列存放在内核中，只有在内核重启(即，操作系统重启)或者显式地删除一个消息队列时，该消息队列才会被真正的删除。消息队列可以实现消息的随机查询,消息不一定要以先进先出的次序读取,也可以按消息的类型读取.比 FIFO 更有优势。<strong>消息队列克服了信号承载信息量少，管道只能承载无格式字 节流以及缓冲区大小受限等缺点。</strong></li>
-<li><strong>信号量(Semaphores)</strong> ：信号量是一个计数器，用于多进程对共享数据的访问，信号量的意图在于进程间同步。这种通信方式主要用于解决与同步相关的问题并避免竞争条件。</li>
-<li><strong>共享内存(Shared memory)</strong> ：使得多个进程可以访问同一块内存空间，不同进程可以及时看到对方进程中对共享内存中数据的更新。这种方式需要依靠某种同步操作，如互斥锁和信号量等。可以说这是最有用的进程间通信方式。</li>
-<li><strong>套接字(Sockets)</strong> : 此方法主要用于在客户端和服务器之间通过网络进行通信。套接字是支持 TCP&#x2F;IP 的网络通信的基本操作单元，可以看做是不同主机之间的进程进行双向通信的端点，简单的说就是通信的两方的一种约定，用套接字中的相关函数来完成通信过程。</li>
-</ol>
-<h3 id="2-4-线程间的同步的方式"><a href="#2-4-线程间的同步的方式" class="headerlink" title="#2.4 线程间的同步的方式"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-4-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F">#</a>2.4 线程间的同步的方式</h3><p>👨‍💻<strong>面试官</strong> ：<strong>那线程间的同步的方式有哪些呢?</strong></p>
-<p>🙋 <strong>我</strong> ：线程同步是两个或多个共享关键资源的线程的并发执行。应该同步线程以避免关键的资源使用冲突。操作系统一般有下面三种线程同步的方式：</p>
-<ol>
-<li>**互斥量(Mutex)**：采用互斥对象机制，只有拥有互斥对象的线程才有访问公共资源的权限。因为互斥对象只有一个，所以可以保证公共资源不会被多个线程同时访问。比如 Java 中的 synchronized 关键词和各种 Lock 都是这种机制。</li>
-<li><strong>信号量(Semphares)</strong> ：它允许同一时刻多个线程访问同一资源，但是需要控制同一时刻访问此资源的最大线程数量。</li>
-<li><strong>事件(Event)</strong> :Wait&#x2F;Notify：通过通知操作的方式来保持多线程同步，还可以方便的实现多线程优先级的比较操作。</li>
-</ol>
-<h3 id="2-5-进程的调度算法"><a href="#2-5-进程的调度算法" class="headerlink" title="#2.5 进程的调度算法"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-5-%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95">#</a>2.5 进程的调度算法</h3><p>👨‍💻<strong>面试官</strong> ：<strong>你知道操作系统中进程的调度算法有哪些吗?</strong></p>
-<p>🙋 <strong>我</strong> ：嗯嗯！这个我们大学的时候学过，是一个很重要的知识点！</p>
-<p>为了确定首先执行哪个进程以及最后执行哪个进程以实现最大 CPU 利用率，计算机科学家已经定义了一些算法，它们是：</p>
-<ul>
-<li><strong>先到先服务(FCFS)调度算法</strong> : 从就绪队列中选择一个最先进入该队列的进程为之分配资源，使它立即执行并一直执行到完成或发生某事件而被阻塞放弃占用 CPU 时再重新调度。</li>
-<li><strong>短作业优先(SJF)的调度算法</strong> : 从就绪队列中选出一个估计运行时间最短的进程为之分配资源，使它立即执行并一直执行到完成或发生某事件而被阻塞放弃占用 CPU 时再重新调度。</li>
-<li><strong>时间片轮转调度算法</strong> : 时间片轮转调度是一种最古老，最简单，最公平且使用最广的算法，又称 RR(Round robin)调度。每个进程被分配一个时间段，称作它的时间片，即该进程允许运行的时间。</li>
-<li><strong>多级反馈队列调度算法</strong> ：前面介绍的几种进程调度的算法都有一定的局限性。如<strong>短进程优先的调度算法，仅照顾了短进程而忽略了长进程</strong> 。属于最高优先级类的进程运行一个时间片，属于次高优先级类的进程运行两个时间片，再次一级运行四个时间片，以此类推，多级反馈队列调度算法既能使高优先级的作业得到响应又能使短作业（进程）迅速完成。因而它是目前<strong>被公认的一种较好的进程调度算法</strong>，UNIX 操作系统采取的便是这种调度算法。</li>
-<li><strong>优先级调度</strong> ： 为每个流程分配优先级，首先执行具有最高优先级的进程，依此类推。具有相同优先级的进程以 FCFS 方式执行。可以根据内存要求，时间要求或任何其他资源要求来确定优先级。</li>
-</ul>
-<h3 id="2-6-什么是死锁"><a href="#2-6-什么是死锁" class="headerlink" title="#2.6 什么是死锁"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-6-%E4%BB%80%E4%B9%88%E6%98%AF%E6%AD%BB%E9%94%81">#</a>2.6 什么是死锁</h3><p>👨‍💻<strong>面试官</strong> ：<strong>你知道什么是死锁吗?</strong></p>
-<p>🙋 <strong>我</strong> ：多个进程可以竞争有限数量的资源。当一个进程申请资源时，如果这时没有可用资源，那么这个进程进入等待状态。有时，如果所申请的资源被其他等待进程占有，那么该等待进程有可能再也无法改变状态。这种情况称为 <strong>死锁</strong>。</p>
-<h3 id="2-7-死锁的四个条件"><a href="#2-7-死锁的四个条件" class="headerlink" title="#2.7 死锁的四个条件"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-7-%E6%AD%BB%E9%94%81%E7%9A%84%E5%9B%9B%E4%B8%AA%E6%9D%A1%E4%BB%B6">#</a>2.7 死锁的四个条件</h3><p>👨‍💻<strong>面试官</strong> ：<strong>产生死锁的四个必要条件是什么?</strong></p>
-<p>🙋 <strong>我</strong> ：如果系统中以下四个条件同时成立，那么就能引起死锁：</p>
-<ul>
-<li><strong>互斥</strong>：资源必须处于非共享模式，即一次只有一个进程可以使用。如果另一进程申请该资源，那么必须等待直到该资源被释放为止。</li>
-<li><strong>占有并等待</strong>：一个进程至少应该占有一个资源，并等待另一资源，而该资源被其他进程所占有。</li>
-<li><strong>非抢占</strong>：资源不能被抢占。只能在持有资源的进程完成任务后，该资源才会被释放。</li>
-<li><strong>循环等待</strong>：有一组等待进程 <code>&#123;P0, P1,..., Pn&#125;</code>， <code>P0</code> 等待的资源被 <code>P1</code> 占有，<code>P1</code> 等待的资源被 <code>P2</code> 占有，……，<code>Pn-1</code> 等待的资源被 <code>Pn</code> 占有，<code>Pn</code> 等待的资源被 <code>P0</code> 占有。</li>
-</ul>
-<p>注意，只有四个条件同时成立时，死锁才会出现。</p>
-<h3 id="2-8-解决死锁的方法"><a href="#2-8-解决死锁的方法" class="headerlink" title="#2.8 解决死锁的方法"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-8-%E8%A7%A3%E5%86%B3%E6%AD%BB%E9%94%81%E7%9A%84%E6%96%B9%E6%B3%95">#</a>2.8 解决死锁的方法</h3><p>解决死锁的方法可以从多个角度去分析，一般的情况下，有<strong>预防，避免，检测和解除四种</strong>。</p>
-<ul>
-<li><strong>预防</strong> 是采用某种策略，<strong>限制并发进程对资源的请求</strong>，从而使得死锁的必要条件在系统执行的任何时间上都不满足。</li>
-<li><strong>避免</strong>则是系统在分配资源时，根据资源的使用情况<strong>提前做出预测</strong>，从而<strong>避免死锁的发生</strong></li>
-<li><strong>检测</strong>是指系统设有<strong>专门的机构</strong>，当死锁发生时，该机构能够检测死锁的发生，并精确地确定与死锁有关的进程和资源。</li>
-<li><strong>解除</strong> 是与检测相配套的一种措施，用于<strong>将进程从死锁状态下解脱出来</strong>。</li>
-</ul>
-<h4 id="死锁的预防"><a href="#死锁的预防" class="headerlink" title="#死锁的预防"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E7%9A%84%E9%A2%84%E9%98%B2">#</a>死锁的预防</h4><p>死锁四大必要条件上面都已经列出来了，很显然，只要破坏四个必要条件中的任何一个就能够预防死锁的发生。</p>
-<p>破坏第一个条件 <strong>互斥条件</strong>：使得资源是可以同时访问的，这是种简单的方法，磁盘就可以用这种方法管理，但是我们要知道，有很多资源 <strong>往往是不能同时访问的</strong> ，所以这种做法在大多数的场合是行不通的。</p>
-<p>破坏第三个条件 <strong>非抢占</strong> ：也就是说可以采用 <strong>剥夺式调度算法</strong>，但剥夺式调度方法目前一般仅适用于 <strong>主存资源</strong> 和 <strong>处理器资源</strong> 的分配，并不适用于所以的资源，会导致 <strong>资源利用率下降</strong>。</p>
-<p>所以一般比较实用的 <strong>预防死锁的方法</strong>，是通过考虑破坏第二个条件和第四个条件。</p>
-<p><strong>1、静态分配策略</strong></p>
-<p>静态分配策略可以破坏死锁产生的第二个条件（占有并等待）。所谓静态分配策略，就是指一个进程必须在执行前就申请到它所需要的全部资源，并且知道它所要的资源都得到满足之后才开始执行。进程要么占有所有的资源然后开始执行，要么不占有资源，不会出现占有一些资源等待一些资源的情况。</p>
-<p>静态分配策略逻辑简单，实现也很容易，但这种策略 <strong>严重地降低了资源利用率</strong>，因为在每个进程所占有的资源中，有些资源是在比较靠后的执行时间里采用的，甚至有些资源是在额外的情况下才是用的，这样就可能造成了一个进程占有了一些 <strong>几乎不用的资源而使其他需要该资源的进程产生等待</strong> 的情况。</p>
-<p><strong>2、层次分配策略</strong></p>
-<p>层次分配策略破坏了产生死锁的第四个条件(循环等待)。在层次分配策略下，所有的资源被分成了多个层次，一个进程得到某一次的一个资源后，它只能再申请较高一层的资源；当一个进程要释放某层的一个资源时，必须先释放所占用的较高层的资源，按这种策略，是不可能出现循环等待链的，因为那样的话，就出现了已经申请了较高层的资源，反而去申请了较低层的资源，不符合层次分配策略，证明略。</p>
-<h4 id="死锁的避免"><a href="#死锁的避免" class="headerlink" title="#死锁的避免"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E7%9A%84%E9%81%BF%E5%85%8D">#</a>死锁的避免</h4><p>上面提到的 <strong>破坏</strong> 死锁产生的四个必要条件之一就可以成功 <strong>预防系统发生死锁</strong> ，但是会导致 <strong>低效的进程运行</strong> 和 <strong>资源使用率</strong> 。而死锁的避免相反，它的角度是允许系统中<strong>同时存在四个必要条件</strong> ，只要掌握并发进程中与每个进程有关的资源动态申请情况，做出 <strong>明智和合理的选择</strong> ，仍然可以避免死锁，因为四大条件仅仅是产生死锁的必要条件。</p>
-<p>我们将系统的状态分为 <strong>安全状态</strong> 和 <strong>不安全状态</strong> ，每当在未申请者分配资源前先测试系统状态，若把系统资源分配给申请者会产生死锁，则拒绝分配，否则接受申请，并为它分配资源。</p>
-<blockquote>
-<p>如果操作系统能够保证所有的进程在有限的时间内得到需要的全部资源，则称系统处于安全状态，否则说系统是不安全的。很显然，系统处于安全状态则不会发生死锁，系统若处于不安全状态则可能发生死锁。</p>
-</blockquote>
-<p>那么如何保证系统保持在安全状态呢？通过算法，其中最具有代表性的 <strong>避免死锁算法</strong> 就是 Dijkstra 的银行家算法，银行家算法用一句话表达就是：当一个进程申请使用资源的时候，<strong>银行家算法</strong> 通过先 <strong>试探</strong> 分配给该进程资源，然后通过 <strong>安全性算法</strong> 判断分配后系统是否处于安全状态，若不安全则试探分配作废，让该进程继续等待，若能够进入到安全的状态，则就 <strong>真的分配资源给该进程</strong>。</p>
-<p>银行家算法详情可见：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33414271/article/details/80245715">《一句话+一张图说清楚——银行家算法》open in new window</a> 。</p>
-<p>操作系统教程树中讲述的银行家算法也比较清晰，可以一看.</p>
-<p>死锁的避免(银行家算法)改善解决了 <strong>资源使用率低的问题</strong> ，但是它要不断地检测每个进程对各类资源的占用和申请情况，以及做 <strong>安全性检查</strong> ，需要花费较多的时间。</p>
-<h4 id="死锁的检测"><a href="#死锁的检测" class="headerlink" title="#死锁的检测"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E7%9A%84%E6%A3%80%E6%B5%8B">#</a>死锁的检测</h4><p>对资源的分配加以限制可以 <strong>预防和避免</strong> 死锁的发生，但是都不利于各进程对系统资源的<strong>充分共享</strong>。解决死锁问题的另一条途径是 <strong>死锁检测和解除</strong> (这里突然联想到了乐观锁和悲观锁，感觉死锁的检测和解除就像是 <strong>乐观锁</strong> ，分配资源时不去提前管会不会发生死锁了，等到真的死锁出现了再来解决嘛，而 <strong>死锁的预防和避免</strong> 更像是悲观锁，总是觉得死锁会出现，所以在分配资源的时候就很谨慎)。</p>
-<p>这种方法对资源的分配不加以任何限制，也不采取死锁避免措施，但系统 <strong>定时地运行一个 “死锁检测”</strong> 的程序，判断系统内是否出现死锁，如果检测到系统发生了死锁，再采取措施去解除它。</p>
-<h5 id="进程-资源分配图"><a href="#进程-资源分配图" class="headerlink" title="#进程-资源分配图"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E8%BF%9B%E7%A8%8B-%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE">#</a>进程-资源分配图</h5><p>操作系统中的每一刻时刻的<strong>系统状态</strong>都可以用<strong>进程-资源分配图</strong>来表示，进程-资源分配图是描述进程和资源申请及分配关系的一种有向图，可用于<strong>检测系统是否处于死锁状态</strong>。</p>
-<p>用一个方框表示每一个资源类，方框中的黑点表示该资源类中的各个资源，每个键进程用一个圆圈表示，用 <strong>有向边</strong> 来表示<strong>进程申请资源和资源被分配的情况</strong>。</p>
-<p>图中 2-21 是<strong>进程-资源分配图</strong>的一个例子，其中共有三个资源类，每个进程的资源占有和申请情况已清楚地表示在图中。在这个例子中，由于存在 <strong>占有和等待资源的环路</strong> ，导致一组进程永远处于等待资源的状态，发生了 <strong>死锁</strong>。</p>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/%E8%BF%9B%E7%A8%8B-%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE.31e353df.jpg" alt="进程-资源分配图"></p>
-<p>进程-资源分配图中存在环路并不一定是发生了死锁。因为循环等待资源仅仅是死锁发生的必要条件，而不是充分条件。图 2-22 便是一个有环路而无死锁的例子。虽然进程 P1 和进程 P3 分别占用了一个资源 R1 和一个资源 R2，并且因为等待另一个资源 R2 和另一个资源 R1 形成了环路，但进程 P2 和进程 P4 分别占有了一个资源 R1 和一个资源 R2，它们申请的资源得到了满足，在有限的时间里会归还资源，于是进程 P1 或 P3 都能获得另一个所需的资源，环路自动解除，系统也就不存在死锁状态了。</p>
-<h5 id="死锁检测步骤"><a href="#死锁检测步骤" class="headerlink" title="#死锁检测步骤"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B%E6%AD%A5%E9%AA%A4">#</a>死锁检测步骤</h5><p>知道了死锁检测的原理，我们可以利用下列步骤编写一个 <strong>死锁检测</strong> 程序，检测系统是否产生了死锁。</p>
-<ol>
-<li>如果进程-资源分配图中无环路，则此时系统没有发生死锁</li>
-<li>如果进程-资源分配图中有环路，且每个资源类仅有一个资源，则系统中已经发生了死锁。</li>
-<li>如果进程-资源分配图中有环路，且涉及到的资源类有多个资源，此时系统未必会发生死锁。如果能在进程-资源分配图中找出一个 <strong>既不阻塞又非独立的进程</strong> ，该进程能够在有限的时间内归还占有的资源，也就是把边给消除掉了，重复此过程，直到能在有限的时间内 <strong>消除所有的边</strong> ，则不会发生死锁，否则会发生死锁。(消除边的过程类似于 <strong>拓扑排序</strong>)</li>
-</ol>
-<h4 id="死锁的解除"><a href="#死锁的解除" class="headerlink" title="#死锁的解除"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E7%9A%84%E8%A7%A3%E9%99%A4">#</a>死锁的解除</h4><p>当死锁检测程序检测到存在死锁发生时，应设法让其解除，让系统从死锁状态中恢复过来，常用的解除死锁的方法有以下四种：</p>
-<ol>
-<li><strong>立即结束所有进程的执行，重新启动操作系统</strong> ：这种方法简单，但以前所在的工作全部作废，损失很大。</li>
-<li><strong>撤销涉及死锁的所有进程，解除死锁后继续运行</strong> ：这种方法能彻底打破<strong>死锁的循环等待</strong>条件，但将付出很大代价，例如有些进程可能已经计算了很长时间，由于被撤销而使产生的部分结果也被消除了，再重新执行时还要再次进行计算。</li>
-<li><strong>逐个撤销涉及死锁的进程，回收其资源直至死锁解除。</strong></li>
-<li><strong>抢占资源</strong> ：从涉及死锁的一个或几个进程中抢占资源，把夺得的资源再分配给涉及死锁的进程直至死锁解除。</li>
-</ol>
-<h3 id="2-9协程"><a href="#2-9协程" class="headerlink" title="2.9协程"></a>2.9协程</h3><p><strong>协程，英文Coroutines，是一种比线程更加轻量级的存在。</strong>正如一个进程可以拥有多个线程一样，一个线程也可以拥有多个<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%8D%8F%E7%A8%8B&spm=1001.2101.3001.7020">协程</a>。</p>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/6765e36cc4604fba897976638af03524.jpeg" alt="img"></p>
-<p>最重要的是，协程不是被操作系统内核所管理，而完全是由程序所控制（也就是在用户态执行）。</p>
-<p>这样带来的好处就是性能得到了很大的提升，不会像线程切换那样消耗资源。</p>
-<h2 id="三-操作系统内存管理基础"><a href="#三-操作系统内存管理基础" class="headerlink" title="#三 操作系统内存管理基础"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E4%B8%89-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%9F%BA%E7%A1%80">#</a>三 操作系统内存管理基础</h2><h3 id="3-1-内存管理介绍"><a href="#3-1-内存管理介绍" class="headerlink" title="#3.1 内存管理介绍"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-1-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E4%BB%8B%E7%BB%8D">#</a>3.1 内存管理介绍</h3><p>👨‍💻 <strong>面试官</strong>: <strong>操作系统的内存管理主要是做什么？</strong></p>
-<p>🙋 <strong>我：</strong> 操作系统的内存管理主要负责内存的分配与回收（malloc 函数：申请内存，free 函数：释放内存），另外地址转换也就是将逻辑地址转换成相应的物理地址等功能也是操作系统内存管理做的事情。</p>
-<h3 id="3-2-常见的几种内存管理机制"><a href="#3-2-常见的几种内存管理机制" class="headerlink" title="#3.2 常见的几种内存管理机制"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-2-%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E7%A7%8D%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6">#</a>3.2 常见的几种内存管理机制</h3><p>👨‍💻 <strong>面试官</strong>: <strong>操作系统的内存管理机制了解吗？内存管理有哪几种方式?</strong></p>
-<p>🙋 <strong>我：</strong> 这个在学习操作系统的时候有了解过。</p>
-<p>简单分为<strong>连续分配管理方式</strong>和<strong>非连续分配管理方式</strong>这两种。连续分配管理方式是指为一个用户程序分配一个连续的内存空间，常见的如 <strong>块式管理</strong> 。同样地，非连续分配管理方式允许一个程序使用的内存分布在离散或者说不相邻的内存中，常见的如<strong>页式管理</strong> 和 <strong>段式管理</strong>。</p>
-<ol>
-<li><strong>块式管理</strong> ： 远古时代的计算机操作系统的内存管理方式。将内存分为几个固定大小的块，每个块中只包含一个进程。如果程序运行需要内存的话，操作系统就分配给它一块，如果程序运行只需要很小的空间的话，分配的这块内存很大一部分几乎被浪费了。这些在每个块中未被利用的空间，我们称之为碎片。</li>
-<li><strong>页式管理</strong> ：把主存分为大小相等且固定的一页一页的形式，页较小，相对相比于块式管理的划分力度更大，提高了内存利用率，减少了碎片。页式管理通过页表对应逻辑地址和物理地址。</li>
-<li><strong>段式管理</strong> ： 页式管理虽然提高了内存利用率，但是页式管理其中的页实际并无任何实际意义。 段式管理把主存分为一段段的，段是有实际意义的，每个段定义了一组逻辑信息，例如,有主程序段 MAIN、子程序段 X、数据段 D 及栈段 S 等。 段式管理通过段表对应逻辑地址和物理地址。</li>
-</ol>
-<p>简单来说：页是物理单位，段是逻辑单位。分页可以有效提高内存利用率，分段可以更好满足用户需求。</p>
-<p>👨‍💻<strong>面试官</strong> ： 回答的还不错！不过漏掉了一个很重要的 <strong>段页式管理机制</strong> 。段页式管理机制结合了段式管理和页式管理的优点。简单来说段页式管理机制就是把主存先分成若干段，每个段又分成若干页，也就是说 <strong>段页式管理机制</strong> 中段与段之间以及段的内部的都是离散的。</p>
-<p>🙋 <strong>我</strong> ：谢谢面试官！刚刚把这个给忘记了～</p>
-<h3 id="3-3-快表和多级页表"><a href="#3-3-快表和多级页表" class="headerlink" title="#3.3 快表和多级页表"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-3-%E5%BF%AB%E8%A1%A8%E5%92%8C%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8">#</a>3.3 快表和多级页表</h3><p>👨‍💻<strong>面试官</strong> ： 页表管理机制中有两个很重要的概念：快表和多级页表，这两个东西分别解决了页表管理中很重要的两个问题。你给我简单介绍一下吧！</p>
-<p>🙋 <strong>我</strong> ：在分页内存管理中，很重要的两点是：</p>
-<ol>
-<li>虚拟地址到物理地址的转换要快。</li>
-<li>解决虚拟地址空间大，页表也会很大的问题。</li>
-</ol>
-<h4 id="快表"><a href="#快表" class="headerlink" title="#快表"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E5%BF%AB%E8%A1%A8">#</a>快表</h4><p>为了解决虚拟地址到物理地址的转换速度，操作系统在 <strong>页表方案</strong> 基础之上引入了 <strong>快表</strong> 来加速虚拟地址到物理地址的转换。我们可以把快表理解为一种特殊的高速缓冲存储器（Cache），其中的内容是页表的一部分或者全部内容（虚拟页号，页面的修改位，修改位，保护位，页框号）。作为页表的 Cache，它的作用与页表相似，但是提高了访问速率。由于采用页表做地址转换，读写内存数据时 CPU 要访问两次主存。有了快表，有时只要访问一次高速缓冲存储器，一次主存，这样可加速查找并提高指令执行速度。</p>
-<p>使用快表之后的地址转换流程是这样的：</p>
-<ol>
-<li>根据虚拟地址中的页号查快表；</li>
-<li>如果该页在快表中，直接从快表中读取相应的物理地址；</li>
-<li>如果该页不在快表中，就访问内存中的页表，再从页表中得到物理地址，同时将页表中的该映射表项添加到快表中；</li>
-<li>当快表填满后，又要登记新页时，就按照一定的淘汰策略淘汰掉快表中的一个页。</li>
-</ol>
-<p>看完了之后你会发现快表和我们平时经常在我们开发的系统使用的缓存（比如 Redis）很像，的确是这样的，操作系统中的很多思想、很多经典的算法，你都可以在我们日常开发使用的各种工具或者框架中找到它们的影子。</p>
-<h4 id="多级页表"><a href="#多级页表" class="headerlink" title="#多级页表"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8">#</a>多级页表</h4><p>引入多级页表的主要目的是为了避免把全部页表一直放在内存中占用过多空间，特别是那些根本就不需要的页表就不需要保留在内存中。多级页表属于时间换空间的典型场景，具体可以查看下面这篇文章</p>
-<ul>
-<li>多级页表如何节约内存：<a target="_blank" rel="noopener" href="https://www.polarxiong.com/archives/%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8%E5%A6%82%E4%BD%95%E8%8A%82%E7%BA%A6%E5%86%85%E5%AD%98.html">https://www.polarxiong.com/archives/多级页表如何节约内存.htmlopen in new window</a></li>
-</ul>
-<h4 id="总结"><a href="#总结" class="headerlink" title="#总结"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%80%BB%E7%BB%93">#</a>总结</h4><p>为了提高内存的空间性能，提出了多级页表的概念；但是提到空间性能是以浪费时间性能为基础的，因此为了补充损失的时间性能，提出了快表（即 TLB）的概念。 不论是快表还是多级页表实际上都利用到了<strong>程序的局部性原理</strong>，局部性原理在后面的虚拟内存这部分会介绍到。</p>
-<h3 id="3-4-分页机制和分段机制的共同点和区别"><a href="#3-4-分页机制和分段机制的共同点和区别" class="headerlink" title="#3.4 分页机制和分段机制的共同点和区别"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-4-%E5%88%86%E9%A1%B5%E6%9C%BA%E5%88%B6%E5%92%8C%E5%88%86%E6%AE%B5%E6%9C%BA%E5%88%B6%E7%9A%84%E5%85%B1%E5%90%8C%E7%82%B9%E5%92%8C%E5%8C%BA%E5%88%AB">#</a>3.4 分页机制和分段机制的共同点和区别</h3><p>👨‍💻<strong>面试官</strong> ： <strong>分页机制和分段机制有哪些共同点和区别呢？</strong></p>
-<p>🙋 <strong>我</strong> ：</p>
-<ol>
-<li><p>共同点</p>
-<p>：</p>
-<ul>
-<li>分页机制和分段机制都是为了提高内存利用率，减少内存碎片。</li>
-<li>页和段都是离散存储的，所以两者都是离散分配内存的方式。但是，每个页和段中的内存是连续的。</li>
-</ul>
-</li>
-<li><p>区别</p>
-<p>：</p>
-<ul>
-<li>页的大小是固定的，由操作系统决定；而段的大小不固定，取决于我们当前运行的程序。</li>
-<li>分页仅仅是为了满足操作系统内存管理的需求，而段是逻辑信息的单位，在程序中可以体现为代码段，数据段，能够更好满足用户的需要。</li>
-</ul>
-</li>
-</ol>
-<h3 id="3-5-逻辑-虚拟-地址和物理地址"><a href="#3-5-逻辑-虚拟-地址和物理地址" class="headerlink" title="#3.5 逻辑(虚拟)地址和物理地址"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-5-%E9%80%BB%E8%BE%91-%E8%99%9A%E6%8B%9F-%E5%9C%B0%E5%9D%80%E5%92%8C%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80">#</a>3.5 逻辑(虚拟)地址和物理地址</h3><p>👨‍💻<strong>面试官</strong> ：你刚刚还提到了<strong>逻辑地址和物理地址</strong>这两个概念，我不太清楚，你能为我解释一下不？</p>
-<p>🙋 <strong>我：</strong> em…好的嘛！我们编程一般只有可能和逻辑地址打交道，比如在 C 语言中，指针里面存储的数值就可以理解成为内存里的一个地址，这个地址也就是我们说的逻辑地址，逻辑地址由操作系统决定。物理地址指的是真实物理内存中地址，更具体一点来说就是内存地址寄存器中的地址。物理地址是内存单元真正的地址。</p>
-<h3 id="3-6-CPU-寻址了解吗-为什么需要虚拟地址空间"><a href="#3-6-CPU-寻址了解吗-为什么需要虚拟地址空间" class="headerlink" title="#3.6 CPU 寻址了解吗?为什么需要虚拟地址空间?"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-6-cpu-%E5%AF%BB%E5%9D%80%E4%BA%86%E8%A7%A3%E5%90%97-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4">#</a>3.6 CPU 寻址了解吗?为什么需要虚拟地址空间?</h3><p>👨‍💻<strong>面试官</strong> ：<strong>CPU 寻址了解吗?为什么需要虚拟地址空间?</strong></p>
-<p>🙋 <strong>我</strong> ：这部分我真不清楚！</p>
-<p>于是面试完之后我默默去查阅了相关文档！留下了没有技术的泪水。。。</p>
-<blockquote>
-<p>这部分内容参考了 Microsoft 官网的介绍，地址：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows-hardware/drivers/gettingstarted/virtual-address-spaces?redirectedfrom=MSDN">https://docs.microsoft.com/zh-cn/windows-hardware/drivers/gettingstarted/virtual-address-spaces?redirectedfrom=MSDNopen in new window</a></p>
-</blockquote>
-<p>现代处理器使用的是一种称为 <strong>虚拟寻址(Virtual Addressing)</strong> 的寻址方式。<strong>使用虚拟寻址，CPU 需要将虚拟地址翻译成物理地址，这样才能访问到真实的物理内存。</strong> 实际上完成虚拟地址转换为物理地址转换的硬件是 CPU 中含有一个被称为 <strong>内存管理单元（Memory Management Unit, MMU）</strong> 的硬件。如下图所示：</p>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/2b27dac8cc647f8aac989da2d1166db2.png" alt="MMU_principle_updated"></p>
-<p><strong>为什么要有虚拟地址空间呢？</strong></p>
-<p>先从没有虚拟地址空间的时候说起吧！没有虚拟地址空间的时候，<strong>程序都是直接访问和操作的都是物理内存</strong> 。但是这样有什么问题呢？</p>
-<ol>
-<li>用户程序可以访问任意内存，寻址内存的每个字节，这样就很容易（有意或者无意）破坏操作系统，造成操作系统崩溃。</li>
-<li>想要同时运行多个程序特别困难，比如你想同时运行一个微信和一个 QQ 音乐都不行。为什么呢？举个简单的例子：微信在运行的时候给内存地址 1xxx 赋值后，QQ 音乐也同样给内存地址 1xxx 赋值，那么 QQ 音乐对内存的赋值就会覆盖微信之前所赋的值，这就造成了微信这个程序就会崩溃。</li>
-</ol>
-<p><strong>总结来说：如果直接把物理地址暴露出来的话会带来严重问题，比如可能对操作系统造成伤害以及给同时运行多个程序造成困难。</strong></p>
-<p>通过虚拟地址访问内存有以下优势：</p>
-<ul>
-<li>程序可以使用一系列相邻的虚拟地址来访问物理内存中不相邻的大内存缓冲区。</li>
-<li>程序可以使用一系列虚拟地址来访问大于可用物理内存的内存缓冲区。当物理内存的供应量变小时，内存管理器会将物理内存页（通常大小为 4 KB）保存到磁盘文件。数据或代码页会根据需要在物理内存与磁盘之间移动。</li>
-<li>不同进程使用的虚拟地址彼此隔离。一个进程中的代码无法更改正在由另一进程或操作系统使用的物理内存。</li>
-</ul>
-<h2 id="四-虚拟内存"><a href="#四-虚拟内存" class="headerlink" title="#四 虚拟内存"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E5%9B%9B-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98">#</a>四 虚拟内存</h2><h3 id="4-1-什么是虚拟内存-Virtual-Memory"><a href="#4-1-什么是虚拟内存-Virtual-Memory" class="headerlink" title="#4.1 什么是虚拟内存(Virtual Memory)?"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-1-%E4%BB%80%E4%B9%88%E6%98%AF%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98-virtual-memory">#</a>4.1 什么是虚拟内存(Virtual Memory)?</h3><p>👨‍💻<strong>面试官</strong> ：再问你一个常识性的问题！<strong>什么是虚拟内存(Virtual Memory)?</strong></p>
-<p>🙋 <strong>我</strong> ：这个在我们平时使用电脑特别是 Windows 系统的时候太常见了。很多时候我们使用点开了很多占内存的软件，这些软件占用的内存可能已经远远超出了我们电脑本身具有的物理内存。<strong>为什么可以这样呢？</strong> 正是因为 <strong>虚拟内存</strong> 的存在，通过 <strong>虚拟内存</strong> 可以让程序可以拥有超过系统物理内存大小的可用内存空间。另外，<strong>虚拟内存为每个进程提供了一个一致的、私有的地址空间，它让每个进程产生了一种自己在独享主存的错觉（每个进程拥有一片连续完整的内存空间）</strong>。这样会更加有效地管理内存并减少出错。</p>
-<p><strong>虚拟内存</strong>是计算机系统内存管理的一种技术，我们可以手动设置自己电脑的虚拟内存。不要单纯认为虚拟内存只是“使用硬盘空间来扩展内存“的技术。<strong>虚拟内存的重要意义是它定义了一个连续的虚拟地址空间</strong>，并且 <strong>把内存扩展到硬盘空间</strong>。推荐阅读：<a target="_blank" rel="noopener" href="https://juejin.im/post/59f8691b51882534af254317">《虚拟内存的那点事儿》open in new window</a></p>
-<p>维基百科中有几句话是这样介绍虚拟内存的。</p>
-<blockquote>
-<p><strong>虚拟内存</strong> 使得应用程序认为它拥有连续的可用的内存（一个连续完整的地址空间），而实际上，它通常是被分隔成多个物理内存碎片，还有部分暂时存储在外部磁盘存储器上，在需要时进行数据交换。与没有使用虚拟内存技术的系统相比，使用这种技术的系统使得大型程序的编写变得更容易，对真正的物理内存（例如 RAM）的使用也更有效率。目前，大多数操作系统都使用了虚拟内存，如 Windows 家族的“虚拟内存”；Linux 的“交换空间”等。From:<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98">https://zh.wikipedia.org/wiki/虚拟内存open in new window</a></p>
-</blockquote>
-<h3 id="4-2-局部性原理"><a href="#4-2-局部性原理" class="headerlink" title="#4.2 局部性原理"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-2-%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86">#</a>4.2 局部性原理</h3><p>👨‍💻<strong>面试官</strong> ：要想更好地理解虚拟内存技术，必须要知道计算机中著名的<strong>局部性原理</strong>。另外，局部性原理既适用于程序结构，也适用于数据结构，是非常重要的一个概念。</p>
-<p>🙋 <strong>我</strong> ：局部性原理是虚拟内存技术的基础，正是因为程序运行具有局部性原理，才可以只装入部分程序到内存就开始运行。</p>
-<blockquote>
-<p>以下内容摘自《计算机操作系统教程》 第 4 章存储器管理。</p>
-</blockquote>
-<p>早在 1968 年的时候，就有人指出我们的程序在执行的时候往往呈现局部性规律，也就是说在某个较短的时间段内，程序执行局限于某一小部分，程序访问的存储空间也局限于某个区域。</p>
-<p>局部性原理表现在以下两个方面：</p>
-<ol>
-<li><strong>时间局部性</strong> ：如果程序中的某条指令一旦执行，不久以后该指令可能再次执行；如果某数据被访问过，不久以后该数据可能再次被访问。产生时间局部性的典型原因，是由于在程序中存在着大量的循环操作。</li>
-<li><strong>空间局部性</strong> ：一旦程序访问了某个存储单元，在不久之后，其附近的存储单元也将被访问，即程序在一段时间内所访问的地址，可能集中在一定的范围之内，这是因为指令通常是顺序存放、顺序执行的，数据也一般是以向量、数组、表等形式簇聚存储的。</li>
-</ol>
-<p>时间局部性是通过将近来使用的指令和数据保存到高速缓存存储器中，并使用高速缓存的层次结构实现。空间局部性通常是使用较大的高速缓存，并将预取机制集成到高速缓存控制逻辑中实现。虚拟内存技术实际上就是建立了 “内存一外存”的两级存储器的结构，利用局部性原理实现髙速缓存。</p>
-<h3 id="4-3-虚拟存储器"><a href="#4-3-虚拟存储器" class="headerlink" title="#4.3 虚拟存储器"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-3-%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8%E5%99%A8">#</a>4.3 虚拟存储器</h3><blockquote>
-<p><strong>勘误：虚拟存储器又叫做虚拟内存，都是 Virtual Memory 的翻译，属于同一个概念。</strong></p>
-</blockquote>
-<p>👨‍💻<strong>面试官</strong> ：都说了虚拟内存了。你再讲讲<strong>虚拟存储器</strong>把！</p>
-<p>🙋 <strong>我</strong> ：</p>
-<blockquote>
-<p>这部分内容来自：<a target="_blank" rel="noopener" href="https://wizardforcel.gitbooks.io/wangdaokaoyan-os/content/13.html">王道考研操作系统知识点整理open in new window</a>。</p>
-</blockquote>
-<p>基于局部性原理，在程序装入时，可以将程序的一部分装入内存，而将其他部分留在外存，就可以启动程序执行。由于外存往往比内存大很多，所以我们运行的软件的内存大小实际上是可以比计算机系统实际的内存大小大的。在程序执行过程中，当所访问的信息不在内存时，由操作系统将所需要的部分调入内存，然后继续执行程序。另一方面，操作系统将内存中暂时不使用的内容换到外存上，从而腾出空间存放将要调入内存的信息。这样，计算机好像为用户提供了一个比实际内存大的多的存储器——<strong>虚拟存储器</strong>。</p>
-<p>实际上，我觉得虚拟内存同样是一种时间换空间的策略，你用 CPU 的计算时间，页的调入调出花费的时间，换来了一个虚拟的更大的空间来支持程序的运行。不得不感叹，程序世界几乎不是时间换空间就是空间换时间。</p>
-<h3 id="4-4-虚拟内存的技术实现"><a href="#4-4-虚拟内存的技术实现" class="headerlink" title="#4.4 虚拟内存的技术实现"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-4-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%9A%84%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0">#</a>4.4 虚拟内存的技术实现</h3><p>👨‍💻<strong>面试官</strong> ：<strong>虚拟内存技术的实现呢？</strong></p>
-<p>🙋 <strong>我</strong> ：<strong>虚拟内存的实现需要建立在离散分配的内存管理方式的基础上。</strong> 虚拟内存的实现有以下三种方式：</p>
-<ol>
-<li><strong>请求分页存储管理</strong> ：建立在分页管理之上，为了支持虚拟存储器功能而增加了请求调页功能和页面置换功能。请求分页是目前最常用的一种实现虚拟存储器的方法。请求分页存储管理系统中，在作业开始运行之前，仅装入当前要执行的部分段即可运行。假如在作业运行的过程中发现要访问的页面不在内存，则由处理器通知操作系统按照对应的页面置换算法将相应的页面调入到主存，同时操作系统也可以将暂时不用的页面置换到外存中。</li>
-<li><strong>请求分段存储管理</strong> ：建立在分段存储管理之上，增加了请求调段功能、分段置换功能。请求分段储存管理方式就如同请求分页储存管理方式一样，在作业开始运行之前，仅装入当前要执行的部分段即可运行；在执行过程中，可使用请求调入中断动态装入要访问但又不在内存的程序段；当内存空间已满，而又需要装入新的段时，根据置换功能适当调出某个段，以便腾出空间而装入新的段。</li>
-<li><strong>请求段页式存储管理</strong></li>
-</ol>
-<p><strong>这里多说一下？很多人容易搞混请求分页与分页存储管理，两者有何不同呢？</strong></p>
-<p>请求分页存储管理建立在分页管理之上。他们的根本区别是是否将程序全部所需的全部地址空间都装入主存，这也是请求分页存储管理可以提供虚拟内存的原因，我们在上面已经分析过了。</p>
-<p>它们之间的根本区别在于是否将一作业的全部地址空间同时装入主存。请求分页存储管理不要求将作业全部地址空间同时装入主存。基于这一点，请求分页存储管理可以提供虚存，而分页存储管理却不能提供虚存。</p>
-<p>不管是上面那种实现方式，我们一般都需要：</p>
-<ol>
-<li>一定容量的内存和外存：在载入程序的时候，只需要将程序的一部分装入内存，而将其他部分留在外存，然后程序就可以执行了；</li>
-<li><strong>缺页中断</strong>：如果<strong>需执行的指令或访问的数据尚未在内存</strong>（称为缺页或缺段），则由处理器通知操作系统将相应的页面或段<strong>调入到内存</strong>，然后继续执行程序；</li>
-<li><strong>虚拟地址空间</strong> ：逻辑地址到物理地址的变换。</li>
-</ol>
-<h3 id="4-5-页面置换算法"><a href="#4-5-页面置换算法" class="headerlink" title="#4.5 页面置换算法"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-5-%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95">#</a>4.5 页面置换算法</h3><p>👨‍💻<strong>面试官</strong> ：虚拟内存管理很重要的一个概念就是页面置换算法。那你说一下 <strong>页面置换算法的作用?常见的页面置换算法有哪些?</strong></p>
-<p>🙋 <strong>我</strong> ：</p>
-<blockquote>
-<p>这个题目经常作为笔试题出现，网上已经给出了很不错的回答，我这里只是总结整理了一下。</p>
-</blockquote>
-<p>地址映射过程中，若在页面中发现所要访问的页面不在内存中，则发生缺页中断 。</p>
-<blockquote>
-<p><strong>缺页中断</strong> 就是要访问的<strong>页</strong>不在主存，需要操作系统将其调入主存后再进行访问。 在这个时候，被内存映射的文件实际上成了一个分页交换文件。</p>
-</blockquote>
-<p>当发生缺页中断时，如果当前内存中并没有空闲的页面，操作系统就必须在内存选择一个页面将其移出内存，以便为即将调入的页面让出空间。用来选择淘汰哪一页的规则叫做页面置换算法，我们可以把页面置换算法看成是淘汰页面的规则。</p>
-<p>相同例子：服务器可以把经常访问的一些Web页面存在存储器的高速缓存中。</p>
-<ul>
-<li><p><strong>OPT 页面置换算法（最佳页面置换算法）</strong> ：最佳(Optimal, OPT)置换算法所选择的被淘汰页面将是以后永不使用的，或者是在最长时间内不再被访问的页面,这样可以保证获得最低的缺页率。但由于人们目前无法预知进程在内存下的若千页面中哪个是未来最长时间内不再被访问的，因而该算法无法实现。一般作为衡量其他置换算法的方法。</p>
-</li>
-<li><p><strong>FIFO（First In First Out） 页面置换算法（先进先出页面置换算法）</strong> : 总是淘汰最先进入内存的页面，即选择在内存中驻留时间最久的页面进行淘汰。</p>
-</li>
-<li><p><strong>LRU （Least Recently Used）页面置换算法（最近最久未使用页面置换算法）</strong> ：LRU 算法赋予每个页面一个访问字段，用来记录一个页面自上次被访问以来所经历的时间 T，当须淘汰一个页面时，选择现有页面中其 T 值最大的，即最近最久未使用的页面予以淘汰。数据结构双重链表加哈希表。</p>
-</li>
-<li><p><strong>LFU （Least Frequently Used）页面置换算法（最少使用页面置换算法）</strong> : 该置换算法选择在之前时期使用最少的页面作为淘汰页</p>
-</li>
-<li><p>第二次机会算法FIFO 算法可能会把经常使用的页面置换出去，为了避免这一问题，对该算法做一个简单的修改：<br>当页面被访问 (读或写) 时设置该页面的 R 位为 1。当内存不足，需要页面替换的时候，检查链表中最老页面的 R 位。如果 R 位是 0，那么这个页面既老又没有被使用，可以立刻置换掉；如果是1，就将 R 位清 0，并把该页面放到链表的尾端，修改它的装入时间使它就像刚装入的一样，然后继续从链表的头部开始搜索。</p>
-</li>
-</ul>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220325110754388.png" alt="image-20220325110754388"></p>
-<ul>
-<li>第二次机会算需要在链表中移动页面，降低了效率。时钟算法使用和日使用一个指针指向最老的页面。</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="akurisu">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2022/03/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" class="post-title-link" itemprop="url">计算机网络</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2022-03-01 23:47:44" itemprop="dateCreated datePublished" datetime="2022-03-01T23:47:44+08:00">2022-03-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-21 13:48:46" itemprop="dateModified" datetime="2022-04-21T13:48:46+08:00">2022-04-21</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">Java知识</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <hr>
-<h3 id="OSI七层网络体系"><a href="#OSI七层网络体系" class="headerlink" title="OSI七层网络体系"></a>OSI七层网络体系</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220313185712942.png" alt="image-20220313185712942"></p>
-<h3 id="TCP-x2F-IP网络体系"><a href="#TCP-x2F-IP网络体系" class="headerlink" title="TCP&#x2F;IP网络体系"></a>TCP&#x2F;IP网络体系</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220313185422470.png" alt="image-20220313185422470"></p>
-<ol>
-<li>应用层</li>
-<li>传输层</li>
-<li>网络层</li>
-<li>网络接口层</li>
-</ol>
-<h1 id="应用层协议"><a href="#应用层协议" class="headerlink" title="应用层协议"></a>应用层协议</h1><h2 id="HTTP"><a href="#HTTP" class="headerlink" title="HTTP"></a>HTTP</h2><h3 id="HTTP报文头"><a href="#HTTP报文头" class="headerlink" title="HTTP报文头"></a>HTTP报文头</h3><p>下面提供了一个典型的HTTP请求报文: </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">GET /somedir/page・html HTTP/1.1 </span><br><span class="line">Host: www・someschool•edu </span><br><span class="line">Connection: close </span><br><span class="line">User-agent: Mozilla/5•0</span><br><span class="line">Accept-language: fr</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220329122500251.png" alt="image-20220329122500251"></p>
-<p>http 报文头分为两种，一种是请求报文头和响应报文头 包含一下几个部分：<strong>请求行，首部行和实体体</strong>。其中请求行包含了这个请求的方法：有 GET、  POST、PUT、HEAD、DELETE。还包含了 URL 字段和 HTTP 的版本。实体体中，<strong>如果使用的是 get 方法，那么实体体就为空，如果使用的是 post 方法，那么响应的文本内容就会放在实体体中。</strong>HEAD 方法类似于 GET 方法，但是发送一个 HEAD 请求是不会返回请求的对象的。一般用于调试。PUT 方法时允许用户上传对象到指定的 web 服务器上的指定路径。DELETE 就是删除 web 服务器上的对象。首部行里面的信息。</p>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220329125857983.png" alt="image-20220329125857983"></p>
-<p>我们仔细看一下这个响应报文。它有三个部分：一个初始状态行（status line） , 6个 首部行（headerline）,然后是实体体（entity body）o。</p>
-<h3 id="Http常见响应码"><a href="#Http常见响应码" class="headerlink" title="Http常见响应码"></a>Http常见响应码</h3><h4 id="1XX-信息"><a href="#1XX-信息" class="headerlink" title="1XX 信息"></a>1XX 信息</h4><ul>
-<li><strong>100 Continue</strong> ：表明到目前为止都很正常，客户端可以继续发送请求或者忽略这个响应。</li>
-</ul>
-<h4 id="2XX-成功"><a href="#2XX-成功" class="headerlink" title="#2XX 成功"></a><a target="_blank" rel="noopener" href="https://www.cyc2018.xyz/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/HTTP/HTTP.html#_2xx-%E6%88%90%E5%8A%9F">#</a>2XX 成功</h4><ul>
-<li><strong>200 OK</strong>   请求成功，信息在返回的响应报文中。</li>
-<li><strong>204 No Content</strong> ：请求已经成功处理，但是返回的响应报文不包含实体的主体部分。一般在只需要从客户端往服务器发送信息，而不需要返回数据时使用。</li>
-<li><strong>206 Partial Content</strong> ：表示客户端进行了范围请求，响应报文包含由 Content-Range 指定范围的实体内容。</li>
-</ul>
-<h4 id="3XX-重定向"><a href="#3XX-重定向" class="headerlink" title="#3XX 重定向"></a><a target="_blank" rel="noopener" href="https://www.cyc2018.xyz/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/HTTP/HTTP.html#_3xx-%E9%87%8D%E5%AE%9A%E5%90%91">#</a>3XX 重定向</h4><ul>
-<li><strong>301 Moved Permanently</strong> ：永久性重定向</li>
-<li><strong>302 Found</strong> ：临时性重定向</li>
-<li><strong>303 See Other</strong> ：和 302 有着相同的功能，但是 303 明确要求客户端应该采用 GET 方法获取资源。</li>
-<li>注：虽然 HTTP 协议规定 301、302 状态下重定向时不允许把 POST 方法改成 GET 方法，但是大多数浏览器都会在 301、302 和 303 状态下的重定向把 POST 方法改成 GET 方法。</li>
-<li><strong>304 Not Modified</strong> ：如果请求报文首部包含一些条件，例如：If-Match，If-Modified-Since，If-None-Match，If-Range，If-Unmodified-Since，如果不满足条件，则服务器会返回 304 状态码。</li>
-<li><strong>307 Temporary Redirect</strong> ：临时重定向，与 302 的含义类似，但是 307 要求浏览器不会把重定向请求的 POST 方法改成 GET 方法。</li>
-</ul>
-<h4 id="4XX-客户端错误"><a href="#4XX-客户端错误" class="headerlink" title="#4XX 客户端错误"></a><a target="_blank" rel="noopener" href="https://www.cyc2018.xyz/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/HTTP/HTTP.html#_4xx-%E5%AE%A2%E6%88%B7%E7%AB%AF%E9%94%99%E8%AF%AF">#</a>4XX 客户端错误</h4><ul>
-<li><strong>400 Bad Request</strong> ：请求报文中存在语法错误。</li>
-<li><strong>401 Unauthorized</strong> ：该状态码表示发送的请求需要有认证信息（BASIC 认证、DIGEST 认证）。如果之前已进行过一次请求，则表示用户认证失败。</li>
-<li><strong>403 Forbidden</strong> ：请求被拒绝。</li>
-<li><strong>404 Not Found</strong>：被请求的文档不在服务器上</li>
-</ul>
-<h4 id="5XX-服务器错误"><a href="#5XX-服务器错误" class="headerlink" title="#5XX 服务器错误"></a><a target="_blank" rel="noopener" href="https://www.cyc2018.xyz/%E8%AE%A1%E7%AE%97%E6%9C%BA%E5%9F%BA%E7%A1%80/HTTP/HTTP.html#_5xx-%E6%9C%8D%E5%8A%A1%E5%99%A8%E9%94%99%E8%AF%AF">#</a>5XX 服务器错误</h4><ul>
-<li><strong>500 Internal Server Error</strong> ：服务器正在执行请求时发生错误。</li>
-<li><strong>503 Service Unavailable</strong> ：服务器暂时处于超负载或正在进行停机维护，现在无法处理请求</li>
-<li><strong>505 HTTP Version Not Supported</strong>：服务器不支持请求报文使用的HTTP协议版本。</li>
-</ul>
-<h3 id="HTTP-x2F-1-0vsHTTP-x2F-1-1vsHTTP-x2F-2-0"><a href="#HTTP-x2F-1-0vsHTTP-x2F-1-1vsHTTP-x2F-2-0" class="headerlink" title="HTTP&#x2F;1.0vsHTTP&#x2F;1.1vsHTTP&#x2F;2.0"></a>HTTP&#x2F;1.0vsHTTP&#x2F;1.1vsHTTP&#x2F;2.0</h3><h4 id="HTTP-x2F-1-0"><a href="#HTTP-x2F-1-0" class="headerlink" title="HTTP&#x2F;1.0"></a>HTTP&#x2F;1.0</h4><p>HTTP&#x2F;1.0中浏览器与服务器<strong>只保持短暂的连接，连接无法复用</strong>。也就是说每个TCP连接只能发送一个请求。发送数据完毕，连接就关闭，如果还要请求其他资源，就必须再新建一个连接。</p>
-<p>我们知道TCP连接的建立需要三次握手，是很耗费时间的一个过程。所以，<strong>HTTP&#x2F;1.0版本的性能比较差</strong>。</p>
-<blockquote>
-<p>HTTP1.0 其实也可以强制开启长链接，例如接受<code>Connection: keep-alive</code> 这个字段，但是，这不是标准字段，不同实现的行为可能不一致，因此不是根本的解决办法。</p>
-</blockquote>
-<h4 id="HTTP-x2F-1-1"><a href="#HTTP-x2F-1-1" class="headerlink" title="HTTP&#x2F;1.1"></a>HTTP&#x2F;1.1</h4><p>为了解决HTTP&#x2F;1.0存在的缺陷，HTTP&#x2F;1.1于1999年诞生。相比较于HTTP&#x2F;1.0来说，最主要的改进就是引入了持久连接。所谓的持久连接即<strong>TCP连接默认不关闭，可以被多个请求复用</strong>。</p>
-<p>客户端和服务器发现对方一段时间没有活动，就可以主动关闭连接。或者客户端在最后一个请求时，主动告诉服务端要关闭连接。H<strong>TTP&#x2F;1.1版还引入了管道机制（pipelining），即在同一个TCP连接里面，客户端可以同时发送多个请求。这样就进一步改进了HTTP协议的效率。</strong></p>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220329131132781.png" alt="image-20220329131132781"></p>
-<h4 id="HTTP-x2F-2-0"><a href="#HTTP-x2F-2-0" class="headerlink" title="HTTP&#x2F;2.0"></a>HTTP&#x2F;2.0</h4><p>  HTTP&#x2F;2.0主要基于 SPDY 协议。HTTP&#x2F;2 为了解决HTTP&#x2F;1.1中仍然存在的效率问题，HTTP&#x2F;2 采用了<strong>多路复用</strong>。即在一个连接里，客户端和浏览器都可以同时发送多个请求或回应，而且不用按照顺序一一对应。能这样做有一个前提，就是HTTP&#x2F;2进行了<strong>二进制分帧</strong>，即 HTTP&#x2F;2 会将所有传输的信息分割为更小的消息和帧（frame）,并对它们采用二进制格式的编码。</p>
-<p>  除此之外，还有一些其他的优化，比如<strong>做Header压缩、服务端推送</strong>等。</p>
-<p>  <strong>Header压缩</strong>就是压缩老板和员工之间的对话。</p>
-<p>  <strong>服务端推送</strong>就是员工事先把一些老板可能询问的事情提现发送到老板的手机（缓存）上。这样老板想要知道的时候就可以直接读取短信（缓存）了。</p>
-<h3 id="HTTPS"><a href="#HTTPS" class="headerlink" title="HTTPS"></a>HTTPS</h3><h4 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h4><p>  HTTPS 是在 HTTP 的基础上增加了 <strong>SSL 或 TLS 安全协议</strong>（TLS 不支持数字证书），让 HTTP 先 和 SSL（Secure Sockets Layer）通信，再由 SSL 和 TCP 通信，也就是说 HTTPS 使用了隧道进行 通信。</p>
-<p>   SSL 和 TLS 这两个协议可以加密处理数据（采用混合加密技术）防止数据被监听、验证通信方身份 （通过数字证书认证通信方是自己的服务器）以及数据完整性保护（防止传输的内容被中间人冒充 或者篡改），也就是说 HTTPS 使用了隧道进行通信。隧道：使用 SSL 等加密手段，在客户端和服务器之间建立一条安全的通信线路。 </p>
-<p>  通过使用 SSL，HTTPS 具有了加密（防窃听）、认证（防伪装）和完整性保护（防篡改）。</p>
-<h4 id="工作过程"><a href="#工作过程" class="headerlink" title="工作过程"></a>工作过程</h4><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220330093509369.png" alt="image-20220330093509369"></p>
-<p>1、 客户端发送自己支持的加密规则给服务器，代表告诉服务器要进行连接了；</p>
-<p>2、 服务器从中选出一套加密算法和 hash 算法以及自己的身份信息（地址等）以证书的形式发送给浏览器，证书中包含<strong>服务器信息，加密公钥，证书的办法机构；</strong></p>
-<p>3、客户端收到网站的证书之后要做下面的事情：</p>
-<ul>
-<li>验证证书的合法性；</li>
-<li>如果验证通过证书，浏览器会生成一串随机数<strong>密钥</strong>，并用证书中的公钥进行加密；</li>
-<li>用约定好的 hash 算法计算握手消息，然后用生成的密钥进行加密，然后一起发送给服务器。</li>
-</ul>
-<p>4、服务器接收到客户端传送来的信息，要做下面的事情：</p>
-<ul>
-<li>4.1 用私钥解析出密钥，用密钥解析握手消息，验证 hash 值是否和浏览器发来的一致；</li>
-<li>4.2 使用密钥加密消息；</li>
-</ul>
-<p>5、如果计算法 hash 值一致，握手成功。</p>
-<h4 id="对称式加密"><a href="#对称式加密" class="headerlink" title="对称式加密"></a>对称式加密</h4><p>对称密钥加密（Symmetric-Key Encryption），加密和解密使用同一密钥。</p>
-<ul>
-<li>优点：运算速度快； </li>
-<li>缺点：无法安全地将密钥传输给通信方。</li>
-</ul>
-<h4 id="非对称式加密"><a href="#非对称式加密" class="headerlink" title="非对称式加密"></a>非对称式加密</h4><p>非对称密钥加密，又称公开密钥加密（Public-Key Encryption），加密和解密使用不同的密钥。</p>
-<p>公开密钥所有人都可以获得，通信发送方获得接收方的公开密钥之后，就可以使用公开密钥进行加密，接收方收到通信内容后使用私有密钥解密。 </p>
-<p>非对称密钥除了用来加密，还可以用来进行签名。因为私有密钥无法被其他人获取，因此<strong>通信发送方使用其私有密钥进行签名</strong>，通信接收方使用发送方的公开密钥对签名进行解密，就能判断这个签名是否正确。</p>
-<ul>
-<li>优点：可以更安全地将公开密钥传输给通信发送方； </li>
-<li>缺点：运算速度慢</li>
-</ul>
-<h2 id="DNS"><a href="#DNS" class="headerlink" title="DNS"></a>DNS</h2><h3 id="DNS-的查询过程"><a href="#DNS-的查询过程" class="headerlink" title="DNS 的查询过程"></a>DNS 的查询过程</h3><p>首先通过 URL 找到主机名。比如 <a target="_blank" rel="noopener" href="http://www.baidu.com,**根据这个去浏览器缓存里面找,如果没有就去本机的/">www.baidu.com，**根据这个去浏览器缓存里面找，如果没有就去本机的</a> host 的文件找，在没有就去访问本地域名服务器<strong>，询问能不能找到这个主机 IP 地址的缓存。 再没有就通过迭代的方法，找</strong>根域名服务器，顶级、权威，最后返回一个 ip 地址给 DNS 应用**。 当发送一个 DNS 请求的时候，如果本地域名服务器中没有的话，本地域名服务器就会代理的作用将请求转发到 DNS 服务器层次结构中。</p>
-<h3 id="DNS缓存"><a href="#DNS缓存" class="headerlink" title="DNS缓存"></a>DNS缓存</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220330100416720.png" alt="image-20220330100416720"></p>
-<p>至此我们的讨论一直忽略了 DNS系统 的一个非常重要特色：DNS缓存(DNS caching) o实际上，为了改善时延性能并减 少在因特网上到处传输的DNS报文数量， DNS广泛使用了缓存技术。DNS缓存的原 理非常简单。在一个请求链中，当某DNS 服务器接收一个DNS回答(例如，包含某 主机名到IP地址的映射)时，它能将映射 缓存在本地存储器中。例如，在图2・18 中，每当本地DNS服务器dns. nyu. edu从 某个DNS服务器接收到一个回答，它能够 缓存包含在该回答中的任何信息。如果在 DNS服务器中缓存了一台主机名&#x2F;IP地址 对，另一个对相同主机名的查询到达该 DNS服务器时，该DNS服务器就能够提供 所要求的IP地址，即使它不是该主机名的权威服务器。由于主机和主机名与IP地址间的映射并不是永久的，DNS服务器在一段时间后(通常设置为两天)将丢弃缓存的信息。</p>
-<p>举一个例子，假定主机apricot, nyu. edu向dns. nyu. edu查询主机名cnn. com的IP地址。 此后，假定过了几个小时，纽约大学的另外一台主机如kiwi. nyu. edu也向dns. nyu. edu查询 相同的主机名。因为有了缓存，该本地DNS服务器可以立即返回cnn. com的IP地址，而不 必查询任何其他DNS服务器。本地DNS服务器也能够缓存TLD服务器的IP地址，因而允 许本地DNS绕过查询链中的根DNS服务器。事实上，因为缓存，除了少数DNS查询以外，根服务器被绕过了。</p>
-<p>http 请求都有哪些？</p>
-<ul>
-<li>GET 获取资源，服务端返回报文实体主体部分。  </li>
-<li>HEAD 与 GET 类似，但是服务端不返回报文实体主体部分。 </li>
-<li>POST 传输实体主体 </li>
-<li>PUT 上传文件，存在安全性问题，一般不建议使用 </li>
-<li>PATCH 对资源进行部分修改 </li>
-<li>DELETE 删除文件，与 PUT 功能相反，并且同样不带验证机制 </li>
-<li>OPTIONS 查询指定的 URL 能够支持的方法，会返回 Allow：GET，POST，HEAD 这样的内容。 </li>
-<li>CONNECT 要求在与代理服务器通信时建立隧道 </li>
-<li>TRACE 追踪路径，服务器会将通信路径返回给客户端，通常不会使用 TRACE，并且它容易受到 XST 攻击（Cross-Site Tracing，跨站追踪）</li>
-</ul>
-<h1 id="运输层协议"><a href="#运输层协议" class="headerlink" title="运输层协议"></a>运输层协议</h1><h2 id="TCP"><a href="#TCP" class="headerlink" title="TCP"></a>TCP</h2><h3 id="TCP三次握手"><a href="#TCP三次握手" class="headerlink" title="TCP三次握手"></a>TCP三次握手</h3><h4 id="三次握手的概念"><a href="#三次握手的概念" class="headerlink" title="三次握手的概念"></a>三次握手的概念</h4><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220329083907417.png" alt="image-20220329083907417"></p>
-<p> 刚开始客户端处于 closed 的状态，服务端处于 listen 状态。然后<br>   1、第一次握手：客户端给服务端发一个 SYN 报文，并指明客户端的初始化序列号 ISN（c）。此时客户端处于 SYN_Send 状态。</p>
-<p>   2、第二次握手：服务器收到客户端的 SYN 报文之后，会以自己的 SYN 报文作为应答，并且也是指定了自己的初始化序列号 ISN(s)，同时会把客户端的 ISN + 1 作为 ACK 的值，表示自己已经收到了客户端的 SYN，此时服务器处于 SYN_REVD 的状态。</p>
-<p>   3、第三次握手：客户端收到 SYN 报文之后，会发送一个 ACK 报文，当然，也是一样把服务器的 ISN + 1 作为 ACK 的值，表示已经收到了服务端的 SYN 报文，此时客户端处于 establised 状态。</p>
-<p>   4、服务器收到 ACK 报文之后，也处于 establised 状态，此时，双方以建立起了链接。</p>
-<h4 id="三次握手作用"><a href="#三次握手作用" class="headerlink" title="三次握手作用"></a>三次握手作用</h4><p> 1、确认双方的接受能力、发送能力是否正常。<br> 2、指定自己的初始化序列号，为后面的可靠传送做准备。<br> 3、如果是 https 协议的话，三次握手这个过程，还会进行数字证书的验证以及加密密钥的生成到。</p>
-<h4 id="为什么需要三次握手"><a href="#为什么需要三次握手" class="headerlink" title="为什么需要三次握手"></a>为什么需要三次握手</h4><ul>
-<li>当进行第一次握手，网络不好可能会堵塞，所以连接的请求并没有到达服务器端；</li>
-<li>但是tcp连接有超时重传的机制，所以再一次发送请求，这时候服务器端接收到了你的请求，他也会返回一个请求给你，这是第二次握手；</li>
-<li>但是这时候网络环境突然又好了起来，那个堵塞的请求到达了服务器端，服务器端又给你回了一个请求，但是你又不想给服务器发送请求，这时候服务器的资源会进行占用等待你的请求，为了不使服务器的资源继续占用，你又必须发送一个请求给服务器；所以要进行3次握手</li>
-</ul>
-<h3 id="TCP四次挥手"><a href="#TCP四次挥手" class="headerlink" title="TCP四次挥手"></a>TCP四次挥手</h3><h4 id="含义"><a href="#含义" class="headerlink" title="含义"></a>含义</h4><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220329085636059.png" alt="image-20220329085636059"></p>
-<p>1、第一次挥手：客户端发送一个 FIN 报文，报文中会指定一个序列号。此时客户端处于FIN_WAIT1状态。</p>
-<p>2、第二次握手：服务端收到 FIN 之后，会发送 ACK 报文，且把客户端的序列号值 + 1 作为 ACK 报文的序列号值，表明已经收到客户端的报文了，此时服务端处于 CLOSE_WAIT状态。</p>
-<p>3、第三次挥手：如果服务端也想断开连接了，和客户端的第一次挥手一样，发给 FIN 报文，且指定一个序列号。此时服务端处于 LAST_ACK 的状态。</p>
-<p>4、第四次挥手：客户端收到 FIN 之后，一样发送一个 ACK 报文作为应答，且把服务端的序列号值 + 1 作为自己 ACK 报文的序列号值，此时客户端处于 TIME_WAIT 状态。需要过一阵子以确保服务端收到自己的 ACK 报文之后才会进入 CLOSED 状态</p>
-<p>5、服务端收到 ACK 报文之后，就处于关闭连接了，处于 CLOSED 状态。</p>
-<h4 id="为什么最后还要等待TIME-WAIT"><a href="#为什么最后还要等待TIME-WAIT" class="headerlink" title="为什么最后还要等待TIME_WAIT"></a>为什么最后还要等待TIME_WAIT</h4><p>  这其中的原因就是，要确保服务器是否已经收到了我们的 ACK 报文，如果没有收到的话，服务器会重新发 FIN 报文给客户端，客户端再次收到 ACK 报文之后，就知道之前的 ACK 报文丢失了，然后再次发送 ACK 报文。<br>  至于 TIME_WAIT 持续的时间至少是一个报文的来回时间，即2MSL(Maximum Segment  Lifetime)。MSL 指一个片段在网络中最大的存活时间，一般会设置一个计时，如果过了这个计时没有再次收到 FIN 报文，则代表对方成功就是 ACK 报文，此时处于 CLOSED 状态。</p>
-<h3 id="滑动窗口"><a href="#滑动窗口" class="headerlink" title="滑动窗口"></a>滑动窗口</h3><p>  窗口是缓存的一部分，用来暂时存放字节流。发送方和接收方各有一个窗口，接收方通过 TCP  确认报文段中的窗口字段告诉发送方自己的窗口大小，发送方根据这个值和其它信息设置自己的窗 口大小，从而控制发送速率。</p>
-<p>   发送窗口内的字节都允许被发送，接收窗口内的字节都允许被接收。如果发送窗口左部的字节已经发送并且收到了确认，那么就将发送窗口向右滑动一定距离，直到左部第一个字节不是已发送并且 已确认的状态；接收窗口的滑动类似，接收窗口左部字节已经发送确认并交付主机，就向右滑动接收窗口。 </p>
-<p>  接收方只会对窗口内最后一个按序到达的字节进行确认，例如接收窗口已经收到的字节序号为 {31,   34, 35}，其中 {31}按序到达，而 {34, 35} 就不是，因此只对字节 31 进行确认。发送方得到一个 字节的确认之后，就知道这个字节之前的所有字节都已经被接收。</p>
-<h3 id="流量控制"><a href="#流量控制" class="headerlink" title="流量控制"></a>流量控制</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220329093110364.png" alt="image-20220329093110364"></p>
-<p>  TCP 链接的每一侧主机都为该 TCP 链接设置了接收缓存。当 TCP 链接收到正确、按续的字节后，它就将数据放入接收缓存。相关联的应用进程就会从该缓存中读取数据，不是数据一道道就立 马读取数据。当发送送方发的太快了，太多了，很容易使接收方缓存溢出。这个时候就需要流量控制来解决。他是一个速度匹配的服务。</p>
-<p>  TCP通过让发送方维护一个称为接收窗口(receive window)的变量来提供流量控制，接收窗口用于给发送方一个指示一一该接收方还有多少可用的缓存空间。因为 TCP是全双工通信，在连接两端的发送方都各自维护一个接收窗口。主机B通过把当前的rwnd值放入它发给主机A的报文段接收窗口字段中，通知主机A它在该连接的缓存中还有多少可用空间。当主机B的接收窗口为0时，主机A继续发送只有一个字节数据的报文段。这些报文段将会被接收方确认。最终缓存将开始清空，并且确认报文里将包含一个非0的rwnd 值。</p>
-<h3 id="拥塞控制"><a href="#拥塞控制" class="headerlink" title="拥塞控制"></a>拥塞控制</h3><p>  TCP 主要通过四个算法来进行拥塞控制：<strong>慢开始、拥塞避免、快重传、快恢复。</strong> 发送方需要维护一个叫做拥塞窗口（cwnd）的状态变量，注意拥塞窗口与发送方窗口的区别：拥塞 窗口只是一状态变量，实际决定发送方能发送多少数据的是发送方窗口</p>
-<p>为了便于讨论，做如下假设： </p>
-<ul>
-<li>接收方有足够大的接收缓存，因此不会发生流量控制； </li>
-<li>虽然 TCP 的窗口基于字节，但是这里设窗口的大小单位为报文段。</li>
-</ul>
-<p>​    <img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220329094335339.png" alt="image-20220329094335339"></p>
-<h4 id="慢开始与拥塞避免"><a href="#慢开始与拥塞避免" class="headerlink" title="慢开始与拥塞避免"></a>慢开始与拥塞避免</h4><p>  发送的最初执行慢开始，令 cwnd &#x3D; 1，发送方只能发送 1 个报文段；当收到确认后，将 cwnd加倍，因此之后发送方能够发送的报文段数量为：2、4、8 … </p>
-<p>  注意到慢开始每个轮次都将 cwnd 加倍，这样会让 cwnd 增长速度非常快，从而使得发送方发送的 速度增长速度过快，网络拥塞的可能性也就更高。<strong>设置一个慢开始门限 ssthresh，当 cwnd &gt;&#x3D; ssthresh  时，进入拥塞避免，每个轮次只将 cwnd 加 1。</strong></p>
-<p>  如果出现了超时（即发送方没有接收到接收方传过来的确认报文），则令 <strong>ssthresh &#x3D; cwnd &#x2F; 2</strong>，然后 重新执行慢开始。 </p>
-<p>  注意：拥塞避免并非指完全能够避免拥塞，而是指在拥塞避免阶段将拥塞窗口控制为按线性规律增 长，使网络比较不容易出现拥塞。</p>
-<h4 id="快重传与快恢复"><a href="#快重传与快恢复" class="headerlink" title="快重传与快恢复"></a>快重传与快恢复</h4><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220329100939294.png" alt="image-20220329100939294"></p>
-<p>  所谓快重传，就是使发送方尽早知道发生了个别报文段丢失，尽快重传，而不是等待重传计时器超 时再重传。</p>
-<p>   在接收方，要求每次接收到报文段都应该对最后一个已收到的有序报文段进行确认（所以才会有了下边连续 3 次重复确认 M2）。例如已经接收到 M1 和 M2，此时收到 M4，应当发送对 M2 的确 认。 </p>
-<p>  在发送方，如果收到三个重复确认，那么可以知道下一个报文段丢失，此时执行快重传，立即重传下一个报文段。例如收到三个 M2，则 M3 丢失，立即重传 M3。 在这种情况下，只是丢失个别报文段，而不是网络拥塞。因此执行快恢复，令 <strong>cwnd &#x3D;ssthresh &#x3D; cwnd  &#x2F; 2</strong> ，注意到此时直接进入拥塞避免。 </p>
-<p>  <strong>慢开始和快恢复的快慢指的是 cwnd 的设定值，而不是 cwnd 的增长速率。慢开始 cwnd 设定为 1， 而快恢复 cwnd 设定为 ssthresh。</strong></p>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220329101247891.png" alt="image-20220329101247891"></p>
-<h3 id="TCP报文头格式"><a href="#TCP报文头格式" class="headerlink" title="TCP报文头格式"></a>TCP报文头格式</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220329115402388.png" alt="image-20220329115402388"></p>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220314105352113.png" alt="image-20220314105352113"></p>
-<p><strong>序号</strong>：TCP 的序号是数据流中的字节数，不是分组的序号。表示该报文段数据字段首字节的序号。</p>
-<p> <strong>确认号</strong>：TCP 使用累积确认，确认号是第一个未收到的字节序号，表示希望接收到的下一个字节。</p>
-<p> <strong>首部长度</strong>：通常选项字段为空，所以一般 TCP 首部的长度是 <strong>20</strong> <strong>字节</strong>。</p>
-<p> <strong>选项字段</strong>(可选与变长的)：用于发送方与接收方协商 MSS(最大报文段长)，或在高速网络环境下用作窗口</p>
-<p>调节因子。</p>
-<p> <strong>标志字段</strong></p>
-<p> <strong>ACK</strong>：指示确认字段中的值是有效的</p>
-<p> <strong>RST,SYN,FIN</strong>：连接建立与拆除</p>
-<p> <strong>PSH</strong>：指示接收方应立即将数据交给上层</p>
-<p> <strong>URG</strong>：报文段中存在着(被发送方的上层实体置位)“紧急”的数据</p>
-<p> <strong>接收窗口</strong>：用于流量控制（表示接收方还有多少可用的缓存空间）。</p>
-<p> TCP RFC 并没有规定失序到达的分组应该如何处理，而是交给程序员。可以选择丢弃或保留。如果发生超时，TCP <strong>只重传第一个已发送而未确认的分组</strong>，超时时间间隔会设置为原来的</p>
-<h3 id="TCP和UDP的区别"><a href="#TCP和UDP的区别" class="headerlink" title="TCP和UDP的区别"></a>TCP和UDP的区别</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220329120555130.png" alt="image-20220329120555130"></p>
-<p>  UDP 在传送数据之前不需要先建立连接（无连接），远地主机在收到 UDP 报文后，不需要给出任 何确认。一般用于即时通信，因为偶尔丢失包也没有影响，比如： QQ 语音、 QQ 视频 、直播等 等。</p>
-<p>  TCP 不提供广播或多播服务。</p>
-<p>  TCP 要提供可靠的，面向连接的运输服务（TCP 的面向连接体现在 TCP 在传递数据之前，会有三 次握手来建立连接，在数据传完后，会断开连接用来节约系统资源，可靠性体现在数据传递时，有 JIANG J Q: 699046690 报文确认、滑动窗口、超时重传、拥塞控制机制），这一系列操作增加了许多开销。这不仅使 TCP 首部增大很多，还要占用许多处理机资源。TCP 一般用于需要可靠传输的场景，比如：文件传输、 发送邮件、远程登录（包括了文件传输）等场景。</p>
-<p> 总的来说： </p>
-<ol>
-<li>TCP 面向连接，UDP 无连接。 </li>
-<li>TCP 可靠传输，UDP 不可靠传输。 </li>
-<li>TCP 传输慢，UDP 传输快。 </li>
-<li>TCP 所需资源多（比如：超时重传功能需要先缓存已发送的数据），UDP 所需资源少。 </li>
-<li>TCP 首部字节多（因为有 ACK，SYN，FIN 等字段以及滑动窗口等），UPD 首部字节少。</li>
-</ol>
-<h3 id="TCP粘包和拆包"><a href="#TCP粘包和拆包" class="headerlink" title="TCP粘包和拆包"></a>TCP粘包和拆包</h3><p>由于TCP传输协议面向流的，<strong>没有消息保护边界</strong>。一方发送的多个报文可能会被合并成一个大的报文进行传输，这就是粘包；也可能发送的一个报文，可能会被拆分成多个小报文，这就是拆包。</p>
-<p>发生TCP粘包、拆包主要是以下原因：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">（1）应用程序写入数据大于套接字缓冲区大小，会发生拆包；</span><br><span class="line">（2）应用程序写入数据小于套接字缓冲区大小，网卡将应用多次写入的数据发送到网络上，这将会发送粘包；</span><br><span class="line">（3）进行MSS（最大报文长度）大小的TCP分段，当TCP报文长度——TCP header长度&gt;MSS  的时候会发生拆包；</span><br><span class="line">（4）接收方法不及时读取套接字缓冲区数据，这将发生粘包。</span><br></pre></td></tr></table></figure>
-
-<p> <strong>UDP会不会产生粘包问题呢？</strong></p>
-<p> TCP为了保证可靠传输并减少额外的开销（每次发包都要验证），采用了基于流的传输，基于流的传输不认为消息是一条一条的，是无保护消息边界的（保护消息边界：指传输协议把数据当做一条独立的消息在网上传输，接收端一次只能接受一条独立的消息）。UDP则是面向消息传输的，是有保护消息边界的，接收方一次只接受一条独立的信息，所以不存在粘包问题。</p>
-<p> 举个例子：有三个数据包，大小分别为2k、4k、6k，如果采用UDP发送的话，不管接受方的接收缓存有多大，我们必须要进行至少三次以上的发送才能把数据包发送完，但是使用TCP协议发送的话，我们只需要接受方的接收缓存有12k的大小，就可以一次把这3个数据包全部发送完毕。</p>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220324202652206.png" alt="image-20220324202652206"></p>
-<h3 id="TCP-协议如何保证可靠传输"><a href="#TCP-协议如何保证可靠传输" class="headerlink" title="TCP 协议如何保证可靠传输"></a>TCP 协议如何保证可靠传输</h3><ol>
-<li><p>应用数据被分割成 TCP 认为最适合发送的数据块。</p>
-</li>
-<li><p>TCP 给发送的每一个包进行编号，接收方对数据包进行排序，把有序数据传送给应用层。</p>
-</li>
-<li><p><strong>校验和：</strong> TCP 将保持它首部和数据的检验和。这是一个端到端的检验和，目的是检测数据在传输过程中的任何变化。如果收到段的检验和有差错，TCP 将丢弃这个报文段和不确认收到此报文段。</p>
-</li>
-<li><p>TCP 的接收端会丢弃重复的数据。</p>
-</li>
-<li><p><strong>流量控制：</strong> TCP 连接的每一方都有固定大小的缓冲空间，TCP 的接收端只允许发送端发送接收端缓冲区能接纳的数据。当接收方来不及处理发送方的数据，能提示发送方降低发送的速率，防止包丢失。TCP 使用的流量控制协议是可变大小的滑动窗口协议。 （TCP 利用滑动窗口实现流量控制）</p>
-<p>在连接双方都维护一个接收窗口，主机B为该连接分配了一个接收缓存，用RcvBuffer表示大小，rwnd&#x3D;RcvBuffer-LastByteRcvd+LastbyteRead</p>
-<p>，主机B把当前rwnd放到发给主机A的报文段接收窗口中，通知主机A该连接缓存还有多少空间，将未确认的数量控制在rwnd以内就可以保证主机A不会使主机B的接收缓存溢出。</p>
-</li>
-<li><p><strong>拥塞控制：</strong> 当网络拥塞时，减少数据的发送。</p>
-<p>为了进行拥塞控制，TCP 发送方要维持一个 <strong>拥塞窗口(cwnd)</strong> 的状态变量。拥塞控制窗口的大小取决于网络的拥塞程度，并且动态变化。发送方让自己的发送窗口取为拥塞窗口和接收方的接受窗口中较小的一个。</p>
-<p>TCP 的拥塞控制采用了四种算法，即 <strong>慢开始</strong> 、 <strong>拥塞避免</strong> 、<strong>快重传</strong> 和 <strong>快恢复</strong>。在网络层也可以使路由器采用适当的分组丢弃策略（如主动队列管理 AQM），以减少网络拥塞的发生。</p>
-<ul>
-<li><strong>慢开始：</strong> 慢开始算法的思路是当主机开始发送数据时，如果立即把大量数据字节注入到网络，那么可能会引起网络阻塞，因为现在还不知道网络的符合情况。经验表明，较好的方法是先探测一下，即由小到大逐渐增大发送窗口，也就是由小到大逐渐增大拥塞窗口数值。cwnd 初始值为 1，每经过一个传播轮次，cwnd 加倍。</li>
-<li><strong>拥塞避免：</strong> 拥塞避免算法的思路是让拥塞窗口 cwnd 缓慢增大，即每经过一个往返时间 RTT 就把发送放的 cwnd 加 1.</li>
-<li><strong>快重传与快恢复：</strong> 在 TCP&#x2F;IP 中，快速重传和恢复（fast retransmit and recovery，FRR）是一种拥塞控制算法，它能快速恢复丢失的数据包。没有 FRR，如果数据包丢失了，TCP 将会使用定时器来要求传输暂停。在暂停的这段时间内，没有新的或复制的数据包被发送。有了 FRR，如果接收机接收到一个不按顺序的数据段，它会立即给发送机发送一个重复确认。如果发送机接收到三个重复确认，它会假定确认件指出的数据段丢失了，并立即重传这些丢失的数据段。有了 FRR，就不会因为重传时要求的暂停被耽误。 　当有单独的数据包丢失时，快速重传和恢复（FRR）能最有效地工作。当有多个数据信息包在某一段很短的时间内丢失时，它则不能很有效地工作。</li>
-</ul>
-</li>
-<li><p><strong>ARQ 协议：</strong> 也是为了实现可靠传输的，它的基本原理就是每发完一个分组就停止发送，等待对方确认。在收到确认后再发下一个分组。</p>
-</li>
-<li><p><strong>超时重传：</strong> 当 TCP 发出一个段后，它启动一个定时器，等待目的端确认收到这个报文段。如果不能及时收到一个确认，将重发这个报文段</p>
-</li>
-</ol>
-<h3 id=""><a href="#" class="headerlink" title=""></a></h3><h3 id="TCP和UDP有如下区别："><a href="#TCP和UDP有如下区别：" class="headerlink" title="TCP和UDP有如下区别："></a>TCP和UDP有如下区别：</h3><ol>
-<li>连接：TCP面向连接的传输层协议，即传输数据之前必须先建立好连接；UDP无连接。</li>
-<li>服务对象：TCP点对点的两点间服务，即一条TCP连接只能有两个端点；UDP支持一对一，一对多，多对一，多对多的交互通信。</li>
-<li>可靠性：TCP可靠交付：无差错，不丢失，不重复，按序到达；UDP尽最大努力交付，不保证可靠交付。</li>
-<li>拥塞控制&#x2F;流量控制：有拥塞控制和流量控制保证数据传输的安全性；UDP没有拥塞控制，网络拥塞不会影响源主机的发送效率。</li>
-<li>报文长度：TCP动态报文长度，即TCP报文长度是根据接收方的窗口大小和当前网络拥塞情况决定的；UDP面向报文，不合并，不拆分，保留上面传下来报文的边界。</li>
-<li>首部开销：TCP首部开销大，首部20个字节；UDP首部开销小，8字节（源端口，目的端口，数据长度，校验和）。</li>
-<li>适用场景（由特性决定）：数据完整性需让位于通信实时性，则应该选用TCP 协议（如文件传输、重要状态的更新等）；反之，则使用 UDP 协议（如视频传输、实时通信等）。</li>
-</ol>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/tcp-vs-udp.jpg" alt="TCP、UDP协议的区别"></p>
-<h3 id="ARQ-协议"><a href="#ARQ-协议" class="headerlink" title="ARQ 协议"></a>ARQ 协议</h3><p><strong>自动重传请求</strong>（Automatic Repeat-reQuest，ARQ）是 OSI 模型中数据链路层和传输层的错误纠正协议之一。它通过使用确认和超时这两个机制，在不可靠服务的基础上实现可靠的信息传输。如果发送方在发送后一段时间之内没有收到确认帧，它通常会重新发送。ARQ 包括停止等待 ARQ 协议和连续 ARQ 协议。</p>
-<h4 id="停止等待-ARQ-协议"><a href="#停止等待-ARQ-协议" class="headerlink" title="#停止等待 ARQ 协议"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/network/other-network-questions.html#%E5%81%9C%E6%AD%A2%E7%AD%89%E5%BE%85-arq-%E5%8D%8F%E8%AE%AE">#</a>停止等待 ARQ 协议</h4><p>停止等待协议是为了实现可靠传输的，它的基本原理就是每发完一个分组就停止发送，等待对方确认（回复 ACK）。如果过了一段时间（超时时间后），还是没有收到 ACK 确认，说明没有发送成功，需要重新发送，直到收到确认后再发下一个分组。</p>
-<p>在停止等待协议中，若接收方收到重复分组，就丢弃该分组，但同时还要发送确认。</p>
-<h2 id="IP"><a href="#IP" class="headerlink" title="IP"></a>IP</h2><h3 id="IPv4数据报格式"><a href="#IPv4数据报格式" class="headerlink" title="IPv4数据报格式"></a>IPv4数据报格式</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220313162307775.png" alt="image-20220313162307775"></p>
-<ul>
-<li>4比特版本号</li>
-<li>4比特首部长度</li>
-<li>8比特服务类型</li>
-<li>16比特数据报长度</li>
-<li>16比特标识、4比特标志、12比特片偏移</li>
-<li>8比特寿命</li>
-<li>8比特协议</li>
-<li>16比特首部检验和</li>
-<li>32比特源和32比特目的IP地址</li>
-<li>选项</li>
-<li>数据（有效载荷）</li>
-</ul>
-<h3 id="IPv4数据报分片-标识、标志、偏移量"><a href="#IPv4数据报分片-标识、标志、偏移量" class="headerlink" title="IPv4数据报分片(标识、标志、偏移量)"></a>IPv4数据报分片(标识、标志、偏移量)</h3><p>发送主机在为数据报设置源和目标地址的同时贴上标识号，发送主机通常将它发送的每个数据报的标识号加1，当分片时，片具有初始数据报的源地址、目的地址和标识号。</p>
-<p>最后一个分片标志比特被设为了0，其他片标志比特被设为1,使用偏移字段指定该片在数据报的哪个位置。</p>
-<h1 id="面试题"><a href="#面试题" class="headerlink" title="面试题"></a>面试题</h1><h2 id="打开一个网页，整个过程会使用哪些协议（过程有-6-个）"><a href="#打开一个网页，整个过程会使用哪些协议（过程有-6-个）" class="headerlink" title="打开一个网页，整个过程会使用哪些协议（过程有 6 个）"></a>打开一个网页，整个过程会使用哪些协议（过程有 6 个）</h2><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220330100701382.png" alt="image-20220330100701382"></p>
-<p>总体来说分为以下几个过程: 1.</p>
-<ol>
-<li>DNS 解析 </li>
-<li>TCP 连接 </li>
-<li>SSL 握手 </li>
-<li>发送 HTTP 请求 </li>
-<li>服务器处理请求并返回 HTTP 报文 </li>
-<li>浏览器解析渲染页面 </li>
-<li>连接结束</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+  </nav>
 
 
 
@@ -3231,12 +3017,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-count">11</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span>
       </div>
   </nav>
