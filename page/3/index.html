@@ -145,6 +145,1046 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/mysql%E9%9D%A2%E8%AF%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="akurisu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/01/mysql%E9%9D%A2%E8%AF%95/" class="post-title-link" itemprop="url">mysql面试</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-01 23:47:44" itemprop="dateCreated datePublished" datetime="2022-03-01T23:47:44+08:00">2022-03-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-21 13:54:27" itemprop="dateModified" datetime="2022-04-21T13:54:27+08:00">2022-04-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">Java知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="MySQL的逻辑架构图"><a href="#MySQL的逻辑架构图" class="headerlink" title="MySQL的逻辑架构图"></a>MySQL的逻辑架构图</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220312085136410.png" alt="image-20220312085136410"></p>
+<p>Server 层包括连接器、查询缓存、分析器、优化器、执行器等，涵盖 MySQL 的大多数核心服务功能，以及所有的内置函数（如日期、时间、数学和加密函数等），所有跨存储引擎的功能都在这一层实现，比如存储过程、触发器、视图等。</p>
+<p>查询缓存   可以通过query_cache_type进行开关0是关闭，1是开启，2是按需获取</p>
+<p>分析器  词法分析分析是否是关键字，语法分析分析语法写的是否正确，分析器分析表是否存在列是否存在</p>
+<p>优化器  决定SQL怎么执行是最好的</p>
+<p>执行器 操作对应的引擎，返回结果</p>
+<p>而存储引擎层负责数据的存储和提取。其架构模式是插件式的，支持 InnoDB、MyISAM、Memory 等多个存储引擎。现在最常用的存储引擎是 InnoDB，它从 MySQL 5.5.5 版本开始成为了默认存储引擎。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220403094200555.png" alt="image-20220403094200555"></p>
+<h3 id="MyISAM-和-InnoDB-的区别"><a href="#MyISAM-和-InnoDB-的区别" class="headerlink" title="MyISAM 和 InnoDB 的区别"></a>MyISAM 和 InnoDB 的区别</h3><p><strong>1.是否支持行级锁</strong></p>
+<p>MyISAM 只有表级锁(table-level locking)，而 InnoDB 支持行级锁(row-level locking)和表级锁,默认为行级锁。</p>
+<p>也就说，MyISAM 一锁就是锁住了整张表，这在并发写的情况下是多么滴憨憨啊！这也是为什么 InnoDB 在并发写的时候，性能更牛皮了！</p>
+<p><strong>行锁就是针对数据表中行记录的锁</strong>，<strong>在 InnoDB 事务中，行锁是在需要的时候才加上的，但并不是不需要了就立刻释放，而是要等到事务结束时才释放。这个就是两阶段锁协议。</strong></p>
+<p><strong>2.是否支持事务</strong></p>
+<p>MyISAM 不提供事务支持。</p>
+<p>InnoDB 提供事务支持，具有提交(commit)和回滚(rollback)事务的能力。</p>
+<p>提到<strong>事务</strong>，你肯定会想到 <strong>ACID（Atomicity、Consistency、Isolation、Durability，即原子性、一致性、隔离性、持久性）</strong></p>
+<p><strong>多条事务执行执行时可能出现的情况</strong></p>
+<p>脏读:读到其他事务未提交的数据； </p>
+<p><strong>丢失修改（Lost to modify）:</strong> 指在一个事务读取一个数据时，另外一个事务也访问了该数据，那么在第一个事务中修改了这个数据后，第二个事务也修改了这个数据。这样第一个事务内的修改结果就被丢失，因此称为丢失修改。 例如：事务 1 读取某表中的数据 A&#x3D;20，事务 2 也读取 A&#x3D;20，事务 1 修改 A&#x3D;A-1，事务 2 也修改 A&#x3D;A-1，最终结果 A&#x3D;19，事务 1 的修改被丢失。</p>
+<p>不可重复读：前后读取的记录内容不一致； </p>
+<p>幻读：前后读取的记录数量不一致。</p>
+<p><strong>SQL 标准的事务隔离级别包括：</strong></p>
+<p>读未提交是指，一个事务还没提交时，它做的变更就能被别的事务看到。</p>
+<p>读提交是指，一个事务提交之后，它做的变更才会被其他事务看到。</p>
+<p>可重复读是指，一个事务执行过程中看到的数据，总是跟这个事务在启动时看到的数据是一致的。当然在可重复读隔离级别下，未提交变更对其他事务也是不可见的。</p>
+<p>串行化，顾名思义是对于同一行记录，“写”会加“写锁”，“读”会加“读锁”。当出现读写锁冲突的时候，后访问的事务必须等前一个事务执行完成，才能继续执行。</p>
+<p><strong>你可能会问那什么时候需要“可重复读”的场景呢？</strong></p>
+<p>假设你在管理一个个人银行账户表。一个表存了账户余额，一个表存了账单明细。到了月底你要做数据校对，也就是判断上个月的余额和当前余额的差额，是否与本月的账单明细一致。你一定希望在校对过程中，即使有用户发生了一笔新的交易，也不影响你的校对结果。</p>
+<p>串行化，顾名思义是对于同一行记录，“写”会加“写锁”，“读”会加“读锁”。当出现读写锁冲突的时候，后访问的事务必须等前一个事务执行完成，才能继续执行。和jvm的锁有关联</p>
+<p>MVCC:每条记录在更新的时候都会同时记录一条回滚操作。同一条记录在系统中可以存在多个版本，这就是数据库的多版本并发控制（MVCC）,是事务隔离级别的实现。</p>
+<p><strong>3.是否支持外键</strong></p>
+<p>MyISAM 不支持，而 InnoDB 支持。</p>
+<p>🌈 拓展一下：</p>
+<p>一般我们也是不建议在数据库层面使用外键的，应用层面可以解决。不过，这样会对数据的一致性造成威胁。具体要不要使用外键还是要根据你的项目来决定。</p>
+<p><strong>4.是否支持数据库异常崩溃后的安全恢复</strong></p>
+<p>MyISAM 不支持，而 InnoDB 支持。</p>
+<p>使用 InnoDB 的数据库在异常崩溃后，数据库重新启动的时候会保证数据库恢复到崩溃前的状态。这个恢复的过程依赖于 <code>redo log</code> 。</p>
+<h4 id="redolog"><a href="#redolog" class="headerlink" title="redolog"></a><strong>redolog</strong></h4><p><strong>其实就是 MySQL 里经常说到的 WAL 技术，WAL 的全称是 Write-Ahead Logging，</strong>它的关键点就是先写日志，再写磁盘，也就是先写粉板，等不忙的时候再写账本，具体来说，当有一条记录需要更新的时候，InnoDB 引擎就会先把记录写到 redo log（粉板）里面，并更新内存，这个时候更新就算完成了。同时，InnoDB 引擎会在适当的时候，将这个操作记录更新到磁盘里面，而这个更新往往是在系统比较空闲的时候做，这就像打烊以后掌柜做的事。</p>
+<p>与此类似，InnoDB 的 redo log 是固定大小的，比如可以配置为一组 4 个文件，每个文件的大小是 1GB，那么这块“粉板”总共就可以记录 4GB 的操作。从头开始写，写到末尾就又回到开头循环写，如下面这个图所示。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220312083324081.png" alt="image-20220312083324081"></p>
+<p>write pos 是当前记录的位置，一边写一边后移，写到第 3 号文件末尾后就回到 0 号文件开头。checkpoint 是当前要擦除的位置，也是往后推移并且循环的，擦除记录前要把记录更新到数据文件。</p>
+<p><strong>write pos 和 checkpoint</strong> 之间的是“粉板”上还空着的部分，可以用来记录新的操作。如果 write pos 追上 checkpoint，表示“粉板”满了，这时候不能再执行新的更新，得停下来先擦掉一些记录，把 checkpoint 推进一下。</p>
+<p><strong>有了 redo log，InnoDB 就可以保证即使数据库发生异常重启，之前提交的记录都不会丢失，这个能力称为 crash-safe。</strong></p>
+<p>要理解 crash-safe 这个概念，可以想想我们前面赊账记录的例子。只要赊账记录记在了粉板上或写在了账本上，之后即使掌柜忘记了，比如突然停业几天，恢复生意后依然可以通过账本和粉板上的数据明确赊账账目。</p>
+<h4 id="binlog"><a href="#binlog" class="headerlink" title="binlog"></a><strong>binlog</strong></h4><p>Server 层也有自己的日志，称为 binlog（归档日志）</p>
+<p>这两种日志有以下三点不同。</p>
+<ol>
+<li>redo log 是 InnoDB 引擎特有的；binlog 是 MySQL 的 Server 层实现的，所有引擎都可以使用。</li>
+<li>redo log 是物理日志，记录的是“在某个数据页上做了什么修改”；</li>
+<li>binlog 是逻辑日志，记录的是这个语句的原始逻辑，比如“给 ID&#x3D;2 这一行的 c 字段加 1 ”。redo log 是循环写的，空间固定会用完；binlog 是可以追加写入的。“追加写”是指 binlog 文件写到一定大小后会切换到下一个，并不会覆盖以前的日志。</li>
+</ol>
+<h4 id=""><a href="#" class="headerlink" title=""></a></h4><p>🌈 拓展一下：</p>
+<ul>
+<li>MySQL InnoDB 引擎使用 <strong>redo log(重做日志)</strong> 保证事务的<strong>持久性</strong>，使用 <strong>undo log(回滚日志)</strong> 来保证事务的<strong>原子性</strong>。</li>
+<li>MySQL InnoDB 引擎通过 <strong>锁机制</strong>、<strong>MVCC</strong> 等手段来保证事务的隔离性（ 默认支持的隔离级别是 <strong><code>REPEATABLE-READ</code></strong> ）。</li>
+<li>保证了事务的持久性、原子性、隔离性之后，一致性才能得到保障。</li>
+</ul>
+<h4 id="MySQL刷盘机制"><a href="#MySQL刷盘机制" class="headerlink" title="MySQL刷盘机制"></a>MySQL刷盘机制</h4><p>其中，有四种情况会触发脏页的刷盘： </p>
+<ol>
+<li><p>redo log 可写空间满了。</p>
+</li>
+<li><p>内存满了，需要淘汰的数据页恰好是脏页。</p>
+</li>
+<li><p>系统不繁忙的时候。</p>
+</li>
+<li><p>关 闭数据库的时候。</p>
+<p> 其中，第三种情况不会为系统带来过多影响的，第四中情况下不会在乎为系统带来的影响。所以我 们只需要关注第一和第二种情况： 对于第二种情况，由于 mysql 的更新需要先写日志，所以当日志满了的情况下，所有的更新都会停 止，一直到刷完盘日志腾出了空间为止； </p>
+<p>而对于第一种情况，当查询的数据在内存中的数据页没有的时候，就需要淘汰旧页释放内存以读入 新页，所以当一次查询导致需要淘汰的脏页过多的时候，就需要先等待较长的刷盘时间，然后才能 获取响应。 </p>
+<p>为了避免上述两种情况，必须要控制脏页在内存中的比例。</p>
+</li>
+</ol>
+<p><strong>5.是否支持 MVCC</strong></p>
+<p>MyISAM 不支持，而 InnoDB 支持。</p>
+<p>讲真，这个对比有点废话，毕竟 MyISAM 连行级锁都不支持。</p>
+<p>MVCC 可以看作是行级锁的一个升级，可以有效减少加锁操作，提供性能。</p>
+<h3 id="解决死锁的方法"><a href="#解决死锁的方法" class="headerlink" title="解决死锁的方法"></a>解决死锁的方法</h3><p>一种策略是，直接进入等待，直到超时。这个超时时间可以通过参数 innodb_lock_wait_timeout 来设置。innodb_lock_wait_timeout 的默认值是 50s，而且不能设置值太小误伤其他线程，所以一般不用这个策略。</p>
+<p>另一种策略是，发起死锁检测，发现死锁后，主动回滚死锁链条中的某一个事务，让其他事务得以继续执行。将参数 innodb_deadlock_detect 设置为 on，表示开启这个逻辑。</p>
+<p>所以，正常情况下我们还是要采用第二种策略，即：主动死锁检测，而且 innodb_deadlock_detect 的默认值本身就是 on。主动死锁检测在发生死锁的时候，是能够快速发现并进行处理的，但是它也是有额外负担的。</p>
+<p>假设有 1000 个并发线程要同时更新同一行，那么死锁检测操作就是 100 万这个量级的。</p>
+<p>一种头痛医头的方法，就是如果你能确保这个业务一定不会出现死锁，可以临时把死锁检测关掉，另一个思路是控制并发度</p>
+<p>你可以考虑通过将一行改成逻辑上的多行来减少锁冲突。还是以影院账户为例，可以考虑放在多条记录上，比如 10 个记录，影院的账户总额等于这 10 个记录的值的总和。这样每次要给影院账户加金额的时候，随机选其中一条记录来加。这样每次冲突概率变成原来的 1&#x2F;10，可以减少锁等待个数，也就减少了死锁检测的 CPU 消耗。</p>
+<h3 id="为什么表的数据删除一半，表文件大小不变"><a href="#为什么表的数据删除一半，表文件大小不变" class="headerlink" title="为什么表的数据删除一半，表文件大小不变"></a>为什么表的数据删除一半，表文件大小不变</h3><p>你现在知道了，delete 命令其实只是把记录的位置，或者数据页标记为了“可复用”，但磁盘文件的大小是不会变的。也就是说，通过 delete 命令是不能回收表空间的。这些可以复用，而没有被使用的空间，看起来就像是“空洞”。</p>
+<h3 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h3><h4 id="事务的特性"><a href="#事务的特性" class="headerlink" title="事务的特性"></a>事务的特性</h4><p>提到事务，你肯定会想到 ACID（Atomicity、Consistency、Isolation、Durability，即原子性、一致性、隔离性、持久性）</p>
+<h4 id="事务的隔离级别"><a href="#事务的隔离级别" class="headerlink" title="事务的隔离级别"></a>事务的隔离级别</h4><ul>
+<li><strong>读未提交</strong>是指，一个事务还没提交时，它做的变更就能被别的事务看到。</li>
+<li><strong>读提交</strong>是指，一个事务提交之后，它做的变更才会被其他事务看到。</li>
+<li><strong>可重复读</strong>是指，一个事务执行过程中看到的数据，总是跟这个事务在启动时看到的数据是一致的。当然在可重复读隔离级别下，未提交变更对其他事务也是不可见的。</li>
+<li><strong>串行化</strong>，顾名思义是对于同一行记录，“写”会加“写锁”，“读”会加“读锁”。当出现读写锁冲突的时候，后访问的事务必须等前一个事务执行完成，才能继续执行。</li>
+</ul>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220403142212814.png" alt="image-20220403142212814"></p>
+<ul>
+<li>脏读：脏读就是指当一个事务正在访问数据，并且对数据进行了修改，而这种修改还没有提交到数据库中，这时，另外一个事务也访问这个数据，然后使用了这个数据。</li>
+<li>不可重复读：是指在一个事务内，多次读同一数据。在这个事务还没有结束时，另外一个事务也访问该同一数据。那么，在第一个事务中的两次读数据之间，由于第二个事务的修改，那么第一个事务两次读到的的数据可能是不一样的。这样就发生了在一个事务内两次读到的数据是不一样的，因此称为是不可重复读。</li>
+<li>幻读:事务A 按照一定条件进行数据读取， 期间事务B 插入了相同搜索条件的新数据，事务A再次按照原先条件进行读取时，发现了事务B新插入的数据 称为幻读</li>
+</ul>
+<h3 id="多版本并发控制"><a href="#多版本并发控制" class="headerlink" title="多版本并发控制"></a>多版本并发控制</h3><h4 id="什么是MVCC"><a href="#什么是MVCC" class="headerlink" title="什么是MVCC"></a>什么是MVCC</h4><p>MVCC(Multiversion Concurrency Control)),多版本并发控制。顾名思义，MVcc是通过数据行的多个版本管理来实现数据库的并发控制。这项技术使得在InnoDB的事务隔离级别下执行一致性读操作有了保证。换言之，<strong>就是为了查询一些正在被另一个事务更新的行，并且可以看到它们被更新之前的值</strong>，这样在做查询的时候就不用等待另一个事务释放锁。</p>
+<h4 id="快照读与当前读"><a href="#快照读与当前读" class="headerlink" title="快照读与当前读"></a>快照读与当前读</h4><p>所谓的MVCC,就是生成一个ReadView,通过ReadView找到符合条件的记录版本（历史版本由undo日志构建)。查询语句只能读到在生成ReadView,之前己提交事务所做的更改，在生成ReadView之前未提交的事务或者之后才开启的事务所做的更改是看不到的。而写操作肯定针对的是最新版本的记录，读记录的历史版本和改动记录的最新版本本身并不冲突，也就是采用MVCC时，读-写操作并不冲突。</p>
+<h4 id="再谈隔离级别"><a href="#再谈隔离级别" class="headerlink" title="再谈隔离级别"></a>再谈隔离级别</h4><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404161412581.png" alt="image-20220404161412581"></p>
+<p>​                                                                                                          SQL标准下的隔离级别</p>
+<p>SQL标准下的隔离级别，在MySQL下是不一样的，MySQL默认的隔离级别<strong>可重复读</strong>不仅解决了脏读、不可重复读，<strong>也解决了幻读</strong>，主要原因是因为使用了MVCC，在MVCC相当于使用了快照。</p>
+<p>MCC可以不采用锁机制，而是通过乐观锁的方式来解决不可重复读和幻读问题！它可以在大多数情况下替代行级锁，降低系统的开销。</p>
+<h4 id="隐藏字段、Undo-Log版本链"><a href="#隐藏字段、Undo-Log版本链" class="headerlink" title="隐藏字段、Undo Log版本链"></a>隐藏字段、Undo Log版本链</h4><p>回顾一下undo Log的版本链，对于使用InnoDB存储引擎的表来说，它的聚簇索引记录中都包含两个必要的隐藏列。</p>
+<ul>
+<li>trx_id：每次一个事务对某条聚簇索引记录进行改动时，都会把该事务的事务1d赋值给trx_1d隐藏列。</li>
+<li>roll_pointer:每次对某条聚簇索引记录进行改动时，都会把I旧的版本写入到undo日志中，然后这个隐藏列就相当于一个指针，可以通过它来找到该记录修改前的信息。指向上一个版本快照。</li>
+</ul>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404165512887.png" alt="image-20220404165512887"></p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404213200554.png" alt="image-20220404213200554"></p>
+<h4 id="ReadView"><a href="#ReadView" class="headerlink" title="ReadView"></a>ReadView</h4><h5 id="什么是ReadView"><a href="#什么是ReadView" class="headerlink" title="什么是ReadView"></a>什么是ReadView</h5><p>在MVCC机制中，多个事务对同一个行记录进行更新会产生多个历史快照，这些历史快照保存在Undo Log里。如果一个事务想要查询这个行记录，需要读取哪个版本的行记录呢？这时就需要用到ReadView了，它帮我们解决了行的可见性问题。<br>ReadView就是事务A在使用MVCC机制进行快照读操作时产生的读视图。当事务启动时，会生成数据库系统当前的一个快照，InnoDB为每个事务构造了一个数组，用来记录并维护系统当前<strong>活跃事务</strong>的ID(“活跃”指的就是，启动了但还没提交)</p>
+<h5 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h5><p>使用READ UNCOMMITTED隔离级别的事务，由于可以读到未提交事务修改过的记录，所以直接读取记录的最新版本就好了。<br>使用SERIALIZABLE隔离级别的事务，InnoDB规定使用加锁的方式来访问记录。<br>使用READ COMMITTED和REPEATABLE READ隔离级别的事务，都必须保证读到<strong>已经提交了的</strong>事务修改过的记录。假如另一个事务已经修改了记录但是尚未提交，是不能直接读取最新版本的记录的，核心问题就是需要判断一下版本链中的哪个版本是当前事务可见的，这是ReadView要解决的主要问题。<br>这个ReadView中主要包含4个比较重要的内容，分别如下：</p>
+<p>1.creator_trx_id&#96;,创建这个Read View的事务ID。</p>
+<blockquote>
+<p>说明：只有在对表中的记录做改动时（执行NSERT、DELETE、UPDATE这些语句时）才会为事务分配事<br>务d,否则在一个只读事务中的事务d值都默认为0。</p>
+</blockquote>
+<p>2.trx_ids,表示在生成ReadView时当前系统中<strong>活跃的</strong>(没有提交的)读写事务的事务id列表。<br>3.up_limit_id,活跃的事务中最小的事务ID。<br>4.low_limit_id,<strong>表示生成ReadView时系统中应该分配给下一个事务的id值</strong>。low_limit_id是系统最大的事务id值，这里要注意是系统中的事务id,需要区别于正在活跃的事务ID。   max（活跃，提交）</p>
+<blockquote>
+<p>注意：low_limit_.id并不是trx_ids中的最大值，事务id是递增分配的。比如，现在有id为1,2,3这三个事务，之后id为3的事务提交了。那么一个新的读事务在生成ReadView时，trX_ids就包括1和2，up_limit_.id的值就是1，low_limit_id的值就是4。</p>
+</blockquote>
+<p>举例</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404164609021.png" alt="image-20220404164609021"></p>
+<h5 id="ReadView的规则"><a href="#ReadView的规则" class="headerlink" title="ReadView的规则"></a>ReadView的规则</h5><p>有了这个ReadView,这样在访问某条记录时，只需要按照下边的步骤判断记录的某个版本是否可见。</p>
+<ul>
+<li><p>如果被访问版本的trx_id,属性值与ReadView中的creator_trx_id值相同，意味着当前事务在访问它自己修改过的记录，所以该版本可以被当前事务访问。</p>
+</li>
+<li><p>如果被访问版本的trx_id属性值小于ReadView中的up_limit_id值，表明生成该版本的事务在当前事务生成ReadView前已经提交，所以该版本可以被当前事务访问。</p>
+</li>
+<li><p>如果被访问版本的trx_id属性值大于或等于ReadView中的Iow_limit_id值，表明生成该版本的事务在当前事务生成ReadView,后才开启，所以该版本不可以被当前事务访问。</p>
+</li>
+<li><p>如果被访问版本的trx_id,属性值在ReadView的up_limit_id和low_limit_id之间，那就需要判断一下trx_id属性值是不是在trx_ids列表中。</p>
+<p>  如果在，说明创建ReadViewl时生成该版本的事务还是活跃的，该版本不可以被访问。<br>  如果不在，说明创建ReadViewl时生成该版本的事务已经被提交，该版本可以被访问。</p>
+</li>
+</ul>
+<h4 id="MVCC整体操作流程"><a href="#MVCC整体操作流程" class="headerlink" title="MVCC整体操作流程"></a>MVCC整体操作流程</h4><p>了解了这些概念之后，我们来看下当查询一条记录的时候，系统如何通过MVCC找到它：</p>
+<ol>
+<li>首先获取事务自己的版本号，也就是事务ID</li>
+<li>获取ReadView:</li>
+<li>查询得到的数据，然后与ReadView中的事务版本号进行比较：</li>
+<li>如果不符合ReadView规则，就需要从Undo Log中获取历史快照；</li>
+<li>最后返回符合规则的数据。</li>
+</ol>
+<p>如果某个版本的数据对当前事务不可见的话，那就顺着版本链找到下一个版本的数据，继续按照上边的步骤判断可见性，依此类推，直到版本链中的最后一个版本。如果最后一个版本也不可见的话，那么就意味着该条记录对该事务完全不可见，查询结果就不包含该记录。</p>
+<blockquote>
+<p>InnoDB中，MVCC是通过Undo Log+Read View进行数据读取，Undo Log保存了历史快照，而Read View规则帮我们判断当前版本的数据是否可见。</p>
+</blockquote>
+<p>读已提交个隔离级别，一个事务每一次SELECT查询都会重新获取一次Read View</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404165731384.png" alt="image-20220404165731384"></p>
+<p>当隔离级别为可重复读的时候，就避免了不可重复读，这是因为一个事务只在第一次SELECT的时候会获取一次Read View,而后面所有的SELECT都会复用这个Read View,如下表所示：</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404165831731.png" alt="image-20220404165831731"></p>
+<h4 id="MVCC在可重复读情况下解决幻读"><a href="#MVCC在可重复读情况下解决幻读" class="headerlink" title="MVCC在可重复读情况下解决幻读"></a>MVCC在可重复读情况下解决幻读</h4><p>每次查询可以看到的ReadView都是一个ReadView，所以连续两次读不会结果不同。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>这里介绍了MVCC在READ COMMITTD、REPEATABLE READ这两种隔离级别的事务在执行快照读操作时访问记录的版本链的过程。这样使不同事务的读-写、写-读操作并发执行，从而提升系统性能。<br>核心点在于ReadView的原理，READ COMMITTD、REPEATABLE READ这两个隔离级别的一个很大不同就是生成ReadView的时机不同：</p>
+<ul>
+<li>READ COMMITTD在每一次进行普通SELECT操作前都会生成一个ReadView。</li>
+<li>REPEATABLE READ只在第一次进行普通SELECT操作前生成一个ReadView,之后的查询操作都重复使用这个ReadView就好了。</li>
+</ul>
+<blockquote>
+<p>说明：我们之前说执行DELETE语句或者更新主键的JPDATE语句并不会立即把对应的记录完全从页面中删除而是执行一个所谓的delete marki操作，相当于只是对记录打上了一个删除标志位，这主要就是为MVcc服务的。</p>
+</blockquote>
+<p>通过MVCC我们可以解决：</p>
+<ol>
+<li>读写之间阻塞的问题。通过MVCC可以让读写互相不阻塞，即读不阻塞写，写不阻塞读，这样就可以提升事务并发处理能力。</li>
+<li>降低了死锁的概率。这是因为MCC采用了乐观锁的方式，读取数据时并不需要加锁，对于写操作，也只锁定必要的行。</li>
+<li>解决快照读的问题。当我们查询数据库在某个时间点的快照时，只能看到这个时间点之前事务提交更新的结果，而不能看到这个时间点之后事务提交的更新结果。</li>
+</ol>
+<h3 id="索引"><a href="#索引" class="headerlink" title="索引"></a>索引</h3><h3 id="索引的几类型"><a href="#索引的几类型" class="headerlink" title="索引的几类型"></a>索引的几类型</h3><ol>
+<li>普通索引</li>
+<li>唯一索引</li>
+<li>主键索引</li>
+<li>组合索引</li>
+<li>全文索引</li>
+</ol>
+<h4 id="索引的常见模型"><a href="#索引的常见模型" class="headerlink" title="索引的常见模型"></a>索引的常见模型</h4><p>这里我先给你介绍三种常见、也比较简单的数据结构，它们分别是哈希表、有序数组和搜索树。</p>
+<p>所以，哈希表这种结构适用于只有等值查询的场景，比如 Memcached 及其他一些 NoSQL 引擎，有序数组索引只适用于静态存储引擎，比如你要保存的是 2017 年某个城市的所有人口信息，这类不会再修改的数据。</p>
+<h4 id="B树（B-树-平衡多路查找树）"><a href="#B树（B-树-平衡多路查找树）" class="headerlink" title="B树（B-树    平衡多路查找树）"></a>B树（B-树    平衡多路查找树）</h4><p>（1）树种的每个节点最多拥有m个子节点且m&gt;&#x3D;2,空树除外（注：m阶代表一个树节点最多有多少个查找路径，m阶&#x3D;m路,当m&#x3D;2则是2叉树,m&#x3D;3则是3叉）；</p>
+<p>（2）除根节点外每个节点的关键字数量大于等于ceil(m&#x2F;2)-1个小于等于m-1个，非根节点关键字数必须&gt;&#x3D;2;（注：ceil()是个朝正无穷方向取整的函数 如ceil(1.1)结果为2)</p>
+<p>（3）所有叶子节点均在同一层、叶子节点除了包含了关键字和关键字记录的指针外也有指向其子节点的指针只不过其指针地址都为null对应下图最后一层节点的空格子</p>
+<p>（4）如果一个非叶节点有N个子节点，则该节点的关键字数等于N-1;</p>
+<p>（5）所有节点关键字是按递增次序排列，并遵循左小右大原则；</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220403144605645.png" alt="image-20220403144605645"></p>
+<h4 id="B-树"><a href="#B-树" class="headerlink" title="B+树"></a>B+树</h4><p>B+树是B树的一个升级版，相对于B树来说B+树更充分的利用了节点的空间，让查询速度更加稳定，其速度完全接近于二分法查找。为什么说B+树查找的效率要比B树更高、更稳定；我们先看看两者的区别</p>
+<p>（1）B+跟B树不同B+树的非叶子节点不保存关键字记录的指针，这样使得B+树每个节点所能保存的关键字大大增加；</p>
+<p>（2）B+树叶子节点保存了父节点的所有关键字和关键字记录的指针，每个叶子节点的关键字从小到大链接；</p>
+<p>（3）B+树的根节点关键字数量和其子节点个数相等;</p>
+<p>（4）B+的非叶子节点只进行数据索引，不会存实际的关键字记录的指针，所有数据地址必须要到叶子节点才能获取到，所以每次数据查询的次数都一样；</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220403145208350.png" alt="image-20220403145208350"></p>
+<p>特点：在B树的基础上每个节点存储的关键字数更多，树的层级更少所以查询数据更快，所有指关键字指针都存在叶子节点，所以每次查找的次数都相同所以查询速度更稳定;</p>
+<h4 id="InnoDB索引模型"><a href="#InnoDB索引模型" class="headerlink" title="InnoDB索引模型"></a>InnoDB索引模型</h4><p>在 InnoDB 中，表都是根据主键顺序以索引的形式存放的，这种存储方式的表称为索引组织表。又因为前面我们提到的，InnoDB 使用了 B+ 树索引模型，所以数据都是存储在 B+ 树中的。</p>
+<p>每一个索引在 InnoDB 里面对应一棵 B+ 树。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">create</span> <span class="keyword">table</span> T(</span><br><span class="line">id <span class="type">int</span> <span class="keyword">primary</span> key, </span><br><span class="line">k <span class="type">int</span> <span class="keyword">not</span> <span class="keyword">null</span>, </span><br><span class="line">name <span class="type">varchar</span>(<span class="number">16</span>),</span><br><span class="line">index (k))engine<span class="operator">=</span>InnoDB;</span><br></pre></td></tr></table></figure>
+
+<h4 id="回表"><a href="#回表" class="headerlink" title="回表"></a>回表</h4><p>基于主键索引和普通索引的查询有什么区别？</p>
+<ul>
+<li><p>如果语句是 select * from T where ID&#x3D;500，即主键查询方式，则只需要搜索 ID 这棵 B+ 树；</p>
+</li>
+<li><p>如果语句是 select * from T where k&#x3D;5，即普通索引查询方式，则需要先搜索 k 索引树，得到 ID 的值为 500，再到 ID 索引树搜索一次。这个过程称为<strong>回表</strong>。</p>
+<p>也就是说，基于非主键索引的查询需要多扫描一棵索引树。因此，我们在应用中应该尽量使用主键查询。</p>
+</li>
+</ul>
+<h4 id="覆盖索引"><a href="#覆盖索引" class="headerlink" title="覆盖索引"></a>覆盖索引</h4><p>如果一个索引包含了满足查询语句中字段与条件的数据就叫做覆盖索引。</p>
+<p>(k)</p>
+<p>如果执行的语句是 select ID from T where k between 3 and 5，这时只需要查 ID 的值，而 ID 的值已经在 k 索引树上了，因此可以直接提供查询结果，不需要回表。也就是说，在这个查询里面，索引 k 已经“覆盖了”我们的查询需求，我们称为覆盖索引。</p>
+<p><strong>由于覆盖索引可以减少树的搜索次数，显著提升查询性能，所以使用覆盖索引是一个常用的性能优化手段。</strong></p>
+<h4 id="最左前缀原则"><a href="#最左前缀原则" class="headerlink" title="最左前缀原则"></a>最左前缀原则</h4><p>顾名思义：最左优先，以最左边的为起点任何连续的索引都能匹配上。同时遇到范围查询(&gt;、&lt;、between、like)就会停止匹配。例如：b &#x3D; 2 如果建立(a,b)顺序的索引，是匹配不到(a,b)索引的；但是如果查询条件是a &#x3D; 1 and b &#x3D; 2或者a&#x3D;1(又或者是b &#x3D; 2 and b &#x3D; 1)就可以，因为优化器会自动调整a,b的顺序。再比如a &#x3D; 1 and b &#x3D; 2 and c &gt; 3 and d &#x3D; 4 如果建立(a,b,c,d)顺序的索引，d是用不到索引的，因为c字段是一个范围查询，它之后的字段会停止匹配</p>
+<p>最左匹配原则都是针对联合索引来说的，所以我们有必要了解一下联合索引的原理。了解了联合索引，那么为什么会有最左匹配原则这种说法也就理解了。</p>
+<p>我们都知道索引的底层是一颗B+树，那么联合索引当然还是一颗B+树，只不过联合索引的健值数量不是一个，而是多个。构建一颗B+树只能根据一个值来构建，因此数据库依据联合索引最左的字段来构建B+树。<br>例子：假如创建一个（a,b)的联合索引，那么它的索引树是这样的</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220403163830215.png" alt="image-20220403163830215"></p>
+<p>可以看到a的值是有顺序的，1，1，2，2，3，3，而b的值是没有顺序的1，2，1，4，1，2。所以b &#x3D; 2这种查询条件没有办法利用索引，因为联合索引首先是按a排序的，b是无序的。</p>
+<h4 id="索引失效"><a href="#索引失效" class="headerlink" title="索引失效"></a>索引失效</h4><p>如有索引 (a,b,c,d)，查询条件 a&#x3D;1 and b&#x3D;2 and c&gt;3 and d&#x3D;4，则会在每个节点依次命中 a、b、c，无 法命中 d。(c 已经是范围查询了，d 肯定是排不了序了)</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404125622828.png" alt="image-20220404125622828"></p>
+<h5 id="范围查询右边失效的情况"><a href="#范围查询右边失效的情况" class="headerlink" title="范围查询右边失效的情况"></a>范围查询右边失效的情况</h5><p>举例</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404130115771.png" alt="image-20220404130115771"></p>
+<p>分析如下：<br>首先字段在B+树上是有序的，所以可以用二分查找法定位到1，然后将所有大于1的数据取出来，a可以用到索引。<br>b有序的前提是a是确定的值，那么现在a的值是取大于1的，可能有10个大于1的a,也可能有一百个a。<br>大于1的那部分的B+树里，b字段是无序的（开局一张图），所以b不能在无序的B+树里用二分查找来查询，b用不到索引。</p>
+<h5 id="模糊查询索引失效问题"><a href="#模糊查询索引失效问题" class="headerlink" title="模糊查询索引失效问题"></a>模糊查询索引失效问题</h5><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404130348676.png" alt="image-20220404130348676"></p>
+<p>我们先来了解一下%的用途</p>
+<ul>
+<li>%放在右边，代表查询以”a”开头的数据，如：abc</li>
+<li>两个%%，代表查询数据中包含”a”的数据，如：cab、cba、abc</li>
+<li>%放在左边，代表查询以”a”为结尾的数据，如cba</li>
+</ul>
+<p>为什么%放在右边有时候能用到索引</p>
+<ul>
+<li>%放右边叫做：前缀</li>
+<li>%%叫做：中缀</li>
+<li>%放在左边叫做：后缀</li>
+</ul>
+<p>字符串的存放本身就是满足最左匹配原则的，按照第一个字符排序如果第一个字母相同就按照第二 字母排序。如果%放右边，B+树的索引顺序是按照首字母大小进行排序的，所以首字母明确了，就可以在 B+树上有序查找。 其他情况都无法确定首字母所以无法按照顺序查找，只能走全表。效率很低下。</p>
+<h4 id="索引下推"><a href="#索引下推" class="headerlink" title="索引下推"></a>索引下推</h4><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql<span class="operator">&gt;</span> <span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> tuser <span class="keyword">where</span> name <span class="keyword">like</span> <span class="string">&#x27;张%&#x27;</span> <span class="keyword">and</span> age<span class="operator">=</span><span class="number">10</span> <span class="keyword">and</span> ismale<span class="operator">=</span><span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在 MySQL 5.6 之前，只能从 ID3 开始一个个回表。到主键索引上找出数据行，再对比字段值。</p>
+<p>而 MySQL 5.6 引入的索引下推优化（index condition pushdown)， 可以在索引遍历过程中，对索引中包含的字段先做判断，直接过滤掉不满足条件的记录，减少回表次数。</p>
+<p>图 4 跟图 3 的区别是，InnoDB 在 (name,age) 索引内部就判断了 age 是否等于 10，对于不等于 10 的记录，直接判断并跳过。在我们的这个例子中，只需要对 ID4、ID5 这两条记录回表取数据判断，就只需要回表 2 次。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220403164923369.png" alt="image-20220403164923369"></p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220403164930546.png" alt="image-20220403164930546"></p>
+<h4 id="前缀索引"><a href="#前缀索引" class="headerlink" title="前缀索引"></a>前缀索引</h4><p>前缀索引也叫局部索引，比如给身份证的前 10 位添加索引，类似这种给某列部分信息添加索 引的方式叫做前缀索引。前缀索引能有效减小索引文件的大小，让每个索引页可以保存更多的索引 值，从而提高了索引查询的速度。但前缀索引也有它的缺点，不能在 order by 或者 group by 中触 发前缀索引，也不能把它们用于覆盖索引。目的就是为了降低重复的索引提高每个节点存放索引的 数量。减少 IO 次数提高查询速度。</p>
+<h3 id="锁"><a href="#锁" class="headerlink" title="锁"></a>锁</h3><h4 id="共享锁（S-Lock-读锁）和排他锁（X-Lcok-写锁）"><a href="#共享锁（S-Lock-读锁）和排他锁（X-Lcok-写锁）" class="headerlink" title="共享锁（S Lock 读锁）和排他锁（X Lcok 写锁）"></a>共享锁（S Lock 读锁）和排他锁（X Lcok 写锁）</h4><ul>
+<li>读锁 ：也称为 共享锁 、英文用 S 表示。针对同一份数据，多个事务的读操作可以同时进行而不会 互相影响，相互不阻塞的。</li>
+<li>写锁 ：也称为 排他锁 、英文用 X 表示。当前写操作没有完成前，它会阻断其他写锁和读锁。这样 就能确保在给定的时间里，只有一个事务能执行写入，并防止其他用户读取正在写入的同一资源。</li>
+</ul>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220403180158929.png" alt="image-20220403180158929"></p>
+<p>默认情况下，写锁比读锁具有更高的优先级：当一个锁释放时，这个锁会优先给写锁队列中等候的 获取锁请求，然后再给读锁队列中等候的获取锁请求</p>
+<p>可以设置改变读锁和写锁的优先级</p>
+<ul>
+<li>通过指定启动参数 low-priority-updates，使 MyISAM 引擎默认给予读请求以优先的权利。 </li>
+<li>通过执行命令 SET LOW_PRIORITY_UPDATES&#x3D;1，使该连接发出的更新请求优先级降低。 </li>
+<li>通过指定 INSERT、UPDATE、DELETE 语句的 LOW_PRIORITY 属性，降低该语句的优先级。 </li>
+<li>给系统参数 max_write_lock_count 设置一个合适的值，当一个表的读锁达到这个值后，MySQL 就暂时将写请求的优先级降低，给读进程一定获得锁的机会。</li>
+</ul>
+<h4 id="表级锁、页级锁、行锁"><a href="#表级锁、页级锁、行锁" class="headerlink" title="表级锁、页级锁、行锁"></a>表级锁、页级锁、行锁</h4><h5 id="表级锁"><a href="#表级锁" class="headerlink" title="表级锁"></a>表级锁</h5><h6 id="意向锁"><a href="#意向锁" class="headerlink" title="意向锁"></a>意向锁</h6><p>当产生行级别的锁时候，会产生对应的表级别意向锁(IX,IS)，防止检索锁的速度慢，因为要查到对应的行是很麻烦的。</p>
+<p>读取也可以使用排他锁</p>
+<p>意向共享锁</p>
+<ul>
+<li>意向共享锁（IS）：事务打算给数据行加行共享锁，事务在给一个数据行加共享锁前必须先 取得该表的 IS 锁。 </li>
+<li>意向排他锁（IX）：事务打算给数据行加行排他锁，事务在给一个数据行加排他锁前必须先 取得该表的 IX 锁。</li>
+</ul>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator">-</span> 事务要获取某些行的 S 锁，必须先获得表的 <span class="keyword">IS</span> 锁。</span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">column</span> <span class="keyword">FROM</span> <span class="keyword">table</span> ... LOCK <span class="keyword">IN</span> SHARE MODE;</span><br></pre></td></tr></table></figure>
+
+<p>意向排他锁</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">-- 事务要获取某些行的 X 锁，必须先获得表的 IX 锁。</span></span><br><span class="line"><span class="keyword">SELECT</span> <span class="keyword">column</span> <span class="keyword">FROM</span> <span class="keyword">table</span> ... <span class="keyword">FOR</span> <span class="keyword">UPDATE</span>;</span><br></pre></td></tr></table></figure>
+
+<p>在5.7及之前版本，select … for update,如果获取不到锁，会一直等待，直到innodb_lock_wait_timeout超时</p>
+<ul>
+<li>InnoDB 支持 多粒度锁 ，特定场景下，行级锁可以与表级锁共存。 </li>
+<li>意向锁之间互不排斥，但除了 IS 与 S 兼容外， 意向锁会与 共享锁 &#x2F; 排他锁 互斥 。 </li>
+<li>IX，IS是表级锁，不会和行级的X，S锁发生冲突。只会和表级的X，S发生冲突。 </li>
+<li>意向锁在保证并发性的前提下，实现了 行锁和表锁共存 且 满足事务隔离性 的要求。</li>
+</ul>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220403202731069.png" alt="image-20220403202731069"></p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220403202737106.png" alt="image-20220403202737106"></p>
+<h6 id="自增锁-AUTO-INC锁"><a href="#自增锁-AUTO-INC锁" class="headerlink" title="自增锁(AUTO-INC锁)"></a>自增锁(AUTO-INC锁)</h6><h6 id="元数据锁（MDL锁）"><a href="#元数据锁（MDL锁）" class="headerlink" title="元数据锁（MDL锁）"></a>元数据锁（MDL锁）</h6><p>MySQL5.5引入了meta data lock，简称MDL锁，属于表锁范畴。MDL 的作用是，保证读写的正确性。比 如，如果一个查询正在遍历一个表中的数据，而执行期间另一个线程对这个表结构做变更 ，增加了一 列，那么查询线程拿到的结果跟表结构对不上，肯定是不行的。 </p>
+<p><strong>因此，当对一个表做增删改查操作的时候，加 MDL读锁；当要对表做结构变更操作的时候，加 MDL 写 锁。</strong></p>
+<p>读锁之间不互斥，因此你可以有多个线程同时对-张表增删改查。读写锁之间、写锁之间是互斥的，用来保证变更表结构操作的安全性，解决了DML和DDL操作之间的一致性问题。不需要显式使用，在访问一个表的时候会被自动加上。</p>
+<p><strong>会采用公平队列，如果先用MDL读锁，然后再用MDL写锁阻塞，之后再采用MDL读锁就会继续排队</strong></p>
+<h5 id="行锁"><a href="#行锁" class="headerlink" title="行锁"></a>行锁</h5><p>行锁(Row Lock)也称为记录锁，顾名思义，就是锁住某一行（某条记录row)。需要的注意的是，MySQL服器层并没有实现行锁机制，<strong>行级锁只在存储引擎层实现。</strong><br><strong>优点</strong>：锁定粒度小，发生锁冲突概率低，可以实现的并发度高。<br><strong>缺点：</strong>对于锁的开销比较大，加锁会比较慢，容易出现死锁情况。</p>
+<h6 id="InnoDB行锁实现方式"><a href="#InnoDB行锁实现方式" class="headerlink" title="InnoDB行锁实现方式"></a>InnoDB行锁实现方式</h6><ul>
+<li>InnoDB 行锁是通过给索引上的索引项加锁来实现的，这一点 MySQL 与 Oracle 不同，后 者是通过在数据块中对相应数据行加锁来实现的。InnoDB 这种行锁实现特点意味着：<strong>只有通过索引条件检索数据，InnoDB 才使用行级锁，否则，InnoDB 将使用表锁！</strong> </li>
+<li>不论是使用主键索引、唯一索引或普通索引，InnoDB 都会使用行锁来对数据加锁。 </li>
+<li>只有执行计划真正使用了索引，才能使用行锁：即便在条件中使用了索引字段，但是否使用 索引来检索数据是由 MySQL 通过判断不同执行计划的代价来决定的，<strong>如果 MySQL 认为全表 扫描效率更高，比如对一些很小的表，它就不会使用索引，这种情况下 InnoDB 将使用表锁， 而不是行锁。</strong>因此，<strong>在分析锁冲突时，别忘了检查 SQL 的执行计划</strong>（可以通过 explain 检查 SQL  的 执 行 计 划 ） ， 以确认是否真正使用了索引 。 </li>
+<li>由于 MySQL 的行锁是针对索引加的锁，不是针对记录加的锁，所以虽然多个 session 是访问不同行的记录，<strong>但是如果是使用相同的索引键，是会出现锁冲突的（后使用这些索引的 session 需要等待先使用索引的 session 释放锁后，才能获取锁）</strong>。应用设计的时候要注意这一点。</li>
+</ul>
+<h6 id="记录锁"><a href="#记录锁" class="headerlink" title="记录锁"></a>记录锁</h6><p>记录锁也就是仅仅把一条记录锁上，官方的类型名称为：LOCK_REC_NOT_GAP。比如我们把id值为8的那条记录加一个记录锁的示意图如图所示。仅仅是锁住了i值为8的记录，对周围的数据没有影响。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220403210259912.png" alt="image-20220403210259912"></p>
+<p>记录锁是有S锁和X锁之分的，称之为S型记录锁和型记录锁。</p>
+<ul>
+<li>当一个事务获取了一条记录的S型记录锁后，其他事务也可以继续获取该记录的$型记录锁，但不可以继续获取X型记录锁，</li>
+<li>当一个事务获取了一条记录的X型记录锁后，其他事务既不可以继续获取该记录的S型记录锁，也不可以继续获取X型记录锁。</li>
+</ul>
+<h6 id="间隙锁"><a href="#间隙锁" class="headerlink" title="间隙锁"></a>间隙锁</h6><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220403210956771.png" alt="image-20220403210956771"></p>
+<p>图中id值为8的记录加了gap锁，间隙锁可以是4567，<strong>意味着不允许别的事务在id值为8的记录前边的间隙插入新记录，其实就是id列的值(3,8)这个区间的新记录是不允许立即插入的。</strong>比如，有另外一个事务再想插入一条d值为4的新记录，它定位到该条新记录的下一条记录的id值为8，而这条记录上又有一个gp锁，所以就会阻塞插入操作，直到拥有这个gap锁的事务提交了之后，id列的值在区间(3,8)中的新记录才可以被插入。<br>gap锁的提出仅仅是为了防止插入幻影记录而提出的。<strong>虽然有共享gap锁和独占gap锁这样的说法，但是它们起到的作用是相同的。</strong>而且如果对一条记录加了gap锁（不论是共享gap锁还是独占gap锁），并不会限制其他事务对这条记录加记录锁或者继续加gap锁。</p>
+<p>最后一位为20，之后加了一个25的间隙锁，则大于20的都不能插入。</p>
+<p>可能会出现死锁问题。</p>
+<h6 id="临键锁（Next-Keys-Locks）"><a href="#临键锁（Next-Keys-Locks）" class="headerlink" title="临键锁（Next-Keys Locks）"></a>临键锁（Next-Keys Locks）</h6><p>有时候我们<strong>既想锁住某条记录</strong>，又想&#96;<strong>阻止</strong>其他事务在该记录前边的<strong>间隙插入新记录</strong>，所以InnoDB就提出了一种称之为Next-Key Locks的锁，官方的类型名称为：LOCK_ORDINARY,我们也可以简称为next-key锁。NextKey Locks是在存储擎innodb、事务级别在<strong>可重复读</strong>的情况下使用的数据库锁，innodb默认的锁就是Next-Keylocks。比如，我们把id值为8的那条记录加一个next-key锁的示意图如下：</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220403212708066.png" alt="image-20220403212708066"></p>
+<p>next-key锁的本质就是一个记录锁和一个gap锁的合体，它既能保护该条记录，又能阻止别的事务将新记录插入被保护记录前边的间隙。</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">begin</span>;</span><br><span class="line"><span class="keyword">select</span> <span class="operator">*</span> <span class="keyword">from</span> student <span class="keyword">where</span> id <span class="operator">&lt;=</span><span class="number">8</span> <span class="keyword">and</span> id <span class="operator">&gt;</span> <span class="number">3</span> <span class="keyword">for</span> <span class="keyword">update</span>;</span><br></pre></td></tr></table></figure>
+
+<h6 id="插入意向锁"><a href="#插入意向锁" class="headerlink" title="插入意向锁"></a>插入意向锁</h6><h5 id="页锁"><a href="#页锁" class="headerlink" title="页锁"></a>页锁</h5><p>页锁就是在页的粒度上进行锁定，锁定的数据资源比行锁要多，因为一个页中可以有多个行记录。当我们使用页锁的时候，会出现数据浪费的现象，但这样的浪费最多也就是一个页上的数据行。<em><strong>页锁的开销介于表锁和行锁之间，会出现死锁。锁定粒度介于表锁和行锁之间，并发度一般。</strong></em><br>每个层级的锁数量是有限制的，因为锁会占用内存空间，锁空间的大小是有限的。当某个层级的锁数量超过了这个层级的阈值时，就会进行锁升级。锁升级就是用更大粒度的锁替代多个更小粒度的锁，比如InnoDB中行锁升级为表锁，这样做的好处是占用的锁空间降低了，但同时数据的并发度也下降了。</p>
+<h4 id="乐观锁和悲观锁"><a href="#乐观锁和悲观锁" class="headerlink" title="乐观锁和悲观锁"></a>乐观锁和悲观锁</h4><h5 id="悲观锁（Pessimistic-Locking）"><a href="#悲观锁（Pessimistic-Locking）" class="headerlink" title="悲观锁（Pessimistic Locking）"></a>悲观锁（Pessimistic Locking）</h5><p>悲观锁是一种思想，顾名思义，就是很悲观，对数据被其他事务的修改持保守态度，会通过数据库自身的锁机制来实现，从而保证数据操作的排它性。<br>悲观锁总是假设最坏的情况，每次去拿数据的时候都认为别人会修改，所以每次在拿数据的时候都会上锁，这样别人想拿这个数据就会阻塞直到它拿到锁（共享资源每次只给一个线程使用，其它线程阻塞，用完后再把资源转让给其它线程)。比如行锁，表锁等，读锁，写锁等，都是在做操作之前先上锁，当其他线程想要访问数据时，都需要阻塞挂起。Java中synchronized和ReentrantLock等独占锁就是悲观锁思想的实现。</p>
+<p>悲观锁不适用的场景较多，它存在一些不足，因为悲观锁大多数情况下依靠数据库的锁机制来实现，以保证程序的并发访问性，同时这样对数据库性能开销影响也很大，特别是长事务而言，这样的开销往往无法承受，这时就需要乐观锁。</p>
+<h5 id="乐观锁（optimistic-locking）"><a href="#乐观锁（optimistic-locking）" class="headerlink" title="乐观锁（optimistic locking）"></a>乐观锁（optimistic locking）</h5><p>乐观锁认为对同一数据的并发操作不会总发生，属于小概率事件，不用每次都对数据上锁，但是在更新的时候会判断一下在此期间别人有没有去更新这个数据，也就是<em>不采用数据库自身的锁机制，而是通过程序来实现</em>。在程序上，我们可以采用版本号机制或者CS机制实现。乐观锁适用于多读的应用类型，这样可以提高吞吐量。在Java中java.utl.concurrent.atomic包下的原子变量类就是使用了乐观锁的一种实现方式：CAS实现的。</p>
+<h6 id="1-乐观锁的版本号机制"><a href="#1-乐观锁的版本号机制" class="headerlink" title="1.乐观锁的版本号机制"></a>1.乐观锁的版本号机制</h6><p>在表中设计一个版本字段version,第一次读的时候，会获取version字段的取值。然后对数据进行更新或删除操作时，会执行UPDATE…SET version&#x3D;version+1 WHERE version&#x3D;version。此时如果已经有事务对这条数据进行了更改，修改就不会成功。<br>这种方式类似我们熟悉的SVN、CVS版本管理系统，当我们修改了代码进行提交时，首先会检查当前版本号与服务器上的版本号是否一致，如果一致就可以直接提交，如果不一致就需要更新服务器上的最新代码，然后再进行提交。</p>
+<h5 id="两种所适用情况"><a href="#两种所适用情况" class="headerlink" title="两种所适用情况"></a>两种所适用情况</h5><p>从这两种锁的设计思想中，我们总结一下乐观锁和悲观锁的适用场景：</p>
+<ol>
+<li>乐观锁适合读操作多的场景，相对来说写的操比较少。它的优点在于程序实现，不存在死锁问题，不过适用场景也会相对乐观，因为它阻止不了除了程序以外的数据库操作。</li>
+<li>悲观锁适合写操作多的场景，因为写的操作具有排它性。采用悲观锁的方式，可以在数据库层面阻止其他事务对该数据的操作权限，防止读-写和写-写的冲突。<br>我们把乐观锁和悲观锁总结如下图所示。</li>
+</ol>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404101909756.png" alt="image-20220404101909756"></p>
+<h3 id="显示锁和隐式锁"><a href="#显示锁和隐式锁" class="headerlink" title="显示锁和隐式锁"></a>显示锁和隐式锁</h3><h4 id="隐式锁"><a href="#隐式锁" class="headerlink" title="隐式锁"></a>隐式锁</h4><h4 id="显示锁"><a href="#显示锁" class="headerlink" title="显示锁"></a>显示锁</h4><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404103917912.png" alt="image-20220404103917912"></p>
+<h3 id="全局锁"><a href="#全局锁" class="headerlink" title="全局锁"></a>全局锁</h3><p>全局锁就是对整个数据库实例加锁。<strong>当你需要让整个库处于只读状态的时候</strong>，可以使用这个命令，之后其他线程的以下语句会被阻塞：数据更新语句（数据的增删改）、数据定义语句（包括建表、修改表结构等）和更新类事务的提交语句。全局锁的典型使用场景是：做全库逻辑备份。<br>全局锁的命令：</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Flush tables <span class="keyword">with</span> read lock</span><br></pre></td></tr></table></figure>
+
+<h3 id="死锁"><a href="#死锁" class="headerlink" title="死锁"></a>死锁</h3><h4 id="产生死锁的必要条件"><a href="#产生死锁的必要条件" class="headerlink" title="产生死锁的必要条件"></a>产生死锁的必要条件</h4><ol>
+<li>两个或者两个以上事务</li>
+<li>每个事务都已经持有锁并且申请新的锁</li>
+<li>锁资源同时只能被同一个事务持有或者不兼容</li>
+<li>事务之间因为持有锁和申请锁导致彼此循环等待</li>
+</ol>
+<h4 id="如何处理死锁"><a href="#如何处理死锁" class="headerlink" title="如何处理死锁"></a>如何处理死锁</h4><p>方式1：等待，直到超时(innodb_lock_wait_timeout&#x3D;50s)。<br>即当两个事务互相等待时，当一个事务等待时间超过设置的阈值时，就将其回滚，另外事务继续进行。这种方法简单有效，在innodb中，参数<strong>innodb_lock_wait_timeout</strong>用来设置超时时间。<br>缺点：对于在线服务来说，这个等待时间往往是无法接受的。<br>那将此值修改短一些，比如1s,0.1s是否合适？不合适，容易误伤到普通的锁等待。</p>
+<p>方式2：使用死锁检测进行死锁处理<br>方式1检测死锁太过被动，innodb还提供了wait-for graph算法来主动进行死锁检测，每当加锁请求无法立即<br>满足需要并进入等待时，wait-for graph.算法都会被触发。<br>这是一种较为主动的死锁检测机制，要求数据库保存锁的信息链表和事务等待链表两部分信息。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404105055504.png" alt="image-20220404105055504"></p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404105104463.png" alt="image-20220404105104463"></p>
+<p>一旦检测到回路、有死锁，这时候InnoDB存储引擎会选择回滚undo量最小的事务，让其他事务继续执行(innodb._dead1ock_detect&#x3D;on表示开启这个逻辑)。<br>缺点：每个新的被阻塞的线程，都要判断是不是由于自己的加入导致了死锁，这个操作时间复杂度是0(n)。如果100个并发线程同时更新同一行，意味着要检测100*100&#x3D;1万次，1万个线程就会有1千万次检测：</p>
+<p>如何解决？</p>
+<ul>
+<li>方式1：关闭死锁检测，但意味着可能会出现大量的超时，会导致业务有损。</li>
+<li>方式2：控制并发访问的数量。比如在中间件中实现对于相同行的更新，在进入引擎之前排队，这样在IoDB内部就不会有大量的死锁检测工作。<br>进一步的思路：<br>可以考虑通过将一行改成逻辑上的多行来减少锁冲突。比如，连锁超市账户总额的记录，可以考虑放到多条记录上。账户总额等于这多个记录的值的总和。</li>
+</ul>
+<h4 id="如何避免死锁"><a href="#如何避免死锁" class="headerlink" title="如何避免死锁"></a>如何避免死锁</h4><ul>
+<li>合理设计索引，使业务SQL尽可能通过索引定位更少的行，减少锁竞争。</li>
+<li>调整业务逻辑SQL执行顺序，避免update&#x2F;delete长时间持有锁的SQL在事务前面。</li>
+<li>避免大事务，尽量将大事务拆成多个小事来处理，小事务缩短锁定资源的时间，发生锁冲突的几率也更小。</li>
+<li>在并发比较高的系统中，不要显式加锁，特别是是在事务里显式加锁。如select..for update语句，如果是在事务里运行了start transaction或设置了autocommit等于0，那么就会锁定所查找到的记录。</li>
+<li>降低隔离级别。如果业务允许，将隔离级别调低也是较好的选择，比如将隔离级别从RR调整为RC,可以避免掉很多因为gap锁造成的死锁。</li>
+</ul>
+<h3 id="锁的内存结构"><a href="#锁的内存结构" class="headerlink" title="锁的内存结构"></a>锁的内存结构</h3><p>理论上创建多个锁结构没问题，但是如果一个事务要获取10000条记录的锁，生成10000个锁结构也太崩溃了！所以决定在对不同记录加锁时，如果符合下边这些条件的记录会放到一个锁结构中。</p>
+<ul>
+<li>在同一个事务中进行加锁操作</li>
+<li>被加锁的记录在同一个页面中</li>
+<li>加锁的类型是一样的</li>
+<li>等待状态是一样的</li>
+</ul>
+<p>InnoDB存储引擎锁结构如下</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404110010359.png" alt="image-20220404110010359"></p>
+<h3 id="锁监控"><a href="#锁监控" class="headerlink" title="锁监控"></a>锁监控</h3><p>关于MySQL锁的监控，我们一般可以通过检查InnoDB._row_Iock等状态变量来分析系统上的行锁的争夺情况 </p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220404110733333.png" alt="image-20220404110733333"></p>
+<p>各个状态量的说明</p>
+<ul>
+<li>Innodb_row_lock_current_waits:当前正在等待锁定的数量：</li>
+<li>Innodb_row_lock_time：从系统启动到现在锁定总时间长度；（等待总时长）</li>
+<li>Innodb_row_lock_time-avg:每次等待所花平均时间；（等待平均时长）</li>
+<li>Innodb_row_lock_time._max:从系统启动到现在等待最常的一次所花的时间：</li>
+<li>Innodb_row_lock_waits：系统启动后到现在总共等待的次数；（等待总次数）</li>
+</ul>
+<h4 id="其他监控方法"><a href="#其他监控方法" class="headerlink" title="其他监控方法"></a>其他监控方法</h4><p>MySQL把事务和锁的信息记录在了information_schema库中，涉及到的三张表分别是INNODB_TRX、INNODB_LOCKS和INNODB_LOCK_WAITS。<br>MySQL5.7及之前，可以通过information_schema.INNODB_LOCKS查看事务的锁情况，但只能看到阻塞事务的锁；如果事务并未被阻塞，则在该表中看不到该事务的锁情况。<br>MySQL8.0删除了information,<em>schema.INNODB_LOCKS,添加了performance_schema.data_locks,可以通过performance_schema.data_locks查看事务的锁情况，和MySQL5.7及之前不同，performance</em>.schema.data_locks不但可以看到阻塞该事务的锁，还可以看到该事务所持有的锁。<br>同时，information._schema.INNODB_LOCK_WAITS也被performance_schema.data_lock_waits所代替。</p>
+<h2 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h2><h2 id="面试题"><a href="#面试题" class="headerlink" title="面试题"></a>面试题</h2><h4 id="char和varchar的区别"><a href="#char和varchar的区别" class="headerlink" title="char和varchar的区别"></a>char和varchar的区别</h4><p><strong>char 是一种固定长度的类型，varchar 则是一种可变长度的类型</strong>，它们的区别是：<strong>char(M) 类型的数据列里，每个值都占用 M 个字节，如果某个长度小于 M，MySQL 就会在它的右边用空格字符补足．</strong>（在检索操作中那些填补出来的空格字符将被去掉）在 <strong>varchar(M)类型</strong>的 数据列里，<strong>每个值只占用刚好够用的字节再加上一个用来记录其长度的字节（即总长度为 L+1字节）</strong>,char插入时可省略尾部空格，varchar插入时不会省略尾部空格，查找时省略。</p>
+<p>char 优点：效率高；缺点：占用空间；适用场景：存储密码的 md5 值，固定长度的，使用 char 非常合适。</p>
+<p>在 MySQL 中用来判断是否需要进行对据列类型转换的规则（但是类型转换可能会走不 了索引。） </p>
+<ol>
+<li>在一个数据表里，如果每一个数据列的长度都是固定的，那么每一个数据行的长度也 将是固定的． </li>
+<li>只要数据表里有一个数据列的长度的可变的，那么各数据行的长度都是可变的． </li>
+<li>如果某个数据表里的数据行的长度是可变的，那么，为了节约存储空间，MySQL 会 把这个数据表里的固定长度类型的数据列转换为相应的可变长度类型．例外：长度小于 4 个 字符的 char 数据列不会被转换 varchar 类型</li>
+</ol>
+<h4 id="索引的分类"><a href="#索引的分类" class="headerlink" title="索引的分类"></a>索引的分类</h4><p>从数据结构角度上说</p>
+<ol>
+<li>树索引</li>
+<li>Hash索引</li>
+</ol>
+<p>从物理存储角度说</p>
+<ol>
+<li>聚簇索引（叶子结点存储的是对应的数据）</li>
+<li>非聚簇索引（叶子结点存储的仍是索引，主键）</li>
+</ol>
+<p>聚簇索引<strong>默认是主键</strong>，如果表中没有定义主键，InnoDB 会选择一个<strong>唯一的非空索引</strong>代替。如果没有这样的索引，InnoDB 会<strong>隐式定义一个主键</strong>来作为聚簇索引。<strong>InnoDB 只聚集在同一个页面中的记录。包含相邻健值的页面可能相距甚远。</strong></p>
+<p>从逻辑上说</p>
+<ol>
+<li>普通索引</li>
+<li>唯一索引</li>
+<li>主键索引</li>
+<li>联合索引</li>
+<li>全文索引</li>
+</ol>
+<h4 id="查询索引有没有被使用的方法"><a href="#查询索引有没有被使用的方法" class="headerlink" title="查询索引有没有被使用的方法"></a>查询索引有没有被使用的方法</h4><p>使用 Explain 命令来查看语句的执行计划，MySQL 在执行某个语句之前，会将该语句过一遍查询优化器，之后会拿到对语句的分析，也就是执行计划，其中包含了许多信息。可以通过其中和索引有关的信息来分析是否命中了索引，例如：possilbe_key、key、key_len 等字段，分别说明了此语句可能会使用的索引、实际使用的索引以及使用的索引长度。</p>
+<h4 id="InnoDB-和-MyISAM-的比较？"><a href="#InnoDB-和-MyISAM-的比较？" class="headerlink" title="InnoDB 和 MyISAM 的比较？"></a>InnoDB 和 MyISAM 的比较？</h4><ol>
+<li>事务：MyISAM不支持事务，InnoDB支持事务；</li>
+<li>全文索引：MyISAM 支持全文索引，InnoDB 5.6 之前不支持全文索引；</li>
+<li>关于 count(<em>)：MyISAM会直接存储总行数，InnoDB 则不会，需要按行扫描。意思就是对于 select count(</em>) from table; 如果数据量大，MyISAM 会瞬间返回，而 InnoDB 则会一行行扫描；</li>
+<li>外键：MyISAM 不支持外键，InnoDB 支持外键；</li>
+<li>锁：MyISAM 只支持表锁，InnoDB 可以支持行锁。</li>
+</ol>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/Redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="akurisu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/01/Redis/" class="post-title-link" itemprop="url">Redis</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-01 23:47:44" itemprop="dateCreated datePublished" datetime="2022-03-01T23:47:44+08:00">2022-03-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-21 14:07:19" itemprop="dateModified" datetime="2022-04-21T14:07:19+08:00">2022-04-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">Java知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="简单介绍一下-Redis-呗"><a href="#简单介绍一下-Redis-呗" class="headerlink" title="简单介绍一下 Redis 呗!"></a>简单介绍一下 Redis 呗!</h3><p>简单来说 <strong>Redis 就是一个使用 C 语言开发的数据库</strong>，不过与传统数据库不同的是 <strong>Redis 的数据是存在内存中的</strong> ，也就是它是内存数据库，所以读写速度非常快，因此 Redis 被广泛应用于缓存方向。另外，<strong>Redis 除了做缓存之外，也经常用来做分布式锁，甚至是消息队列。</strong>Redis 提供了多种数据类型来支持不同的业务场景。Redis 还支持事务 、持久化、Lua 脚本、多种集群方案。</p>
+<h3 id="Redis常见操作"><a href="#Redis常见操作" class="headerlink" title="Redis常见操作"></a>Redis常见操作</h3><h4 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h4><p>字符串类型是Redis最基础的数据结构。首先键都是字符串类型，而且 其他几种数据结构都是在字符串类型基础上构建的，所以字符串类型能为其<br>他四种数据结构的学习奠定基础。</p>
+<p>set key value [ex seconds] [px milliseconds] [nx|xx]</p>
+<p>set命令有几个选项：</p>
+<ul>
+<li>·ex seconds：为键设置秒级过期时间。</li>
+<li>·px milliseconds：为键设置毫秒级过期时间。</li>
+<li>·nx：键必须不存在，才可以设置成功，用于添加。</li>
+<li>·xx：与nx相反，键必须存在，才可以设置成功，用于更新。<br>  除了set选项，Redis还提供了setex和setnx两个命令</li>
+</ul>
+<ol>
+<li><strong>介绍</strong> ：string 数据结构是简单的 key-value 类型。虽然 Redis 是用 C 语言写的，但是 Redis 并没有使用 C 的字符串表示，而是自己构建了一种 <strong>简单动态字符串</strong>（simple dynamic string，<strong>SDS</strong>）。相比于 C 的原生字符串，Redis 的 SDS 不光可以保存文本数据还可以保存二进制数据，并且获取字符串长度复杂度为 O(1)（C 字符串为 O(N)）,除此之外，Redis 的 SDS API 是安全的，不会造成缓冲区溢出。</li>
+<li><strong>常用命令：</strong> <code>set,get,strlen,exists,decr,incr,setex</code> 等等。</li>
+<li><strong>应用场景：</strong> 一般常用在需要计数的场景，比如用户的访问次数、热点文章的点赞转发数量等等。</li>
+</ol>
+<p>下面我们简单看看它的使用！</p>
+<p><strong>普通字符串的基本操作：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> key value <span class="comment">#设置 key-value 类型的值</span></span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; setnx hello redis <span class="comment">#当重复设置时，setnx会返回0，而set会返回ok</span></span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; get key <span class="comment"># 根据 key 获得对应的 value，get成功</span></span><br><span class="line"><span class="string">&quot;value&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; get key <span class="comment"># 根据 key 获得对应的 value，get失败</span></span><br><span class="line">(null)</span><br><span class="line">127.0.0.1:6379&gt; exists key  <span class="comment"># 判断某个 key 是否存在</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; strlen key <span class="comment"># 返回 key 所储存的字符串值的长度。</span></span><br><span class="line">(<span class="built_in">integer</span>) 5</span><br><span class="line">127.0.0.1:6379&gt; del key <span class="comment"># 删除某个 key 对应的值</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; get key</span><br><span class="line">(nil)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>如果有多个客户端同时执行setnx key value， 根据setnx的特性只有一个客户端能设置成功，setnx可以作为分布式锁的一种实现方案</p>
+<p><strong>批量设置</strong> :</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; mset key1 value1 key2 value2 <span class="comment"># 批量设置 key-value 类型的值</span></span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; mget key1 key2 keys3<span class="comment"># 批量获取多个 key 对应的 value，如果不存在返回nil。</span></span><br><span class="line">1) <span class="string">&quot;value1&quot;</span></span><br><span class="line">2) <span class="string">&quot;value2&quot;</span></span><br><span class="line">2) (nil)</span><br></pre></td></tr></table></figure>
+
+<p>批量操作命令可以有效提高开发效率，假如没有mget这样的命令，要执 行n次get命令需要按照图2-8的方式来执行，具体耗时如下：</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220318140731765.png" alt="image-20220318140731765"></p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220318140700238.png" alt="image-20220318140700238"></p>
+<p>使用mget命令后，要执行n次get命令操作只需要按照图2-9的方式来完 成，具体耗时如下</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220318140744152.png" alt="image-20220318140744152"></p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220318140719953.png" alt="image-20220318140719953"></p>
+<p><strong>计数器（字符串的内容为整数的时候可以使用）：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; <span class="built_in">set</span> number 1</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; incr number <span class="comment"># 将 key 中储存的数字值增一，值不是整数返回错误，值是整数返回自增后的结果，键不存在，按照值为0自增，返回结果是1</span></span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; get number</span><br><span class="line"><span class="string">&quot;2&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; decr number <span class="comment"># 将 key 中储存的数字值减一</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; get number</span><br><span class="line"><span class="string">&quot;1&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; incrby number 2 <span class="comment">#自增指定数字</span></span><br><span class="line"><span class="string">&quot;3&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; decrby number 2 <span class="comment">#自减指定数字</span></span><br><span class="line"><span class="string">&quot;1&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>过期（默认为永不过期）</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; expire key  60 <span class="comment"># 数据在 60s 后过期</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; setex key 60 value <span class="comment"># 数据在 60s 后过期 (setex:[set] + [ex]pire)</span></span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; ttl key <span class="comment"># 查看数据还有多久过期</span></span><br><span class="line">(<span class="built_in">integer</span>) 56</span><br></pre></td></tr></table></figure>
+
+<p>字符串类型命令时间复杂度</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220318141414665.png" alt="image-20220318141414665"></p>
+<h5 id="典型使用场景"><a href="#典型使用场景" class="headerlink" title="典型使用场景"></a>典型使用场景</h5><h4 id="list"><a href="#list" class="headerlink" title="#list"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/database/redis/redis-questions-01.html#list">#</a>list</h4><ol>
+<li><strong>介绍</strong> ：<strong>list</strong> 即是 <strong>链表</strong>。链表是一种非常常见的数据结构，特点是易于数据元素的插入和删除并且可以灵活调整链表长度，但是链表的随机访问困难。许多高级编程语言都内置了链表的实现比如 Java 中的 <strong>LinkedList</strong>，但是 C 语言并没有实现链表，所以 Redis 实现了自己的链表数据结构。Redis 的 list 的实现为一个 <strong>双向链表</strong>，即可以支持反向查找和遍历，更方便操作，不过带来了部分额外的内存开销，列表元素可以重复，列表的元素是有序的。</li>
+<li><strong>常用命令:</strong> <code>rpush,lpop,lpush,rpop,lrange,llen</code> 等。</li>
+<li><strong>应用场景:</strong> 发布与订阅或者说消息队列、慢查询。</li>
+</ol>
+<p>下面我们简单看看它的使用！</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220318143159002.png" alt="image-20220318143159002"></p>
+<p><strong>通过 <code>rpush/lpop</code> 实现队列：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; rpush myList value1 <span class="comment"># 向 list 的头部（右边）添加元素</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; rpush myList value2 value3 <span class="comment"># 向list的头部（最右边）添加多个元素</span></span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br><span class="line">127.0.0.1:6379&gt; lpop myList <span class="comment"># 将 list的尾部(最左边)元素取出</span></span><br><span class="line"><span class="string">&quot;value1&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; lrange myList 0 1 <span class="comment"># 查看对应下标的list列表， 0 为 start,1为 end</span></span><br><span class="line">1) <span class="string">&quot;value2&quot;</span></span><br><span class="line">2) <span class="string">&quot;value3&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; lrange myList 0 -1 <span class="comment"># 查看列表中的所有元素，-1表示倒数第一</span></span><br><span class="line">1) <span class="string">&quot;value2&quot;</span></span><br><span class="line">2) <span class="string">&quot;value3&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p><strong>通过 <code>rpush/rpop</code> 实现栈：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; rpush myList2 value1 value2 value3</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br><span class="line">127.0.0.1:6379&gt; rpop myList2 <span class="comment"># 将 list的头部(最右边)元素取出</span></span><br><span class="line"><span class="string">&quot;value3&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>我专门画了一个图方便小伙伴们来理解：</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/redis-list.e79ad4dd.png" alt="redis list"></p>
+<p><strong>通过 <code>lrange</code> 查看对应下标范围的列表元素：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; rpush myList value1 value2 value3</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br><span class="line">127.0.0.1:6379&gt; lrange myList 0 1 <span class="comment"># 查看对应下标的list列表， 0 为 start,1为 end</span></span><br><span class="line">1) <span class="string">&quot;value1&quot;</span></span><br><span class="line">2) <span class="string">&quot;value2&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; lrange myList 0 -1 <span class="comment"># 查看列表中的所有元素，-1表示倒数第一</span></span><br><span class="line">1) <span class="string">&quot;value1&quot;</span></span><br><span class="line">2) <span class="string">&quot;value2&quot;</span></span><br><span class="line">3) <span class="string">&quot;value3&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>通过 <code>lrange</code> 命令，你可以基于 list 实现分页查询，性能非常高！</p>
+<p><strong>通过 <code>llen</code> 查看链表长度：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; llen myList</span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="hash"><a href="#hash" class="headerlink" title="#hash"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/database/redis/redis-questions-01.html#hash">#</a>hash</h4><ol>
+<li><strong>介绍</strong> ：hash 类似于 JDK1.8 前的 HashMap，内部实现也差不多(数组 + 链表)。不过，Redis 的 hash 做了更多优化。另外，hash 是一个 string 类型的 field 和 value 的映射表，<strong>特别适合用于存储对象</strong>，后续操作的时候，你可以直接仅仅修改这个对象中的某个字段的值。 比如我们可以 hash 数据结构来存储用户信息，商品信息等等。</li>
+<li><strong>常用命令：</strong> <code>hset,hmset,hexists,hget,hgetall,hkeys,hvals</code> 等。</li>
+<li><strong>应用场景:</strong> 系统中对象数据的存储。</li>
+</ol>
+<p>下面我们简单看看它的使用！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; hmset userInfoKey name <span class="string">&quot;guide&quot;</span> description <span class="string">&quot;dev&quot;</span> age <span class="string">&quot;24&quot;</span> <span class="comment">#批量设置哈希</span></span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; hexists userInfoKey name <span class="comment"># 查看 key 对应的 value中指定的字段是否存在。</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; hget userInfoKey name <span class="comment"># 获取存储在哈希表中指定字段的值。</span></span><br><span class="line"><span class="string">&quot;guide&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; hget userInfoKey age</span><br><span class="line"><span class="string">&quot;24&quot;</span></span><br><span class="line">hmget key field [field ...] </span><br><span class="line">hmset key field value [field value ...] <span class="comment">#批量设或获取field-</span></span><br><span class="line">127.0.0.1:6379&gt; hlen userInfoKey <span class="comment">#计算域的个数</span></span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; hgetall userInfoKey <span class="comment"># 获取在哈希表中指定 key 的所有字段和值</span></span><br><span class="line">1) <span class="string">&quot;name&quot;</span></span><br><span class="line">2) <span class="string">&quot;guide&quot;</span></span><br><span class="line">3) <span class="string">&quot;description&quot;</span></span><br><span class="line">4) <span class="string">&quot;dev&quot;</span></span><br><span class="line">5) <span class="string">&quot;age&quot;</span></span><br><span class="line">6) <span class="string">&quot;24&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; hkeys userInfoKey <span class="comment"># 获取 key 列表</span></span><br><span class="line">1) <span class="string">&quot;name&quot;</span></span><br><span class="line">2) <span class="string">&quot;description&quot;</span></span><br><span class="line">3) <span class="string">&quot;age&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; hvals userInfoKey <span class="comment"># 获取 value 列表</span></span><br><span class="line">1) <span class="string">&quot;guide&quot;</span></span><br><span class="line">2) <span class="string">&quot;dev&quot;</span></span><br><span class="line">3) <span class="string">&quot;24&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; hset userInfoKey name <span class="string">&quot;GuideGeGe&quot;</span> <span class="comment"># 修改某个字段对应的值</span></span><br><span class="line">127.0.0.1:6379&gt; hget userInfoKey name</span><br><span class="line"><span class="string">&quot;GuideGeGe&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; hdel userInfoKey name  <span class="comment">#删除哈希的区域</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在使用hgetall时，如果哈希元素个数比较多，会存在阻塞Redis的可能。 如果开发人员只需要获取部分field，可以使用hmget，如果一定要获取全部 field-value，可以使用hscan命令，该命令会渐进式遍历哈希类型。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220318143001320.png" alt="image-20220318143001320"></p>
+<h4 id="set"><a href="#set" class="headerlink" title="set"></a>set</h4><ol>
+<li><strong>介绍 ：</strong> set 类似于 Java 中的 <code>HashSet</code> 。Redis 中的 set 类型是一种无序集合，集合中的元素没有先后顺序。当你需要存储一个列表数据，又不希望出现重复数据时，set 是一个很好的选择，并且 set 提供了判断某个成员是否在一个 set 集合内的重要接口，这个也是 list 所不能提供的。可以基于 set 轻易实现交集、并集、差集的操作。比如：你可以将一个用户所有的关注人存在一个集合中，将其所有粉丝存在一个集合。Redis 可以非常方便的实现如共同关注、共同粉丝、共同喜好等功能。这个过程也就是求交集的过程。</li>
+<li><strong>常用命令：</strong> <code>sadd,spop,smembers,sismember,scard,sinterstore,sunion</code> 等。</li>
+<li><strong>应用场景:</strong> 需要存放的数据不能重复以及需要获取多个数据源交集和并集等场景</li>
+</ol>
+<p>下面我们简单看看它的使用！</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; sadd mySet value1 value2 <span class="comment"># 添加元素进去</span></span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; sadd mySet value1 <span class="comment"># 不允许有重复元素</span></span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; smembers mySet <span class="comment"># 查看 set 中所有的元素</span></span><br><span class="line">1) <span class="string">&quot;value1&quot;</span></span><br><span class="line">2) <span class="string">&quot;value2&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; scard mySet <span class="comment"># 查看 set 的长度</span></span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; sismember mySet value1 <span class="comment"># 检查某个元素是否存在set 中，只能接收单个元素</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; sadd mySet2 value2 value3</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; sinterstore mySet3 mySet mySet2 <span class="comment"># 获取 mySet 和 mySet2 的交集并存放在 mySet3 中</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; smembers mySet3</span><br><span class="line">1) <span class="string">&quot;value2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="sorted-set"><a href="#sorted-set" class="headerlink" title="#sorted set"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/database/redis/redis-questions-01.html#sorted-set">#</a>sorted set</h4><ol>
+<li><strong>介绍：</strong> 和 set 相比，sorted set 增加了一个权重参数 score，使得集合中的元素能够按 score 进行有序排列，还可以通过 score 的范围来获取元素的列表。有点像是 Java 中 HashMap 和 TreeSet 的结合体。</li>
+<li><strong>常用命令：</strong> <code>zadd,zcard,zscore,zrange,zrevrange,zrem</code> 等。</li>
+<li><strong>应用场景：</strong> 需要对数据根据某个权重进行排序的场景。比如在直播系统中，实时排行信息包含直播间在线用户列表，各种礼物排行榜，弹幕消息（可以理解为按消息维度的消息排行榜）等信息。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; zadd myZset 3.0 value1 <span class="comment"># 添加元素到 sorted set 中 3.0 为权重</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; zadd myZset 2.0 value2 1.0 value3 <span class="comment"># 一次添加多个元素</span></span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br><span class="line">127.0.0.1:6379&gt; zcard myZset <span class="comment"># 查看 sorted set 中的元素数量</span></span><br><span class="line">(<span class="built_in">integer</span>) 3</span><br><span class="line">127.0.0.1:6379&gt; zscore myZset value1 <span class="comment"># 查看某个 value 的权重</span></span><br><span class="line"><span class="string">&quot;3&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; zrange  myZset 0 -1 <span class="comment"># 顺序输出某个范围区间的元素，0 -1 表示输出所有元素</span></span><br><span class="line">1) <span class="string">&quot;value3&quot;</span></span><br><span class="line">2) <span class="string">&quot;value2&quot;</span></span><br><span class="line">3) <span class="string">&quot;value1&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; zrange  myZset 0 1 <span class="comment"># 顺序输出某个范围区间的元素，0 为 start  1 为 stop</span></span><br><span class="line">1) <span class="string">&quot;value3&quot;</span></span><br><span class="line">2) <span class="string">&quot;value2&quot;</span></span><br><span class="line">127.0.0.1:6379&gt; zrevrange  myZset 0 1 <span class="comment"># 逆序输出某个范围区间的元素，0 为 start  1 为 stop</span></span><br><span class="line">1) <span class="string">&quot;value1&quot;</span></span><br><span class="line">2) <span class="string">&quot;value2&quot;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="bitmap"><a href="#bitmap" class="headerlink" title="#bitmap"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/database/redis/redis-questions-01.html#bitmap">#</a>bitmap</h4><ol>
+<li><strong>介绍：</strong> bitmap 存储的是连续的二进制数字（0 和 1），通过 bitmap, 只需要一个 bit 位来表示某个元素对应的值或者状态，key 就是对应元素本身 。我们知道 8 个 bit 可以组成一个 byte，所以 bitmap 本身会极大的节省储存空间。</li>
+<li><strong>常用命令：</strong> <code>setbit</code> 、<code>getbit</code> 、<code>bitcount</code>、<code>bitop</code></li>
+<li><strong>应用场景：</strong> 适合需要保存状态信息（比如是否签到、是否登录…）并需要进一步对这些信息进行分析的场景。比如用户签到情况、活跃用户情况、用户行为统计（比如是否点赞过某个视频）。</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># SETBIT 会返回之前位的值（默认是 0）这里会生成 7 个位</span></span><br><span class="line">127.0.0.1:6379&gt; setbit mykey 7 1</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit mykey 7 0</span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; getbit mykey 7</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit mykey 6 1</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line">127.0.0.1:6379&gt; setbit mykey 8 1</span><br><span class="line">(<span class="built_in">integer</span>) 0</span><br><span class="line"><span class="comment"># 通过 bitcount 统计被被设置为 1 的位的数量。</span></span><br><span class="line">127.0.0.1:6379&gt; bitcount mykey</span><br><span class="line">(<span class="built_in">integer</span>) 2</span><br></pre></td></tr></table></figure>
+
+<p>针对上面提到的一些场景，这里进行进一步说明。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220324193934603.png" alt="image-20220324193934603"></p>
+<p>String 简单动态字符串</p>
+<p>list 双向链表，压缩列表</p>
+<p>hash哈希表，压缩列表</p>
+<p>sorted set跳表，压缩列表</p>
+<p>set 哈希表，整形数组</p>
+<h3 id="Redis底层结构"><a href="#Redis底层结构" class="headerlink" title="Redis底层结构"></a>Redis底层结构</h3><h4 id="简单动态字符串-SDS"><a href="#简单动态字符串-SDS" class="headerlink" title="简单动态字符串(SDS)"></a>简单动态字符串(SDS)</h4><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220328082407301.png" alt="image-20220328082407301"></p>
+<ol>
+<li>buf：字节数组，保存实际数据。为了表示字节数组的结束，Redis 会自动在数组最后加一 个“\0”，这就会额外占用 1 个字节的开销。 </li>
+<li>len：占 4 个字节，表示 buf 的已用长度。 </li>
+<li>alloc：也占个 4 字节，表示 buf 的实际分配长度，一般大于 len。 可以看到，在 SDS 中，buf 保存实际数据，而 len 和 alloc 本身其实是 SDS 结构体的额 外开销。</li>
+</ol>
+<h4 id="哈希表"><a href="#哈希表" class="headerlink" title="哈希表"></a>哈希表</h4><p>哈希表当发生冲突时使用链地址法解决冲突，</p>
+<p>但是对于链表的 on 的时间复杂度是不可以接受的。所以，Redis 会对哈希表做 rehash 操作，Redis 默认使用了两个全局哈希表：哈希表 1 和哈希表 2，</p>
+<p>   1给哈希表 2 分配更大的空间，例如是当前哈希表 1 大小的两倍；</p>
+<ol start="2">
+<li>把哈希表 1 中的数据重新映射并拷贝到哈希表 2 中；</li>
+<li>释放哈希表 1 的空间。</li>
+</ol>
+<p>Redis 采用了渐进式 rehash，简单来说就是在第二步拷贝数据时，Redis 仍然正常处理客户端请求，每处理一个请求时，从 哈希表 1 中的第一个索引位置开始，顺带着将这个索引位置上的所有 entries 拷贝到哈希表 2 中；  等处理下一个请求时，再顺带拷贝哈希表 1 中的下一个索引位置的 entries</p>
+<h4 id="压缩列表"><a href="#压缩列表" class="headerlink" title="压缩列表"></a>压缩列表</h4><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220328082550069.png" alt="image-20220328082550069"></p>
+<p>  压缩列表实际上类似于一个数组，数组中的每一个元素都对应保存一个数据。和数组不同的是， 压缩列表在表头有三个字段 zlbytes、zltail 和 zllen，分别表示列表长度、列表尾的偏移量和列表中 的 entry 个数；压缩列表在表尾还有一个 zlend，表示列表结束。</p>
+<p>  在压缩列表中，如果我们要查找定位第一个元素和最后一个元素，可以通过表头三个字段的长 度直接定位，复杂度是 O(1)。而查找其他元素时，就没有这么高效了，只能逐个查找，此时的复杂 度就是 O(N) 了。主要是为了解决内存碎片的问题，<strong>当海量数据进来，用压缩链表回比用 String 少 3&#x2F;4 的内存，从而提高 redis 的效率。</strong></p>
+<p>prev_len，表示前一个 entry 的长度。prev_len 有两种取值情况：1 字节或 5 字节。取值 1 字 节时，表示上一个 entry 的长度小于 254 字节。虽然 1 字节的值能表示的数值范围是 0 到 255， 但是压缩列表中 zlend 的取值默认是 255，因此，就默认用 255 表示整个压缩列表的结束，其他表 示长度的地方就不能再用 255 这个值了。所以，当上一个 entry 长度小于 254 字节时，prev_len 取 值为 1 字节，否则，就取值为 5 字节。 </p>
+<p>len：表示自身长度，4 字节； </p>
+<p>encoding：表示编码方式，1 字节；content：保存实际数据。 </p>
+<p>这些 entry 会挨个儿放置在内存中，不需要再用额外的指针进行连接，这样就可以节省指针所 占用的空间。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220328083219181.png" alt="image-20220328083219181"></p>
+<h4 id="跳表"><a href="#跳表" class="headerlink" title="跳表"></a>跳表</h4><p>Redis 中的跳跃表是由两个结构定义的：zskiplistnode 和 skiplist。其中 skiplist 记录着相关信息（头结点、尾结点、最高层、链表长度），zskiplistnode 就是每一个链表的具体信息。 </p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220328101245112.png" alt="image-20220328101245112"></p>
+<p>跳表回退指针，</p>
+<p>上图的左侧是 skiplist 结构，包含如下属性。</p>
+<ul>
+<li>层</li>
+</ul>
+<p>  节点中用L1、L2、L3 等字样标记节点的各个层,L1 代表第一层,L2 代表第二层,以此类推。 每个层都带有两个属性:前进指针和跨度。<strong>前进指针用于访问位于表尾方向的其他节点,而跨 度则记录了前进指针所指向节点和当前节点的距离(跨度越大、距离越远)。</strong>在上图中,连线上带有数字的箭头就代表前进指针,而那个数字就是跨度。当程序从表头向表尾进行遍历时,访问会沿着层的前进指针进行。</p>
+<p>  每次创建一个新跳跃表节点的时候,程序都根据幂次定律(powerlaw,越大的数出现的概率越小)随机生成一个介于 1 和 32 之间的值作为 level 数组的大小,这个大小就是层的“高度”。  </p>
+<ul>
+<li><p>后退(backward)指针：</p>
+<p>节点中用BW 字样标记节点的高度。它指向位于当前节点的前一个节点。后退指针在程序从表尾向表头遍历时使用。与前进指针所不同的是每个节点只有一个后退指针，因此每次只能后 退一个节点。</p>
+</li>
+<li><p>分值(score): </p>
+<p>各个节点中的 1.0、2.0 和 3.0 是节点所保存的分值。在跳跃表中,节点按各自所保存的分值从小到大排列。</p>
+</li>
+<li><p>成员对象(obj):</p>
+<p>各个节点中的 o1、o2 和 o3 是节点所保存的成员对象。在同一个跳跃表中,各个节点保存的 成员对象必须是唯一的,但是多个节点保存的分值却可以是相同的:<strong>分值相同的节点将按照成员对象在字典序中的大小来进行排序</strong>,成员对象较小的节点会排在前面(靠近表头的方向),而成员对象较大的 节点则会排在后面(靠近表尾的方向)。 </p>
+<p>什么是随机层数：对于每一个新插入的节点，都需要调用一个随机算法给它分配一个合理的层 数，源码在 t_zset.c&#x2F;zslRandomLevel(void) 中被定义：直观上期望的目标是 50% 的概率被分配到 Level 1，25% 的概率被分配到 Level 2，12.5% 的概率被分配到 Level 3，以此类推…有 2-63 的概 率被分配到最顶层，因为这里每一层的晋升率都是 50%。 </p>
+<p>Redis 跳跃表默认允许最大的层数是 32，被源码中 ZSKIPLIST_MAXLEVEL 定义，当 Level[0]  有 264 个元素时，才能达到 32 层，所以定义 32 完全够用了。</p>
+</li>
+</ul>
+<h3 id="Redis-除了做缓存，还能做什么？"><a href="#Redis-除了做缓存，还能做什么？" class="headerlink" title="Redis 除了做缓存，还能做什么？"></a>Redis 除了做缓存，还能做什么？</h3><ul>
+<li><strong>分布式锁</strong> ： 通过 Redis 来做分布式锁是一种比较常见的方式。通常情况下，我们都是基于 Redisson 来实现分布式锁。相关阅读：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/CbnPRfvq4m1sqo2uKI6qQw">《分布式锁中的王者方案 - Redisson》open in new window</a>。</li>
+<li><strong>限流</strong> ：一般是通过 Redis + Lua 脚本的方式来实现限流。相关阅读：<a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s/kyFAWH3mVNJvurQDt4vchA">《我司用了 6 年的 Redis 分布式限流器，可以说是非常厉害了！》open in new window</a>。</li>
+<li><strong>消息队列</strong> ：Redis 自带的 list 数据结构可以作为一个简单的队列使用。<strong>Redis5.0 中增加的 Stream</strong> 类型的数据结构更加适合用来做消息队列。它比较类似于 Kafka，有主题和消费组的概念，支持消息持久化以及 ACK 机制。</li>
+<li><strong>复杂业务场景</strong> ：通过 Redis 以及 Redis 扩展（比如 Redisson）提供的数据结构，我们可以很方便地完成很多复杂的业务场景比如通过 bitmap 统计活跃用户、通过 sorted set 维护排行榜。</li>
+</ul>
+<h3 id="Redis-给缓存数据设置过期时间有啥用？"><a href="#Redis-给缓存数据设置过期时间有啥用？" class="headerlink" title="Redis 给缓存数据设置过期时间有啥用？"></a>Redis 给缓存数据设置过期时间有啥用？</h3><p>一般情况下，我们设置保存的缓存数据的时候都会设置一个过期时间。为什么呢？</p>
+<p>因为内存是有限的，如果缓存中的所有数据都是一直保存的话，分分钟直接 Out of memory。</p>
+<p>Redis 自带了给缓存数据设置过期时间的功能，比如：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; exp key 60 <span class="comment"># 数据在 60s 后过期</span></span><br><span class="line">(<span class="built_in">integer</span>) 1</span><br><span class="line">127.0.0.1:6379&gt; setex key 60 value <span class="comment"># 数据在 60s 后过期 (setex:[set] + [ex]pire)</span></span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; ttl key <span class="comment"># 查看数据还有多久过期</span></span><br><span class="line">(<span class="built_in">integer</span>) 56</span><br></pre></td></tr></table></figure>
+
+<p>注意：<strong>Redis 中除了字符串类型有自己独有设置过期时间的命令 <code>setex</code> 外，其他方法都需要依靠 <code>expire</code> 命令来设置过期时间 。另外， <code>persist</code> 命令可以移除一个键的过期时间。</strong></p>
+<p><strong>过期时间除了有助于缓解内存的消耗，还有什么其他用么？</strong></p>
+<p>很多时候，我们的业务场景就是需要某个数据只在某一时间段内存在，比如我们的短信验证码可能只在 1 分钟内有效，用户登录的 token 可能只在 1 天内有效。</p>
+<p>如果使用传统的数据库来处理的话，一般都是自己判断过期，这样更麻烦并且性能要差很多。</p>
+<h3 id="持久化"><a href="#持久化" class="headerlink" title="持久化"></a>持久化</h3><h4 id="RDB简介"><a href="#RDB简介" class="headerlink" title="RDB简介"></a>RDB简介</h4><p>为了提供所有数据的可靠性保证， 它执行的是全量快照，也就是说，把内存中的所有数据都记录到磁盘中。Redis 提供了两个命令来生成 RDB 文件，分别是 save 和 bgsave。 save：在主线程中执行，会导致阻塞；bgsave：创建一个子进程，专门用于写入 RDB 文件，避免了 主线程的阻塞，这也是 Redis RDB 文件生成的默认配置。</p>
+<p>但是，为了保证快照完整性，它只能处理读操作，因为不能修改正 在执行快照的数据。为了快照而暂停写操作，肯定是不能接受的。所以这个时候，Redis 就会借助操作系统提供的<strong>写时复制技术（Copy-On-Write, COW）</strong>，在执行快照的同时，正常处理写操作，bgsave 子 进程是由主线程 fork 生成的，可以共享主线程的所有内存数据。bgsave 子进程运行后，开始读取 主线程的内存数据，并把它们写入 RDB 文件。此时，如果主线程对这些数据也都是读操作，那么，主线程和 bgsave 子进程相互不影响<strong>。如果主线程要修改一块数 据（例如图中的键值对 C），那么，这块数据就会被复制一份，生成该数据的副本（键值对 C’）。 然后，主线程在这个数据副本上进行修改</strong>，<strong>同时，bgsave 子进程可以继续把原来的数据（键值对 C 写入 RDB 文件。</strong></p>
+<p>第一次做完全量快照后，T1 和 T2 时刻如果再做 快照，我们只需要将被修改的数据写入快照文件就行。</p>
+<p>Redis会单独创建（fork）一个子进程来进行持久化，会先将数据写入到 一个临时文件中，待持久化过程都结束了，再用这个临时文件替换上次持久化好的文件。 整个过程中，主进程是不进行任何IO操作的，这就确保了极高的性能 如果需要进行大规模数据的恢复，且对于数据恢复的完整性不是非常敏感，那RDB方式要比AOF方式更加的高效。<strong>RDB****的缺点是最后一次持久化后的数据可能丢失</strong>，RDB持久化是Redis默认的持久化方式。</p>
+<h4 id="RDB持久化流程"><a href="#RDB持久化流程" class="headerlink" title="RDB持久化流程"></a>RDB持久化流程</h4><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220319105937124.png" alt="image-20220319105937124"></p>
+<p>默认持久化规则</p>
+<p>save 900 1           #在900秒(15分钟)之后，如果至少有1个key发生变化，Redis就会自动触发BGSAVE命令创建快照。</p>
+<p>save 300 10          #在300秒(5分钟)之后，如果至少有10个key发生变化，Redis就会自动触发BGSAVE命令创建快照。</p>
+<p>save 60 10000        #在60秒(1分钟)之后，如果至少有10000个key发生变化，Redis就会自动触发BGSAVE命令创建快照。</p>
+<h4 id="AOF简介"><a href="#AOF简介" class="headerlink" title="AOF简介"></a>AOF简介</h4><p>什么 redis 的 AOF 日志是后写日志，不像 mysql 是前写日志呢？因为 redis 为了保证性能，在 写日志的时候不会进行语法检查，所以如果是写前日志的话，可能会有语法错误。AOF 的两个潜在的问题？第一个就是在写日志之前宕机了，数据会丢失。其次，AOF 虽然避 免了对当前命令的阻塞，但可能会给下一个操作带来阻塞风险。这是因为，AOF 日志也是在主线程 中执行的，如果在把日志文件写入磁盘时，磁盘写压力大，就会导致写盘很慢，进而导致后续的操 作也无法执行了。</p>
+<p>以<strong>日志</strong>的形式来记录每个写操作（增量保存），将Redis执行过的所有写指令记录下来(<strong>读操作不记录</strong>)， <strong>只许追加文件但不可以改写文件</strong>，redis启动之初会读取该文件重新构建数据，换言之，redis 重启的话就根据日志文件的内容将写指令从前到后执行一次以完成数据的恢复工作。</p>
+<p>AOF（append only file）持久化：以独立日志的方式记录每次写命令， 重启时再重新执行AOF文件中的命令达到恢复数据的目的。AOF的主要作用 是解决了数据持久化的实时性，目前已经是Redis持久化的主流方式。</p>
+<h4 id="AOF持久化流程"><a href="#AOF持久化流程" class="headerlink" title="AOF持久化流程"></a>AOF持久化流程</h4><p>（1）客户端的请求写命令会被append追加到AOF缓冲区内；</p>
+<p>（2）AOF缓冲区根据AOF持久化策略[always,everysec,no]将操作sync同步到磁盘的AOF文件中；</p>
+<p>（3）AOF文件大小超过重写策略或手动重写时，会对AOF文件rewrite重写，压缩AOF文件容量；</p>
+<p>（4）Redis服务重启时，会重新load加载AOF文件中的写操作达到数据恢复的目的；</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220319114512513.png" alt="image-20220319114512513"></p>
+<h4 id="AOF持久化策略"><a href="#AOF持久化策略" class="headerlink" title="AOF持久化策略"></a>AOF持久化策略</h4><p>always。每执行一次数据修改命令就将其命令写入到磁盘日志文件上。</p>
+<p>everysec。每秒将命令写入到磁盘日志文件上。</p>
+<p>no。不主动设置，由操作系统决定什么时候写入到磁盘日志文件上。</p>
+<p>Always，同步写回：每个写命令执行完，立马同步地将日志写回磁盘；导致磁盘压力会大，写 入速度变慢，可能会阻塞主线程。 </p>
+<p>Everysec，每秒写回：每个写命令执行完，只是先把日志写到</p>
+<p>   AOF 文件的内存缓冲区，每隔一 秒把缓冲区中的内容写入磁盘； No，操作系统控制的写回：每个写命令执行完，只是先把日志写到 AOF 文件的内存缓冲区， 由操作系统决定何时将缓冲区内容写回磁盘。</p>
+<h4 id="AOF结果压缩"><a href="#AOF结果压缩" class="headerlink" title="AOF结果压缩"></a>AOF结果压缩</h4><p>  AOF采用文件追加方式，文件会越来越大为避免出现此种情况，新增了重写机制, 当AOF文件的大小超过所设定的阈值时，Redis就会启动AOF文件的内容压缩， 只保留可以恢复数据的最小指令集.可以使用命令bgrewriteaof，重写是由后台子进程bgrewriteaof  来完成的，为了避免阻塞主线程，我把重写的过程总结为“一个拷贝， 两处日志”，<strong>主线程 fork 出后台的 bgrewriteaof 子进程。 此时，fork 会把主线程的内存拷贝一份给 bgrewriteaof 子进程</strong>。<strong>第一处日志就是指正在使用的 AOF 日志，Redis 会把这个操作写到它的缓冲区。</strong>这样一来， 即使宕机了，这个 AOF 日志的操作仍然是齐全的，可以用于恢复。而第二处日志，就是指新的 AOF  重写日志。这个操作也会被写到重写日志的缓冲区。这样，<strong>重写日志也不会丢失最新的操作。</strong>等到 拷贝数据的所有操作记录重写完成后，重写日志记录的这些最新操作也会写入新的 AOF 文件，以 保证数据库最新状态的记录。此时，我们就可以用新的 AOF 文件替代旧文件了。Redis会记录上次重写时的AOF大小，默认配置是当AOF文件大小是上次rewrite后大小的一倍且文件大于64M时触发</p>
+<h4 id="AOF异常恢复"><a href="#AOF异常恢复" class="headerlink" title="AOF异常恢复"></a>AOF异常恢复</h4><p>  对于错误格式的AOF文件，先进行备份，然后采用redis-check-aof–fix命 令进行修复，修复后使用diff-u对比数据的差异，找出丢失的数据，有些可<br>以人工修改补全 </p>
+<p>  AOF文件可能存在结尾不完整的情况，比如机器突然掉电导致AOF尾部 文件命令写入不全。Redis为我们提供了aof-load-truncated配置来兼容这种情 况，默认开启。加载AOF时，当遇到此问题时会忽略并继续启动，同时打印如下警告日志：       </p>
+<h4 id="RDB和AOF混合使用方案"><a href="#RDB和AOF混合使用方案" class="headerlink" title="RDB和AOF混合使用方案"></a>RDB和AOF混合使用方案</h4><p>  Redis 4.0 中提出了一个混合使用 AOF 日志和内存快照的方法。简单来说，内存快照以一定的 频率执行，在两次快照之间，使用 AOF 日志记录这期间的所有命令操作。这样一来，快照不用很频 繁地执行，这就避免了频繁 fork 对主线程的影响。<strong>而且，AOF 日志也只用记录两次快照间的操作</strong>， 也就是说，不需要记录所有操作了，因此，就不会出现文件过大的情况了，也可以避免重写开销。 <strong>如下图所示，T1 和 T2 时刻的修改，用 AOF 日志记录，等到第二次做全量快照时，就可以清空 AOF 日志，因为此时的修改都已经记录到快照中了，恢复时就不再用日志了</strong>。这个方法既能享受到 RDB 文件快速恢复的好处，又能享受到 AOF 只记录操作命令的简单优势，颇有点“鱼和熊掌可以 兼得”的感觉，建议你在实践中用起来。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220328074538768.png" alt="image-20220328074538768"></p>
+<h3 id="Redis事务"><a href="#Redis事务" class="headerlink" title="Redis事务"></a>Redis事务</h3><h4 id="事务出错的情况"><a href="#事务出错的情况" class="headerlink" title="事务出错的情况"></a>事务出错的情况</h4><ol>
+<li>例如下面操作错将set写成了sett，属于语法错误，会造成整个事务无法 执行，key和counter的值未发生变化：</li>
+<li>例如用户B在添加粉丝列表时，误把sadd命令写成了zadd命令，这种就 是运行时命令，因为语法是正确的：可以看到Redis并不支持回滚功能，sadd user：a：follow user：b命令已 经执行成功，开发人员需要自己修复这类问题</li>
+</ol>
+<p>有些应用场景需要在事务之前，确保事务中的key没有被其他客户端修 改过，才执行事务，否则不执行（类似乐观锁）。Redis提供了watch命令来<br>解决这类问题，表3-2展示了两个客户端执行命令的时序</p>
+<h4 id="Redis-是不支持-roll-back-的，因而不满足原子性的（而且不满足持久性）。"><a href="#Redis-是不支持-roll-back-的，因而不满足原子性的（而且不满足持久性）。" class="headerlink" title="Redis 是不支持 roll back 的，因而不满足原子性的（而且不满足持久性）。"></a>Redis 是不支持 roll back 的，因而不满足原子性的（而且不满足持久性）。</h4><p>redis同一个事务中如果有一条命令执行失败，其后的命令仍然会被执行，没有回滚。</p>
+<p>Redis 官网也解释了自己为啥不支持回滚。简单来说就是 Redis 开发者们觉得没必要支持回滚，这样更简单便捷并且性能更好。Redis 开发者觉得即使命令执行错误也应该在开发过程中就被发现而不是生产过程中。 </p>
+<p>你可以将 Redis 中的事务就理解为 ：<strong>Redis 事务提供了一种将多个命令请求打包的功能。然后，再按顺序执行打包的所有命令，并且不会被中途打断。</strong> </p>
+<h3 id="Redis-bigkey"><a href="#Redis-bigkey" class="headerlink" title="Redis bigkey"></a>Redis bigkey</h3><h4 id="什么是-bigkey？"><a href="#什么是-bigkey？" class="headerlink" title="什么是 bigkey？"></a>什么是 bigkey？</h4><p>简单来说，如果一个 key 对应的 value 所占用的内存比较大，那这个 key 就可以看作是 bigkey。具体多大才算大呢？有一个不是特别精确的参考标准：string 类型的 value 超过 10 kb，复合类型的 value 包含的元素超过 5000 个（对于复合类型的 value 来说，不一定包含的元素越多，占用的内存就越多）。</p>
+<h4 id="bigkey-有什么危害？"><a href="#bigkey-有什么危害？" class="headerlink" title="bigkey 有什么危害？"></a>bigkey 有什么危害？</h4><p>除了会消耗更多的内存空间，bigkey 对性能也会有比较大的影响。</p>
+<p>因此，我们应该尽量避免写入 bigkey！</p>
+<h4 id="如何发现-bigkey？"><a href="#如何发现-bigkey？" class="headerlink" title="如何发现 bigkey？"></a>如何发现 bigkey？</h4><p><strong>1、使用 Redis 自带的 <code>--bigkeys</code> 参数来查找。</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># redis-cli -p 6379 --bigkeys</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Scanning the entire keyspace to find biggest keys as well as</span></span><br><span class="line"><span class="comment"># average sizes per key type.  You can use -i 0.1 to sleep 0.1 sec</span></span><br><span class="line"><span class="comment"># per 100 SCAN commands (not usually needed).</span></span><br><span class="line"></span><br><span class="line">[00.00%] Biggest string found so far <span class="string">&#x27;&quot;ballcat:oauth:refresh_auth:f6cdb384-9a9d-4f2f-af01-dc3f28057c20&quot;&#x27;</span> with 4437 bytes</span><br><span class="line">[00.00%] Biggest list   found so far <span class="string">&#x27;&quot;my-list&quot;&#x27;</span> with 17 items</span><br><span class="line"></span><br><span class="line">-------- summary -------</span><br><span class="line"></span><br><span class="line">Sampled 5 keys <span class="keyword">in</span> the keyspace!</span><br><span class="line">Total key length <span class="keyword">in</span> bytes is 264 (avg len 52.80)</span><br><span class="line"></span><br><span class="line">Biggest   list found <span class="string">&#x27;&quot;my-list&quot;&#x27;</span> has 17 items</span><br><span class="line">Biggest string found <span class="string">&#x27;&quot;ballcat:oauth:refresh_auth:f6cdb384-9a9d-4f2f-af01-dc3f28057c20&quot;&#x27;</span> has 4437 bytes</span><br><span class="line"></span><br><span class="line">1 lists with 17 items (20.00% of keys, avg size 17.00)</span><br><span class="line">0 hashs with 0 fields (00.00% of keys, avg size 0.00)</span><br><span class="line">4 strings with 4831 bytes (80.00% of keys, avg size 1207.75)</span><br><span class="line">0 streams with 0 entries (00.00% of keys, avg size 0.00)</span><br><span class="line">0 sets with 0 members (00.00% of keys, avg size 0.00)</span><br><span class="line">0 zsets with 0 members (00.00% of keys, avg size 0.00</span><br></pre></td></tr></table></figure>
+
+<p>​       从这个命令的运行结果，我们可以看出：这个命令会扫描(Scan) Redis 中的所有 key ，会对 Redis 的性能有一点影响。并且，这种方式只能找出每种数据结构 top 1 bigkey（占用内存最大的 string 数据类型，包含元素最多的复合数据类型）。</p>
+<p><strong>2、分析 RDB 文件</strong></p>
+<p>通过分析 RDB 文件来找出 big key。这种方案的前提是你的 Redis 采用的是 RDB 持久化。</p>
+<p>网上有现成的代码&#x2F;工具可以直接拿来使用：</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/sripathikrishnan/redis-rdb-tools">redis-rdb-toolsopen in new window</a> ：Python 语言写的用来分析 Redis 的 RDB 快照文件用的工具</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/weiyanwei412/rdb_bigkeys">rdb_bigkeysopen in new window</a> : Go 语言写的用来分析 Redis 的 RDB 快照文件用的工具，性能更好。</li>
+</ul>
+<h3 id="过期的数据的删除策略了解么？"><a href="#过期的数据的删除策略了解么？" class="headerlink" title="过期的数据的删除策略了解么？"></a>过期的数据的删除策略了解么？</h3><p>如果假设你设置了一批 key 只能存活 1 分钟，那么 1 分钟后，Redis 是怎么对这批 key 进行删除的呢？</p>
+<p>常用的过期数据的删除策略就两个（重要！自己造缓存轮子的时候需要格外考虑的东西）：</p>
+<ol>
+<li><strong>惰性删除</strong> ：只会在取出 key 的时候才对数据进行过期检查。这样对 CPU 最友好，但是可能会造成太多过期 key 没有被删除。</li>
+<li><strong>定期删除</strong> ： 每隔一段时间抽取一批 key 执行删除过期 key 操作。并且，Redis 底层会通过限制删除操作执行的时长和频率来减少删除操作对 CPU 时间的影响。</li>
+</ol>
+<p>定期删除对内存更加友好，惰性删除对 CPU 更加友好。两者各有千秋，所以 Redis 采用的是 <strong>定期删除+惰性&#x2F;懒汉式删除</strong> 。</p>
+<p>但是，仅仅通过给 key 设置过期时间还是有问题的。因为还是可能存在定期删除和惰性删除漏掉了很多过期 key 的情况。这样就导致大量过期 key 堆积在内存里，然后就 Out of memory 了。</p>
+<p>怎么解决这个问题呢？答案就是：<strong>Redis 内存淘汰机制。</strong></p>
+<h3 id="Redis内存淘汰机制"><a href="#Redis内存淘汰机制" class="headerlink" title="Redis内存淘汰机制"></a>Redis内存淘汰机制</h3><p>在 Redis 4.0 版本之前有 6 种策略，4.0 增加了 2种，主要新增了 LFU 算法。</p>
+<ul>
+<li>不进行淘汰的策略</li>
+</ul>
+<p>​         noevition，此策略不会对缓存的数据进行淘汰，当内存不够了就会报错，因此，如果真实数据集大小大于缓存容量，就不要使用此策略了。</p>
+<ul>
+<li><p>会进行淘汰的策略</p>
+</li>
+<li><ul>
+<li>allkeys-random：随机删除</li>
+<li>allkeys-lru：使用 LRU 算法进行筛选删除</li>
+<li>allkeys-lfu：使用 LFU 算法进行筛选删除</li>
+<li>volatile-random：随机删除</li>
+<li>volatile-ttl：根据过期时间先后进行删除，越早过期的越先被删除</li>
+<li>volatile-lru：使用 LRU 算法进行筛选删除</li>
+<li>volatile-lfu：使用 LFU 算法进行筛选删除</li>
+<li>在设置了过期时间的数据中筛选</li>
+<li>在所有数据中筛选</li>
+</ul>
+</li>
+</ul>
+<p>以 volatile 开头的策略只针对设置了过期时间的数据，即使缓存没有被写满，如果数据过期也会被删除。</p>
+<p>以 allkeys 开头的策略是针对所有数据的，如果数据被选中了，即使过期时间没到，也会被删除。当然，如果它的过期时间到了但未被策略选中，同样会被删除。</p>
+<h3 id="Redis缓存穿透和缓存击穿和缓存雪崩"><a href="#Redis缓存穿透和缓存击穿和缓存雪崩" class="headerlink" title="Redis缓存穿透和缓存击穿和缓存雪崩"></a>Redis缓存穿透和缓存击穿和缓存雪崩</h3><h4 id="缓存穿透"><a href="#缓存穿透" class="headerlink" title="缓存穿透"></a>缓存穿透</h4><h5 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h5><p>  缓存穿透是指查询一个根本不存在的数据，缓存层和存储层都不会命 中，通常出于容错的考虑，如果从存储层查不到数据则不写入缓存层，</p>
+<h5 id="后果"><a href="#后果" class="headerlink" title="后果"></a>后果</h5><p> 缓存穿透将导致不存在的数据每次请求都要到存储层去查询，失去了缓 存保护后端存储的意义。缓存穿透问题可能会使后端存储负载加大，由于很多后端存储不具备高 并发性，甚至可能造成后端存储宕掉。通常可以在程序中分别统计总调用 数、缓存层命中数、存储层命中数，如果发现大量存储层空命中，可能就是<br>出现了缓存穿透问题。</p>
+<h5 id="造成原因"><a href="#造成原因" class="headerlink" title="造成原因"></a>造成原因</h5><p> 造成缓存穿透的基本原因有两个。第一，自身业务代码或者数据出现问 题，第二，一些恶意攻击、爬虫等造成大量空命中。</p>
+<h5 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h5><h6 id="缓存空对象"><a href="#缓存空对象" class="headerlink" title="缓存空对象"></a>缓存空对象</h6><p>缓存空</p>
+<p>如果缓存和数据库都查不到某个 key 的数据就写一个到 Redis 中去并设置过期时间，具体命令如下： <code>SET key value EX 10086</code> 。</p>
+<p>这种方式可以解决请求的 key 变化不频繁的情况，如果黑客恶意攻击，每次构建不同的请求 key，会导致 Redis 中缓存大量无效的 key 。很明显，这种方案并不能从根本上解决此问题。如果非要用这种方式来解决穿透问题的话，尽量将无效的 key 的过期时间设置短一点比如 1 分钟。</p>
+<p>缓存 层和存储层的数据会有一段时间窗口的不一致，可能会对业务有一定影响。 例如过期时间设置为5分钟，如果此时存储层添加了这个数据，那此段时间 就会出现缓存层和存储层数据的不一致，此时可以利用消息系统或者其他方式清除掉缓存层中的空对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">String <span class="title function_">get</span><span class="params">(String key)</span> &#123;</span><br><span class="line">    <span class="comment">// 从缓存中获取数据 </span></span><br><span class="line">    <span class="type">String</span> <span class="variable">cacheValue</span> <span class="operator">=</span> cache.get(key);</span><br><span class="line"><span class="comment">// 缓存为空</span></span><br><span class="line">    <span class="keyword">if</span> (StringUtils.isBlank(cacheValue)) &#123; </span><br><span class="line">        <span class="comment">// 从存储中获取 </span></span><br><span class="line">        <span class="type">String</span> <span class="variable">storageValue</span> <span class="operator">=</span> storage.get(key); cache.set(key, storageValue); </span><br><span class="line">        <span class="comment">// 如果存储数据为空，需要设置一个过期时间(300秒) </span></span><br><span class="line">        <span class="keyword">if</span> (storageValue == <span class="literal">null</span>) &#123; </span><br><span class="line">            cache.expire(key, <span class="number">60</span> * <span class="number">5</span>);</span><br><span class="line">        &#125; </span><br><span class="line">        <span class="keyword">return</span> storageValue;</span><br><span class="line">       &#125; </span><br><span class="line">        <span class="keyword">else</span> &#123; <span class="comment">// 缓存非空 </span></span><br><span class="line">        <span class="keyword">return</span> cacheValue;</span><br><span class="line">        &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h6 id="布隆过滤器"><a href="#布隆过滤器" class="headerlink" title="布隆过滤器"></a>布隆过滤器</h6><p>具体是这样做的：把所有可能存在的请求的值都存放在布隆过滤器中，当用户请求过来，先判断用户发来的请求的值是否存在于布隆过滤器中。不存在的话，直接返回请求参数错误信息给客户端，存在的话才会走下面的流程</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220318153604522.png" alt="image-20220318153604522"></p>
+<p><strong>当一个元素加入布隆过滤器中的时候，会进行如下操作：</strong></p>
+<ol>
+<li>使用布隆过滤器中的哈希函数对元素值进行计算，得到哈希值（有几个哈希函数得到几个哈希值）。</li>
+<li>根据得到的哈希值，在位数组中把对应下标的值置为 1。</li>
+</ol>
+<p><strong>当我们需要判断一个元素是否存在于布隆过滤器的时候，会进行如下操作：</strong></p>
+<ol>
+<li>对给定元素再次进行相同的哈希计算；</li>
+<li>得到值之后判断位数组中的每个元素是否都为 1，如果值都为 1，那么说明这个值在布隆过滤器中，如果存在一个值不为 1，说明该元素不在布隆过滤器中。</li>
+</ol>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220328085422484.png" alt="image-20220328085422484"></p>
+<h5 id="缓存空对象和布隆过滤器的对比"><a href="#缓存空对象和布隆过滤器的对比" class="headerlink" title="缓存空对象和布隆过滤器的对比"></a>缓存空对象和布隆过滤器的对比</h5><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220318145732696.png" alt="image-20220318145732696"></p>
+<h4 id="缓存击穿"><a href="#缓存击穿" class="headerlink" title="缓存击穿"></a>缓存击穿</h4><p>是指缓存中没有但数据库中有的数据（一般是缓存时间到期），这时由于并发用户特别多，同时读缓存没读到数据，又同时去数据库去取数据，引起数据库压力瞬间增大，造成过大压力</p>
+<h5 id="解决方案："><a href="#解决方案：" class="headerlink" title="解决方案："></a><strong>解决方案：</strong></h5><ol>
+<li>设置热点数据永远不过期。</li>
+<li>加互斥锁，互斥锁参考代码如下：</li>
+</ol>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220421140709273.png" alt="image-20220421140709273"></p>
+<h4 id="缓存雪崩"><a href="#缓存雪崩" class="headerlink" title="缓存雪崩"></a>缓存雪崩</h4><p>实际上，缓存雪崩描述的就是这样一个简单的场景：<strong>缓存在同一时间大面积的失效，后面的请求都直接落到了数据库上，造成数据库短时间内承受大量请求。</strong> 这就好比雪崩一样，摧枯拉朽之势，数据库的压力可想而知，可能直接就被这么多请求弄宕机了。</p>
+<p>举个例子：系统的缓存模块出了问题比如宕机导致不可用。造成系统的所有访问，都要走数据库。</p>
+<p>还有一种缓存雪崩的场景是：<strong>有一些被大量访问数据（热点缓存）在某一时刻大面积失效，导致对应的请求直接落到了数据库上。</strong> 这样的情况，有下面几种解决办法：</p>
+<p>举个例子 ：秒杀开始 12 个小时之前，我们统一存放了一批商品到 Redis 中，设置的缓存过期时间也是 12 个小时，那么秒杀开始的时候，这些秒杀的商品的访问直接就失效了。导致的情况就是，相应的请求直接就落到了数据库上，就像雪崩一样可怕</p>
+<h4 id="有哪些解决办法？"><a href="#有哪些解决办法？" class="headerlink" title="有哪些解决办法？"></a>有哪些解决办法？</h4><p><strong>针对 Redis 服务不可用的情况：</strong></p>
+<ol>
+<li>采用 Redis 集群，避免单机出现问题整个缓存服务都没办法使用。</li>
+<li>限流，避免同时处理大量的请求。</li>
+</ol>
+<p><strong>针对热点缓存失效的情况：</strong></p>
+<ol>
+<li>设置不同的失效时间比如随机设置缓存的失效时间。</li>
+<li>缓存永不失效。</li>
+</ol>
+<h3 id="主从复制原理"><a href="#主从复制原理" class="headerlink" title="主从复制原理"></a>主从复制原理</h3><p>第一步主库执行bgsave命令，生成RDB文件，将文件发送给从库，从库接收到后，清除自身数据库并加载RDB文件，这是因为在通过rcplicaof命令与主库同步前，可能保存了其他数据。</p>
+<p>第二步，主库数据同步给从库中，仍然可以正常收到请求，这些请求不在刚刚生成的RDB文件中，为了保证主从库的数据一致性，主库会在内存中用专门的replication buffer记录RDB文件生成后的所有操作性</p>
+<p>第三步，RDB文件发送后，把replication buffer中的修改操作发给从库</p>
+<p>为了保证主从的数据一致性，主库会在内存中专门用replication buffer，记录RDB文件生成后收到的所有写操作。</p>
+<h3 id="redis-主从复制的坑"><a href="#redis-主从复制的坑" class="headerlink" title="redis 主从复制的坑"></a>redis 主从复制的坑</h3><h4 id="主从库不一致"><a href="#主从库不一致" class="headerlink" title="主从库不一致"></a>主从库不一致</h4><p>  解决方案：在硬件环境配置方面，我们要尽量保证主从库间的网络连接状况良好。另外，我们 还可以开发一个外部程序来监控主从库间的复制进度。监控程序可以一直监控着从库的复制进度， 当从库的复制进度又赶上主库时，我们就允许客户端再次跟这些从库连接。</p>
+<h4 id="读取到过期数据"><a href="#读取到过期数据" class="headerlink" title="读取到过期数据"></a>读取到过期数据</h4><p>  我们在使用 Redis 主从集群时，有时会读到过期数据。例如，数据 X 的过期时间是 202010240900，但是客户端在 202010240910 时，仍然可以从从库中读到数据 X。一个数据过期后， 应该是被删除的，客户端不能再读取到该数据，但是，Redis 为什么还能在从库中读到过期的数据 呢？其实，这是由 Redis 的过期数据删除策略引起的。我来给你具体解释下。 </p>
+<p>  <strong>首先介绍一下 redis 的过期策略：Redis 同时使用了两种策略来删除过期的数据，分别是惰性删 除策略和定期删除策略。</strong> </p>
+<p>  先说<strong>惰性删除策略。当一个数据的过期时间到了以后，并不会立即删除数据，而是等到再有请 求来读写这个数据时，对数据进行检查，如果发现数据已经过期了，再删除这个数据。这个策略的 好处是尽量减少删除操作对 CPU 资源的使用，对于用不到的数据，就不再浪费时间进行检查和删除了。但是，这个策略会导致大量已经过期的数据留存在内存中，占用较多的内存资源。</strong> </p>
+<p>  所以，Redis 在使用这个策略的同时，还使用了第二种策略：<strong>定期删除策略。定期删除策略是 指，Redis 每隔一段时间（默认 100ms），就会随机选出一定数量的数据，检查它们是否过期，并 把其中过期的数据删除，这样就可以及时释放一些内存。</strong> </p>
+<p>  其次，惰性删除策略实现后，数据只有被再次访问时，才会被实际删除。如果客户端从主库上 读取留存的过期数据，主库会触发删除操作，此时，客户端并不会读到过期数据。<strong>但是，从库本身不会执行删除操作，如果客户端在从库中访问留存的过期数据，从库并不会触发数据删除。</strong>那么， 从库会给客户端返回过期数据吗？这就和你使用的 Redis 版本有关了。如果你使用的是 Redis 3.2  之前的版本，那么，从库在服务读请求时，并不会判断数据是否过期，而是会返回过期数据。在 3.2  版本后，Redis 做了改进，如果读取的数据已经过期了，从库虽然不会删除，但是会返回空值，这 就避免了客户端读到过期数据。所以，在应用主从集群时，尽量使用 Redis 3.2 及以上版本。 </p>
+<p>  为啥会这样呢？这跟 Redis 用于设置过期时间的命令有关系，有些命令给数据设置的过期时间 在从库上可能会被延后，导致应该过期的数据又在从库上被读取到了。（这种情况的解决方法时把 过期时间设置成具体的时间点，从库不需要依赖主库来完成。）</p>
+<h3 id="哨兵机制"><a href="#哨兵机制" class="headerlink" title="哨兵机制"></a>哨兵机制</h3><p><strong>哨兵其实就是一个运行在特殊模式下的 Redis 进程</strong>，主从库实例运行的同时，它也在运行。哨兵主要负责的就是三个任务：监控、选主（选择主库）和通知。我们先看监控。<strong>监控</strong>是指哨兵进程 在运行时，<strong>周期性地给所有的主从库发送 PING 命令，检测它们是否仍然在线运行。如果从库没有在规定时间内响应哨兵的PING 命令，哨兵就会把它标记为“下线状态”；同样，如果主库也没有 在规定时间内响应哨兵的 PING 命令，哨兵就会判定主库下线，然后开始自动切换主库的流程。</strong></p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220326120622805.png" alt="image-20220326120622805"></p>
+<p>何选定新的主库？一般来说，我把哨兵选择新主库的过程称为“筛选 + 打分”。简单来说， 我们在多个从库中，先按照一定的筛选条件，把不符合条件的从库去掉。然后，我们再按照一定的 规则，给剩下的从库逐个打分，将得分最高的从库选为新主库，如下图所示：</p>
+<p>在刚刚的这段话里，需要注意的是两个“一定”，现在，我们要考虑这里的“一定”具体是指 什么。首先来看筛选的条件。一般情况下，我们肯定要先保证所选的从库仍然在线运行。不过，在 选主时从库正常在线，这只能表示从库的现状良好，并不代表它就是最适合做主库的。设想一下， 如果在选主时，一个从库正常运行，我们把它选为新主库开始使用了。可是，很快它的网络出了故障，此时，我们就得重新选主了。这显然不是我们期望的结果。所以，在<strong>选主时，除了要检查从库 的当前在线状态，还要判断它之前的网络连接状态。如果从库总是和主库断连，而且断连次数超出 了一定的阈值，我们就有理由相信，这个从库的网络状况并不是太好，就可以把这个从库筛掉了。</strong> 接下来就要给剩余的从库打分了。<strong>我们可以分别按照三个规则依次进行三轮打分，这三个规则分别是从库优先级、从库复制进度以及从库 ID 号。只要在某一轮中，有从库得分最高</strong>，那么它就是主库了，选主过程到此结束。如果<strong>没有出现得分最高的从库，那么就继续进行下一轮。</strong> 由哪个哨兵执行主从切换？ <strong>任何一个实例只要自身判断主库“主观下线”后，就会给其他实例发送s-master-down-by-addr</strong> 命 令。接着，其他实例会根据自己和主库的连接情况，做出 Y 或 N 的响应，Y 相当于赞成票，N 相 当于反对票。 此时，这个哨兵就可以再给其他哨兵发送命令，表明希望由自己来执行主从切换，并让所有其 他哨兵进行投票。这个投票过程称为“Leader 选举”。因为最终执行主从切换的哨兵称为 Leader， 投票过程就是确定 Leader。在投票过程中，任何一个想成为 Leader 的哨兵，要满足两个条件：<strong>第 一，拿到半数以上的赞成票；第二，拿到的票数同时还需要大于等于哨兵配置文件中的 quorum 值。</strong> 以 3 个哨兵为例，假设此时的 quorum 设置为 2，那么，任何一个想成为 Leader 的哨兵只要拿到 2 张赞成票，就可以了。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220326120657279.png" alt="image-20220326120657279"></p>
+<h3 id="过期策略"><a href="#过期策略" class="headerlink" title="过期策略"></a>过期策略</h3><ol>
+<li><p>定时删除 </p>
+<p>含义：<strong>在设置key的过期时间的同时，为该key创建一个定时器，让定时器在key的过期时间来临时，对key进行删除</strong></p>
+<p>优点：<strong>保证内存被尽快释放</strong></p>
+<p>缺点：若过期key很多，<strong>删除这些key会占用很多的CPU时间</strong>，在CPU时间紧张的情况下，CPU不能把所有的时间用来做要紧的事儿，还需要去花时间删除这些key定时器的创建耗时，若<strong>为每一个设置过期时间的key创建一个定时器（将会有大量的定时器产生），性能影响严重</strong></p>
+</li>
+<li><p>定期删除  </p>
+<p>含义：<strong>每隔一段时间执行一次删除过期key操作</strong></p>
+<p>优点：<strong>通过限制删除操作的时长和频率，来减少删除操作对CPU时间的占用–处理”定时删除”的缺点定期删除过期key–处理”懒汉式删除”的缺点</strong><br>缺点：<strong>在内存友好方面，不如”定时删除”（会造成一定的内存占用，但是没有懒汉式那么占用内存）</strong>，<strong>在CPU时间友好方面，不如”懒汉式删除”（会定期的去进行比较和删除操作，cpu方面不如懒汉式，但是比定时好）</strong></p>
+</li>
+<li><p>惰性删除</p>
+<p> 含义：<strong>当一个数据的过期时间到了以后，并不会立即删除数据，而是等到再有请 求来读写这个数据时，对数据进行检查，如果发现数据已经过期了，再删除 这个数据。</strong></p>
+<p> 优点：<strong>尽量减少删除操作对 CPU 资源的使用，对于用不到的数据，就不再浪费时间进行检查和删 除了。</strong><br> 缺点：<strong>这个策略会导致大量已经过期的数据留存在内存中，占用较多的内存资源。</strong></p>
+</li>
+</ol>
+<p>​      </p>
+<h3 id="内存淘汰策略"><a href="#内存淘汰策略" class="headerlink" title="内存淘汰策略"></a>内存淘汰策略</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220328083625363.png" alt="image-20220328083625363"></p>
+<p>默认情况下，Redis 在使用的内存空间超过 maxmemory 值时，并不会淘汰数据，也就是设定 的 noeviction 策略。对应到 Redis 缓存，也就是指，一旦缓存被写满了，再有写请求来时，Redis 不 再提供服务，而是直接返回错误。 </p>
+<ol>
+<li>volatile-ttl 在筛选时，会针对设置了过期时间的键值对，根据过期时间的先后进行删除，越 早过期的越先被删除。 </li>
+<li>严重释放删除键值对中，进行随机删除。 </li>
+<li>volatile-lru 会使用 LRU 算法筛选设置了过期时间的键值对。 </li>
+<li>volatile-lfu 会使用 LFU 算法选择设置了过期时间的键值对。 </li>
+<li>allkeys-random 策略，从所有键值对中随机选择并删除数据； </li>
+<li>allkeys-lru 策略，使用 LRU 算法在所有数据中进行筛选。 </li>
+<li>allkeys-lfu 策略，使用 LFU 算法在所有数据中进行筛选。</li>
+</ol>
+<p>LFU 缓存策略是在 LRU 策略基础上，为每个数据增加了一个计数器，来统计 这个数据的访问次数。当使用 LFU 策略筛选淘汰数据时，首先会根据数据的访问次数进 行筛选，把访问次数最低的数据淘汰出缓存。如果两个数据的访问次数相同，LFU 策略再 比较这两个数据的访问时效性，把距离上一次访问时间更久的数据淘汰出缓存。</p>
+<h3 id="Redis的脑裂"><a href="#Redis的脑裂" class="headerlink" title="*Redis的脑裂"></a>*Redis的脑裂</h3><p>  所谓的脑裂，就是指在主从集群中，同时有两个主节点，它们都能接收写请求。而脑裂最直接 的影响，就是客户端不知道应该往哪个主节点写入数据，结果就是不同的客户端会往不同的主节点 上写入数据。而且，严重的话，脑裂会进一步导致数据丢失。那么，主从集群中为什么会发生脑裂？ 脑裂为什么又会导致数据丢失呢？我们该如何避免脑裂的发生呢？这节课，我就结合我遇见的这个 真实问题，带你一起分析和定位问题，帮助你掌握脑裂的成因、后果和应对方法。</p>
+<p>  刚才我提到，我最初发现的问题是，在主从集群中，客户端发送的数据丢失了。所以，我们首 先要弄明白，为什么数据会丢失？是不是数据同步出了问题？第一步：确认是不是数据同步出现了 问题在主从集群中发生数据丢失，最常见的原因就是主库的数据还没有同步到从库，结果主库发生 了故障，等从库升级为主库后，未同步的数据就丢失了。如下图所示，新写入主库的数据 a:1、b:3， 就因为在主库故障前未同步到从库而丢失了。 JIANG J Q: 699046690 如果是这种情况的数据丢失，我们可以通过比对主从库上的复制进度差值来进行判断，也就是 计算 master_repl_offset 和 slave_repl_offset 的差值。如果从库上的 slave_repl_offset 小于原主库的 master_repl_offset，那么，我们就可以认定数据丢失是由数据同步未完成导致的。我们在部署主从集 群时，也监测了主库上的 master_repl_offset，以及从库上的 slave_repl_offset。但是，当我们发现数 据丢失后，我们检查了新主库升级前的 slave_repl_offset，以及原主库的 master_repl_offset，它们是 一致的，也就是说，这个升级为新主库的从库，在升级时已经和原主库的数据保持一致了。那么， 为什么还会出现客户端发送的数据丢失呢？分析到这里，我们的第一个设想就被推翻了。这时，我 们想到，所有的数据操作都是从客户端发送给 Redis 实例的，那么，是不是可以从客户端操作日志 中发现问题呢？紧接着，我们就把目光转到了客户端。</p>
+<p>   第二步：排查客户端的操作日志，发现脑裂现象在排查客户端的操作日志时，我们发现，在主 从切换后的一段时间内，有一个客户端仍然在和原主库通信，并没有和升级的新主库进行交互。这 就相当于主从集群中同时有了两个主库。根据这个迹象，我们就想到了在分布式主从集群发生故障 时会出现的一个问题：脑裂。但是，不同客户端给两个主库发送数据写操作，按道理来说，只会导 致新数据会分布在不同的主库上，并不会造成数据丢失。那么，为什么我们的数据仍然丢失了呢？ 到这里，我们的排查思路又一次中断了。不过，在分析问题时，我们一直认为“从原理出发是追本 溯源的好方法”。脑裂是发生在主从切换的过程中，我们猜测，肯定是漏掉了主从集群切换过程中 的某个环节，所以，我们把研究的焦点投向了主从切换的执行过程。 </p>
+<p>  第三步：发现是原主库假故障导致的脑裂我们是采用哨兵机制进行主从切换的，当主从切换发 生时，一定是有超过预设数量（quorum 配置项）的哨兵实例和主库的心跳都超时了，才会把主库判 断为客观下线，然后，哨兵开始执行切换操作。哨兵切换完成后，客户端会和新主库进行通信，发 送请求操作。但是，在切换过程中，既然客户端仍然和原主库通信，这就表明，原主库并没有真的 发生故障（例如主库进程挂掉）。我们猜测，主库是由于某些原因无法处理请求，也没有响应哨兵 的心跳，才被哨兵错误地判断为客观下线的。结果，在被判断下线之后，原主库又重新开始处理请 求了，而此时，哨兵还没有完成主从切换，客户端仍然可以和原主库通信，客户端发送的写操作就 会在原主库上写入数据了。为了验证原主库只是“假故障”，我们也查看了原主库所在服务器的资 源使用监控记录。的确，我们看到原主库所在的机器有一段时间的 CPU 利用率突然特别高，这是 我们在机器上部署的一个数据采集程序导致的。因为这个程序基本把机器的 CPU 都用满了，导致 Redis 主库无法响应心跳了，在这个期间内，哨兵就把主库判断为客观下线，开始主从切换了。不 过，这个数据采集程序很快恢复正常，CPU 的使用率也降下来了。此时，原主库又开始正常服务请 求了。正因为原主库并没有真的发生故障，我们在客户端操作日志中就看到了和原主库的通信记录。 等到从库被升级为新主库后，主从集群里就有两个主库了，到这里，我们就把脑裂发生的原因摸清 楚了。 </p>
+<p>  那为什么脑裂会导致数据的丢失呢？ </p>
+<p>  主从切换后，从库一旦升级为新主库，哨兵就会让原主库执行 slave of 命令，和新主库重新进行全量同步。而在全量同步执行的最后阶段，原主库需要清空本地的数据，加载新主库发送的 RDB  文件，这样一来，原主库在主从切换期间保存的新写数据就丢失了。</p>
+<h3 id="如何实现分布式锁"><a href="#如何实现分布式锁" class="headerlink" title="如何实现分布式锁"></a>如何实现分布式锁</h3><p>这样一来，我们就可以得出实现分布式锁的两个要求。 要求一：分布式锁的加锁和释放锁的过程，涉及多个操作。所以，在实现分布式锁时，我们需 要保证这些锁操作的原子性； 要求二：共享存储系统保存了锁变量，如果共享存储系统发生故障或宕机，那么客户端也就无 法进行锁操作了。在实现分布式锁时，我们需要考虑保证共享存储系统的可靠性，进而保证锁的可 靠性。</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="akurisu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">数据结构</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-01 23:47:44" itemprop="dateCreated datePublished" datetime="2022-03-01T23:47:44+08:00">2022-03-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-21 13:57:59" itemprop="dateModified" datetime="2022-04-21T13:57:59+08:00">2022-04-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">Java知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h3><p> R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊的<strong>二叉查找树</strong>。红黑树的每个节点上都有存储位表示节点的颜色，可以是红(Red)或黑(Black)。</p>
+<p><strong>红黑树的特性</strong>:</p>
+<ol>
+<li><strong>每个节点或者是黑色，或者是红色。</strong></li>
+<li><strong>根节点是黑色。</strong></li>
+<li><strong>每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！]</strong></li>
+<li><strong>如果一个节点是红色的，则它的子节点必须是黑色的。</strong></li>
+<li><strong>从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点</strong></li>
+<li><strong>对于任意节点而言，其到叶子点树NULL指针的每条路径都包含相同数目的黑节点</strong></li>
+</ol>
+<p>(01) 特性(3)中的叶子节点，是只为空(NIL或null)的节点。</p>
+<p>(02) 特性(5)，<strong>确保没有一条路径会比其他路径长出俩倍</strong>。因而，红黑树是相对是接近平衡的二叉树。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220405160645933.png" alt="image-20220405160645933"></p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="akurisu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/01/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" class="post-title-link" itemprop="url">贪心算法#文章標題</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-01 23:47:44" itemprop="dateCreated datePublished" datetime="2022-03-01T23:47:44+08:00">2022-03-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-05-10 22:40:22" itemprop="dateModified" datetime="2022-05-10T22:40:22+08:00">2022-05-10</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="Leetcode455-分发饼干"><a href="#Leetcode455-分发饼干" class="headerlink" title="Leetcode455 分发饼干"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/assign-cookies/">Leetcode455 分发饼干</a></h2><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220510220256557.png" alt="image-20220510220256557"></p>
+<p>贪心算法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findContentChildren</span><span class="params">(<span class="type">int</span>[] g, <span class="type">int</span>[] s)</span> &#123;</span><br><span class="line">          Arrays.sort(g);</span><br><span class="line">          Arrays.sort(s);</span><br><span class="line">          <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>, j = <span class="number">0</span>, sum = <span class="number">0</span>;</span><br><span class="line">          <span class="keyword">while</span>(i &lt; g.length &amp;&amp; j &lt;s.length)&#123;</span><br><span class="line">              <span class="keyword">if</span>(g[i] &lt;= s[j])&#123;</span><br><span class="line">                  sum++;</span><br><span class="line">                  j++;</span><br><span class="line">                  i++;</span><br><span class="line">              &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                  j++;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Leetcode376-摆动序列"><a href="#Leetcode376-摆动序列" class="headerlink" title="Leetcode376 摆动序列"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/wiggle-subsequence/">Leetcode376 摆动序列</a></h2><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220510221150077.png" alt="image-20220510221150077"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">wiggleMaxLength</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">curDiff</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">preDiff</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; nums.length; i++)&#123;</span><br><span class="line">            curDiff = nums[i] - nums[i -<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span>((curDiff &gt; <span class="number">0</span> &amp;&amp; preDiff &lt;= <span class="number">0</span>) || (curDiff &lt; <span class="number">0</span> &amp;&amp; preDiff &gt;= <span class="number">0</span>))&#123;</span><br><span class="line">                count++;</span><br><span class="line">                preDiff = curDiff;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -457,6 +1497,361 @@
   
   
 
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="akurisu">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/01/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" class="post-title-link" itemprop="url">操作系统</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2022-03-01 23:47:44" itemprop="dateCreated datePublished" datetime="2022-03-01T23:47:44+08:00">2022-03-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-21 14:02:18" itemprop="dateModified" datetime="2022-04-21T14:02:18+08:00">2022-04-21</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">Java知识</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h3 id="1-1-什么是操作系统？"><a href="#1-1-什么是操作系统？" class="headerlink" title="1.1 什么是操作系统？"></a>1.1 什么是操作系统？</h3><p>👨‍💻<strong>面试官</strong> ： 先来个简单问题吧！<strong>什么是操作系统？</strong></p>
+<p>🙋 <strong>我</strong> ：我通过以下四点向您介绍一下什么是操作系统吧！</p>
+<ol>
+<li><strong>操作系统（Operating System，简称 OS）是管理计算机硬件与软件资源的程序，是计算机的基石。</strong></li>
+<li><strong>操作系统本质上是一个运行在计算机上的软件程序 ，用于管理计算机硬件和软件资源。</strong> 举例：运行在你电脑上的所有应用程序都通过操作系统来调用系统内存以及磁盘等等硬件。</li>
+<li><strong>操作系统存在屏蔽了硬件层的复杂性。</strong> 操作系统就像是硬件使用的负责人，统筹着各种相关事项。</li>
+<li><strong>操作系统的内核（Kernel）是操作系统的核心部分，它负责系统的内存管理，硬件设备的管理，文件系统的管理以及应用程序的管理</strong>。 内核是连接应用程序和硬件的桥梁，决定着系统的性能和稳定性。</li>
+</ol>
+<h3 id="1-2-系统调用"><a href="#1-2-系统调用" class="headerlink" title="1.2 系统调用"></a>1.2 系统调用</h3><p>👨‍💻<strong>面试官</strong> ：<strong>什么是系统调用呢？</strong> 能不能详细介绍一下。</p>
+<p>🙋 <strong>我</strong> ：介绍系统调用之前，我们先来了解一下用户态和系统态。</p>
+<p>根据进程访问资源的特点，我们可以把进程在系统上的运行分为两个级别：</p>
+<ol>
+<li>用户态(user mode) : 用户态运行的进程可以直接读取用户程序的数据，在用户态下运行的代码会受到限制。</li>
+<li>系统态(kernel mode):可以简单的理解系统态运行的进程或程序几乎可以访问计算机的任何资源，不受限制。</li>
+</ol>
+<p>说了用户态和系统态之后，那么什么是系统调用呢？</p>
+<p>我们运行的程序基本都是运行在用户态，如果我们调用操作系统提供的系统态级别的子功能咋办呢？那就需要系统调用了！要执行系统调用，程序必须执行特殊的陷阱（trap）指令，该指令同时跳入内核并将特权级别提升到内核模式。</p>
+<p>也就是说在我们运行的用户程序中，凡是与系统态级别的资源有关的操作（如文件管理、进程控制、内存管理等)，都必须通过系统调用方式向操作系统提出服务请求，并由操作系统代为完成。</p>
+<p>这些系统调用按功能大致可分为如下几类：</p>
+<ul>
+<li>设备管理。完成设备的请求或释放，以及设备启动等功能。</li>
+<li>文件管理。完成文件的读、写、创建及删除等功能。</li>
+<li>进程控制。完成进程的创建、撤销、阻塞及唤醒等功能。</li>
+<li>进程通信。完成进程之间的消息传递或信号传递等功能。</li>
+<li>内存管理。完成内存的分配、回收以及获取作业占用内存区大小及地址等功能。</li>
+</ul>
+<h2 id="二-进程和线程"><a href="#二-进程和线程" class="headerlink" title="#二 进程和线程"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E4%BA%8C-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B">#</a>二 进程和线程</h2><h3 id="2-1-进程和线程的区别"><a href="#2-1-进程和线程的区别" class="headerlink" title="#2.1 进程和线程的区别"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-1-%E8%BF%9B%E7%A8%8B%E5%92%8C%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%8C%BA%E5%88%AB">#</a>2.1 进程和线程的区别</h3><p>👨‍💻<strong>面试官</strong>: 好的！我明白了！那你再说一下： <strong>进程和线程的区别</strong>。</p>
+<p>🙋 <strong>我：</strong> 好的！ 下图是 Java 内存区域，我们从 JVM 的角度来说一下线程和进程之间的关系吧！</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/up-cd8ac705f6f004c01e0a1312f1599430ba5.png" alt="img"></p>
+<p>从上图可以看出：一个进程中可以有多个线程，多个线程共享进程的<strong>堆</strong>和<strong>方法区 (JDK1.8 之后的元空间)**资源，但是每个线程有自己的**程序计数器**、</strong>虚拟机栈** 和 <strong>本地方法栈</strong>。</p>
+<p><strong>总结：</strong> 线程是进程划分成的更小的运行单位,一个进程在其执行的过程中可以产生多个线程。线程和进程最大的不同在于基本上各进程是独立的，而各线程则不一定，因为同一进程中的线程极有可能会相互影响。进程：系统进行资源调度和分配的基本单位，进程间独享内存，一个系统至少一个进程；线程。cpu进行资源调度和分配的基本单位，线程间共享进程的内存，一个进程至少一个线程，线程执行开销小，但不利于资源的管理和保护；而进程正相反。</p>
+<h4 id="协程"><a href="#协程" class="headerlink" title="协程"></a>协程</h4><p>是一种<strong>用户态的轻量级线程</strong>、协程的调度完全由用户控制。协程拥有自己的寄存器上下文和 栈。协程调度切换时，将寄存器上下文和栈栈保存到其他地方，在切换回来的时候，回复先前保存 的寄存器上下文和栈，<strong>没有内核切换开销所以非常快</strong>。</p>
+<h3 id="2-2-进程有哪几种状态"><a href="#2-2-进程有哪几种状态" class="headerlink" title="#2.2 进程有哪几种状态?"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-2-%E8%BF%9B%E7%A8%8B%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E7%8A%B6%E6%80%81">#</a>2.2 进程有哪几种状态?</h3><p>👨‍💻<strong>面试官</strong> ： 那你再说说<strong>进程有哪几种状态?</strong></p>
+<p>🙋 <strong>我</strong> ：我们一般把进程大致分为 5 种状态，这一点和<a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Multithread/JavaConcurrencyBasicsCommonInterviewQuestionsSummary.md#6-%E8%AF%B4%E8%AF%B4%E7%BA%BF%E7%A8%8B%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%92%8C%E7%8A%B6%E6%80%81">线程open in new window</a>很像！</p>
+<ul>
+<li><strong>创建状态(new)</strong> ：进程正在被创建，尚未到就绪状态。</li>
+<li><strong>就绪状态(ready)</strong> ：进程已处于准备运行状态，即进程获得了除了处理器之外的一切所需资源，一旦得到处理器资源(处理器分配的时间片)即可运行。</li>
+<li><strong>运行状态(running)</strong> ：进程正在处理器上上运行(单核 CPU 下任意时刻只有一个进程处于运行状态)。</li>
+<li><strong>阻塞状态(waiting)</strong> ：又称为等待状态，进程正在等待某一事件而暂停运行如等待某资源为可用或等待 IO 操作完成。即使处理器空闲，该进程也不能运行。</li>
+<li><strong>结束状态(terminated)</strong> ：进程正在从系统中消失。可能是进程正常结束或其他原因中断退出运行。</li>
+</ul>
+<blockquote>
+<p>订正：下图中 running 状态被 interrupt 向 ready 状态转换的箭头方向反了。</p>
+</blockquote>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/d38202593012b457debbcd74994c6292.png" alt="process-state"></p>
+<h3 id="2-3-进程间的通信方式"><a href="#2-3-进程间的通信方式" class="headerlink" title="#2.3 进程间的通信方式"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-3-%E8%BF%9B%E7%A8%8B%E9%97%B4%E7%9A%84%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F">#</a>2.3 进程间的通信方式</h3><p>👨‍💻<strong>面试官</strong> ：<strong>进程间的通信常见的的有哪几种方式呢?</strong></p>
+<p>🙋 <strong>我</strong> ：大概有 7 种常见的进程间的通信方式。</p>
+<blockquote>
+<p>下面这部分总结参考了:<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/c1015f5ffa74">《进程间通信 IPC (InterProcess Communication)》open in new window</a> 这篇文章，推荐阅读，总结的非常不错。</p>
+</blockquote>
+<ol>
+<li><strong>管道&#x2F;匿名管道(Pipes)</strong> ：用于具有亲缘关系的父子进程间或者兄弟进程之间的通信。                                                                                                                  管道的实质是一个内核缓冲区，进程以先进先出的方式从缓冲区存取数据，管道一端的进程顺序的将数据写入缓冲区，另一端的进程则顺序的读出数据。该缓冲区可以看做是一个循环队列，读和写的位置都是自动增长的，不能随意改变，一个数据只能被读一次，读出来以后在缓冲区就不复存在了。 当缓冲区读空或者写满时，有一定的规则控制相应的读进程或者写进程进入等待队列，当空的缓冲区有新数据写入或者满的缓冲区有数据读出来时，就唤醒等待队列中的进程继续读写。</li>
+<li><strong>有名管道(Names Pipes)</strong> : 匿名管道由于没有名字，只能用于亲缘关系的进程间通信。为了克服这个缺点，提出了有名管道。有名管道严格遵循**先进先出(first in first out)**。有名管道以磁盘文件的方式存在，可以实现本机任意两个进程通信。</li>
+<li><strong>信号(Signal)</strong> ：信号是一种比较复杂的通信方式，用于通知接收进程某个事件已经发生；</li>
+<li><strong>消息队列(Message Queuing)</strong> ：消息队列是消息的链表,具有特定的格式,存放在内存中并由消息队列标识符标识。管道和消息队列的通信数据都是先进先出的原则。与管道（无名管道：只存在于内存中的文件；命名管道：存在于实际的磁盘介质或者文件系统）不同的是消息队列存放在内核中，只有在内核重启(即，操作系统重启)或者显式地删除一个消息队列时，该消息队列才会被真正的删除。消息队列可以实现消息的随机查询,消息不一定要以先进先出的次序读取,也可以按消息的类型读取.比 FIFO 更有优势。<strong>消息队列克服了信号承载信息量少，管道只能承载无格式字 节流以及缓冲区大小受限等缺点。</strong></li>
+<li><strong>信号量(Semaphores)</strong> ：信号量是一个计数器，用于多进程对共享数据的访问，信号量的意图在于进程间同步。这种通信方式主要用于解决与同步相关的问题并避免竞争条件。</li>
+<li><strong>共享内存(Shared memory)</strong> ：使得多个进程可以访问同一块内存空间，不同进程可以及时看到对方进程中对共享内存中数据的更新。这种方式需要依靠某种同步操作，如互斥锁和信号量等。可以说这是最有用的进程间通信方式。</li>
+<li><strong>套接字(Sockets)</strong> : 此方法主要用于在客户端和服务器之间通过网络进行通信。套接字是支持 TCP&#x2F;IP 的网络通信的基本操作单元，可以看做是不同主机之间的进程进行双向通信的端点，简单的说就是通信的两方的一种约定，用套接字中的相关函数来完成通信过程。</li>
+</ol>
+<h3 id="2-4-线程间的同步的方式"><a href="#2-4-线程间的同步的方式" class="headerlink" title="#2.4 线程间的同步的方式"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-4-%E7%BA%BF%E7%A8%8B%E9%97%B4%E7%9A%84%E5%90%8C%E6%AD%A5%E7%9A%84%E6%96%B9%E5%BC%8F">#</a>2.4 线程间的同步的方式</h3><p>👨‍💻<strong>面试官</strong> ：<strong>那线程间的同步的方式有哪些呢?</strong></p>
+<p>🙋 <strong>我</strong> ：线程同步是两个或多个共享关键资源的线程的并发执行。应该同步线程以避免关键的资源使用冲突。操作系统一般有下面三种线程同步的方式：</p>
+<ol>
+<li>**互斥量(Mutex)**：采用互斥对象机制，只有拥有互斥对象的线程才有访问公共资源的权限。因为互斥对象只有一个，所以可以保证公共资源不会被多个线程同时访问。比如 Java 中的 synchronized 关键词和各种 Lock 都是这种机制。</li>
+<li><strong>信号量(Semphares)</strong> ：它允许同一时刻多个线程访问同一资源，但是需要控制同一时刻访问此资源的最大线程数量。</li>
+<li><strong>事件(Event)</strong> :Wait&#x2F;Notify：通过通知操作的方式来保持多线程同步，还可以方便的实现多线程优先级的比较操作。</li>
+</ol>
+<h3 id="2-5-进程的调度算法"><a href="#2-5-进程的调度算法" class="headerlink" title="#2.5 进程的调度算法"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-5-%E8%BF%9B%E7%A8%8B%E7%9A%84%E8%B0%83%E5%BA%A6%E7%AE%97%E6%B3%95">#</a>2.5 进程的调度算法</h3><p>👨‍💻<strong>面试官</strong> ：<strong>你知道操作系统中进程的调度算法有哪些吗?</strong></p>
+<p>🙋 <strong>我</strong> ：嗯嗯！这个我们大学的时候学过，是一个很重要的知识点！</p>
+<p>为了确定首先执行哪个进程以及最后执行哪个进程以实现最大 CPU 利用率，计算机科学家已经定义了一些算法，它们是：</p>
+<ul>
+<li><strong>先到先服务(FCFS)调度算法</strong> : 从就绪队列中选择一个最先进入该队列的进程为之分配资源，使它立即执行并一直执行到完成或发生某事件而被阻塞放弃占用 CPU 时再重新调度。</li>
+<li><strong>短作业优先(SJF)的调度算法</strong> : 从就绪队列中选出一个估计运行时间最短的进程为之分配资源，使它立即执行并一直执行到完成或发生某事件而被阻塞放弃占用 CPU 时再重新调度。</li>
+<li><strong>时间片轮转调度算法</strong> : 时间片轮转调度是一种最古老，最简单，最公平且使用最广的算法，又称 RR(Round robin)调度。每个进程被分配一个时间段，称作它的时间片，即该进程允许运行的时间。</li>
+<li><strong>多级反馈队列调度算法</strong> ：前面介绍的几种进程调度的算法都有一定的局限性。如<strong>短进程优先的调度算法，仅照顾了短进程而忽略了长进程</strong> 。属于最高优先级类的进程运行一个时间片，属于次高优先级类的进程运行两个时间片，再次一级运行四个时间片，以此类推，多级反馈队列调度算法既能使高优先级的作业得到响应又能使短作业（进程）迅速完成。因而它是目前<strong>被公认的一种较好的进程调度算法</strong>，UNIX 操作系统采取的便是这种调度算法。</li>
+<li><strong>优先级调度</strong> ： 为每个流程分配优先级，首先执行具有最高优先级的进程，依此类推。具有相同优先级的进程以 FCFS 方式执行。可以根据内存要求，时间要求或任何其他资源要求来确定优先级。</li>
+</ul>
+<h3 id="2-6-什么是死锁"><a href="#2-6-什么是死锁" class="headerlink" title="#2.6 什么是死锁"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-6-%E4%BB%80%E4%B9%88%E6%98%AF%E6%AD%BB%E9%94%81">#</a>2.6 什么是死锁</h3><p>👨‍💻<strong>面试官</strong> ：<strong>你知道什么是死锁吗?</strong></p>
+<p>🙋 <strong>我</strong> ：多个进程可以竞争有限数量的资源。当一个进程申请资源时，如果这时没有可用资源，那么这个进程进入等待状态。有时，如果所申请的资源被其他等待进程占有，那么该等待进程有可能再也无法改变状态。这种情况称为 <strong>死锁</strong>。</p>
+<h3 id="2-7-死锁的四个条件"><a href="#2-7-死锁的四个条件" class="headerlink" title="#2.7 死锁的四个条件"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-7-%E6%AD%BB%E9%94%81%E7%9A%84%E5%9B%9B%E4%B8%AA%E6%9D%A1%E4%BB%B6">#</a>2.7 死锁的四个条件</h3><p>👨‍💻<strong>面试官</strong> ：<strong>产生死锁的四个必要条件是什么?</strong></p>
+<p>🙋 <strong>我</strong> ：如果系统中以下四个条件同时成立，那么就能引起死锁：</p>
+<ul>
+<li><strong>互斥</strong>：资源必须处于非共享模式，即一次只有一个进程可以使用。如果另一进程申请该资源，那么必须等待直到该资源被释放为止。</li>
+<li><strong>占有并等待</strong>：一个进程至少应该占有一个资源，并等待另一资源，而该资源被其他进程所占有。</li>
+<li><strong>非抢占</strong>：资源不能被抢占。只能在持有资源的进程完成任务后，该资源才会被释放。</li>
+<li><strong>循环等待</strong>：有一组等待进程 <code>&#123;P0, P1,..., Pn&#125;</code>， <code>P0</code> 等待的资源被 <code>P1</code> 占有，<code>P1</code> 等待的资源被 <code>P2</code> 占有，……，<code>Pn-1</code> 等待的资源被 <code>Pn</code> 占有，<code>Pn</code> 等待的资源被 <code>P0</code> 占有。</li>
+</ul>
+<p>注意，只有四个条件同时成立时，死锁才会出现。</p>
+<h3 id="2-8-解决死锁的方法"><a href="#2-8-解决死锁的方法" class="headerlink" title="#2.8 解决死锁的方法"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_2-8-%E8%A7%A3%E5%86%B3%E6%AD%BB%E9%94%81%E7%9A%84%E6%96%B9%E6%B3%95">#</a>2.8 解决死锁的方法</h3><p>解决死锁的方法可以从多个角度去分析，一般的情况下，有<strong>预防，避免，检测和解除四种</strong>。</p>
+<ul>
+<li><strong>预防</strong> 是采用某种策略，<strong>限制并发进程对资源的请求</strong>，从而使得死锁的必要条件在系统执行的任何时间上都不满足。</li>
+<li><strong>避免</strong>则是系统在分配资源时，根据资源的使用情况<strong>提前做出预测</strong>，从而<strong>避免死锁的发生</strong></li>
+<li><strong>检测</strong>是指系统设有<strong>专门的机构</strong>，当死锁发生时，该机构能够检测死锁的发生，并精确地确定与死锁有关的进程和资源。</li>
+<li><strong>解除</strong> 是与检测相配套的一种措施，用于<strong>将进程从死锁状态下解脱出来</strong>。</li>
+</ul>
+<h4 id="死锁的预防"><a href="#死锁的预防" class="headerlink" title="#死锁的预防"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E7%9A%84%E9%A2%84%E9%98%B2">#</a>死锁的预防</h4><p>死锁四大必要条件上面都已经列出来了，很显然，只要破坏四个必要条件中的任何一个就能够预防死锁的发生。</p>
+<p>破坏第一个条件 <strong>互斥条件</strong>：使得资源是可以同时访问的，这是种简单的方法，磁盘就可以用这种方法管理，但是我们要知道，有很多资源 <strong>往往是不能同时访问的</strong> ，所以这种做法在大多数的场合是行不通的。</p>
+<p>破坏第三个条件 <strong>非抢占</strong> ：也就是说可以采用 <strong>剥夺式调度算法</strong>，但剥夺式调度方法目前一般仅适用于 <strong>主存资源</strong> 和 <strong>处理器资源</strong> 的分配，并不适用于所以的资源，会导致 <strong>资源利用率下降</strong>。</p>
+<p>所以一般比较实用的 <strong>预防死锁的方法</strong>，是通过考虑破坏第二个条件和第四个条件。</p>
+<p><strong>1、静态分配策略</strong></p>
+<p>静态分配策略可以破坏死锁产生的第二个条件（占有并等待）。所谓静态分配策略，就是指一个进程必须在执行前就申请到它所需要的全部资源，并且知道它所要的资源都得到满足之后才开始执行。进程要么占有所有的资源然后开始执行，要么不占有资源，不会出现占有一些资源等待一些资源的情况。</p>
+<p>静态分配策略逻辑简单，实现也很容易，但这种策略 <strong>严重地降低了资源利用率</strong>，因为在每个进程所占有的资源中，有些资源是在比较靠后的执行时间里采用的，甚至有些资源是在额外的情况下才是用的，这样就可能造成了一个进程占有了一些 <strong>几乎不用的资源而使其他需要该资源的进程产生等待</strong> 的情况。</p>
+<p><strong>2、层次分配策略</strong></p>
+<p>层次分配策略破坏了产生死锁的第四个条件(循环等待)。在层次分配策略下，所有的资源被分成了多个层次，一个进程得到某一次的一个资源后，它只能再申请较高一层的资源；当一个进程要释放某层的一个资源时，必须先释放所占用的较高层的资源，按这种策略，是不可能出现循环等待链的，因为那样的话，就出现了已经申请了较高层的资源，反而去申请了较低层的资源，不符合层次分配策略，证明略。</p>
+<h4 id="死锁的避免"><a href="#死锁的避免" class="headerlink" title="#死锁的避免"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E7%9A%84%E9%81%BF%E5%85%8D">#</a>死锁的避免</h4><p>上面提到的 <strong>破坏</strong> 死锁产生的四个必要条件之一就可以成功 <strong>预防系统发生死锁</strong> ，但是会导致 <strong>低效的进程运行</strong> 和 <strong>资源使用率</strong> 。而死锁的避免相反，它的角度是允许系统中<strong>同时存在四个必要条件</strong> ，只要掌握并发进程中与每个进程有关的资源动态申请情况，做出 <strong>明智和合理的选择</strong> ，仍然可以避免死锁，因为四大条件仅仅是产生死锁的必要条件。</p>
+<p>我们将系统的状态分为 <strong>安全状态</strong> 和 <strong>不安全状态</strong> ，每当在未申请者分配资源前先测试系统状态，若把系统资源分配给申请者会产生死锁，则拒绝分配，否则接受申请，并为它分配资源。</p>
+<blockquote>
+<p>如果操作系统能够保证所有的进程在有限的时间内得到需要的全部资源，则称系统处于安全状态，否则说系统是不安全的。很显然，系统处于安全状态则不会发生死锁，系统若处于不安全状态则可能发生死锁。</p>
+</blockquote>
+<p>那么如何保证系统保持在安全状态呢？通过算法，其中最具有代表性的 <strong>避免死锁算法</strong> 就是 Dijkstra 的银行家算法，银行家算法用一句话表达就是：当一个进程申请使用资源的时候，<strong>银行家算法</strong> 通过先 <strong>试探</strong> 分配给该进程资源，然后通过 <strong>安全性算法</strong> 判断分配后系统是否处于安全状态，若不安全则试探分配作废，让该进程继续等待，若能够进入到安全的状态，则就 <strong>真的分配资源给该进程</strong>。</p>
+<p>银行家算法详情可见：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33414271/article/details/80245715">《一句话+一张图说清楚——银行家算法》open in new window</a> 。</p>
+<p>操作系统教程树中讲述的银行家算法也比较清晰，可以一看.</p>
+<p>死锁的避免(银行家算法)改善解决了 <strong>资源使用率低的问题</strong> ，但是它要不断地检测每个进程对各类资源的占用和申请情况，以及做 <strong>安全性检查</strong> ，需要花费较多的时间。</p>
+<h4 id="死锁的检测"><a href="#死锁的检测" class="headerlink" title="#死锁的检测"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E7%9A%84%E6%A3%80%E6%B5%8B">#</a>死锁的检测</h4><p>对资源的分配加以限制可以 <strong>预防和避免</strong> 死锁的发生，但是都不利于各进程对系统资源的<strong>充分共享</strong>。解决死锁问题的另一条途径是 <strong>死锁检测和解除</strong> (这里突然联想到了乐观锁和悲观锁，感觉死锁的检测和解除就像是 <strong>乐观锁</strong> ，分配资源时不去提前管会不会发生死锁了，等到真的死锁出现了再来解决嘛，而 <strong>死锁的预防和避免</strong> 更像是悲观锁，总是觉得死锁会出现，所以在分配资源的时候就很谨慎)。</p>
+<p>这种方法对资源的分配不加以任何限制，也不采取死锁避免措施，但系统 <strong>定时地运行一个 “死锁检测”</strong> 的程序，判断系统内是否出现死锁，如果检测到系统发生了死锁，再采取措施去解除它。</p>
+<h5 id="进程-资源分配图"><a href="#进程-资源分配图" class="headerlink" title="#进程-资源分配图"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E8%BF%9B%E7%A8%8B-%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE">#</a>进程-资源分配图</h5><p>操作系统中的每一刻时刻的<strong>系统状态</strong>都可以用<strong>进程-资源分配图</strong>来表示，进程-资源分配图是描述进程和资源申请及分配关系的一种有向图，可用于<strong>检测系统是否处于死锁状态</strong>。</p>
+<p>用一个方框表示每一个资源类，方框中的黑点表示该资源类中的各个资源，每个键进程用一个圆圈表示，用 <strong>有向边</strong> 来表示<strong>进程申请资源和资源被分配的情况</strong>。</p>
+<p>图中 2-21 是<strong>进程-资源分配图</strong>的一个例子，其中共有三个资源类，每个进程的资源占有和申请情况已清楚地表示在图中。在这个例子中，由于存在 <strong>占有和等待资源的环路</strong> ，导致一组进程永远处于等待资源的状态，发生了 <strong>死锁</strong>。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/%E8%BF%9B%E7%A8%8B-%E8%B5%84%E6%BA%90%E5%88%86%E9%85%8D%E5%9B%BE.31e353df.jpg" alt="进程-资源分配图"></p>
+<p>进程-资源分配图中存在环路并不一定是发生了死锁。因为循环等待资源仅仅是死锁发生的必要条件，而不是充分条件。图 2-22 便是一个有环路而无死锁的例子。虽然进程 P1 和进程 P3 分别占用了一个资源 R1 和一个资源 R2，并且因为等待另一个资源 R2 和另一个资源 R1 形成了环路，但进程 P2 和进程 P4 分别占有了一个资源 R1 和一个资源 R2，它们申请的资源得到了满足，在有限的时间里会归还资源，于是进程 P1 或 P3 都能获得另一个所需的资源，环路自动解除，系统也就不存在死锁状态了。</p>
+<h5 id="死锁检测步骤"><a href="#死锁检测步骤" class="headerlink" title="#死锁检测步骤"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E6%A3%80%E6%B5%8B%E6%AD%A5%E9%AA%A4">#</a>死锁检测步骤</h5><p>知道了死锁检测的原理，我们可以利用下列步骤编写一个 <strong>死锁检测</strong> 程序，检测系统是否产生了死锁。</p>
+<ol>
+<li>如果进程-资源分配图中无环路，则此时系统没有发生死锁</li>
+<li>如果进程-资源分配图中有环路，且每个资源类仅有一个资源，则系统中已经发生了死锁。</li>
+<li>如果进程-资源分配图中有环路，且涉及到的资源类有多个资源，此时系统未必会发生死锁。如果能在进程-资源分配图中找出一个 <strong>既不阻塞又非独立的进程</strong> ，该进程能够在有限的时间内归还占有的资源，也就是把边给消除掉了，重复此过程，直到能在有限的时间内 <strong>消除所有的边</strong> ，则不会发生死锁，否则会发生死锁。(消除边的过程类似于 <strong>拓扑排序</strong>)</li>
+</ol>
+<h4 id="死锁的解除"><a href="#死锁的解除" class="headerlink" title="#死锁的解除"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%AD%BB%E9%94%81%E7%9A%84%E8%A7%A3%E9%99%A4">#</a>死锁的解除</h4><p>当死锁检测程序检测到存在死锁发生时，应设法让其解除，让系统从死锁状态中恢复过来，常用的解除死锁的方法有以下四种：</p>
+<ol>
+<li><strong>立即结束所有进程的执行，重新启动操作系统</strong> ：这种方法简单，但以前所在的工作全部作废，损失很大。</li>
+<li><strong>撤销涉及死锁的所有进程，解除死锁后继续运行</strong> ：这种方法能彻底打破<strong>死锁的循环等待</strong>条件，但将付出很大代价，例如有些进程可能已经计算了很长时间，由于被撤销而使产生的部分结果也被消除了，再重新执行时还要再次进行计算。</li>
+<li><strong>逐个撤销涉及死锁的进程，回收其资源直至死锁解除。</strong></li>
+<li><strong>抢占资源</strong> ：从涉及死锁的一个或几个进程中抢占资源，把夺得的资源再分配给涉及死锁的进程直至死锁解除。</li>
+</ol>
+<h3 id="2-9协程"><a href="#2-9协程" class="headerlink" title="2.9协程"></a>2.9协程</h3><p><strong>协程，英文Coroutines，是一种比线程更加轻量级的存在。</strong>正如一个进程可以拥有多个线程一样，一个线程也可以拥有多个<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%8D%8F%E7%A8%8B&spm=1001.2101.3001.7020">协程</a>。</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/6765e36cc4604fba897976638af03524.jpeg" alt="img"></p>
+<p>最重要的是，协程不是被操作系统内核所管理，而完全是由程序所控制（也就是在用户态执行）。</p>
+<p>这样带来的好处就是性能得到了很大的提升，不会像线程切换那样消耗资源。</p>
+<h2 id="三-操作系统内存管理基础"><a href="#三-操作系统内存管理基础" class="headerlink" title="#三 操作系统内存管理基础"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E4%B8%89-%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E5%9F%BA%E7%A1%80">#</a>三 操作系统内存管理基础</h2><h3 id="3-1-内存管理介绍"><a href="#3-1-内存管理介绍" class="headerlink" title="#3.1 内存管理介绍"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-1-%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E4%BB%8B%E7%BB%8D">#</a>3.1 内存管理介绍</h3><p>👨‍💻 <strong>面试官</strong>: <strong>操作系统的内存管理主要是做什么？</strong></p>
+<p>🙋 <strong>我：</strong> 操作系统的内存管理主要负责内存的分配与回收（malloc 函数：申请内存，free 函数：释放内存），另外地址转换也就是将逻辑地址转换成相应的物理地址等功能也是操作系统内存管理做的事情。</p>
+<h3 id="3-2-常见的几种内存管理机制"><a href="#3-2-常见的几种内存管理机制" class="headerlink" title="#3.2 常见的几种内存管理机制"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-2-%E5%B8%B8%E8%A7%81%E7%9A%84%E5%87%A0%E7%A7%8D%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86%E6%9C%BA%E5%88%B6">#</a>3.2 常见的几种内存管理机制</h3><p>👨‍💻 <strong>面试官</strong>: <strong>操作系统的内存管理机制了解吗？内存管理有哪几种方式?</strong></p>
+<p>🙋 <strong>我：</strong> 这个在学习操作系统的时候有了解过。</p>
+<p>简单分为<strong>连续分配管理方式</strong>和<strong>非连续分配管理方式</strong>这两种。连续分配管理方式是指为一个用户程序分配一个连续的内存空间，常见的如 <strong>块式管理</strong> 。同样地，非连续分配管理方式允许一个程序使用的内存分布在离散或者说不相邻的内存中，常见的如<strong>页式管理</strong> 和 <strong>段式管理</strong>。</p>
+<ol>
+<li><strong>块式管理</strong> ： 远古时代的计算机操作系统的内存管理方式。将内存分为几个固定大小的块，每个块中只包含一个进程。如果程序运行需要内存的话，操作系统就分配给它一块，如果程序运行只需要很小的空间的话，分配的这块内存很大一部分几乎被浪费了。这些在每个块中未被利用的空间，我们称之为碎片。</li>
+<li><strong>页式管理</strong> ：把主存分为大小相等且固定的一页一页的形式，页较小，相对相比于块式管理的划分力度更大，提高了内存利用率，减少了碎片。页式管理通过页表对应逻辑地址和物理地址。</li>
+<li><strong>段式管理</strong> ： 页式管理虽然提高了内存利用率，但是页式管理其中的页实际并无任何实际意义。 段式管理把主存分为一段段的，段是有实际意义的，每个段定义了一组逻辑信息，例如,有主程序段 MAIN、子程序段 X、数据段 D 及栈段 S 等。 段式管理通过段表对应逻辑地址和物理地址。</li>
+</ol>
+<p>简单来说：页是物理单位，段是逻辑单位。分页可以有效提高内存利用率，分段可以更好满足用户需求。</p>
+<p>👨‍💻<strong>面试官</strong> ： 回答的还不错！不过漏掉了一个很重要的 <strong>段页式管理机制</strong> 。段页式管理机制结合了段式管理和页式管理的优点。简单来说段页式管理机制就是把主存先分成若干段，每个段又分成若干页，也就是说 <strong>段页式管理机制</strong> 中段与段之间以及段的内部的都是离散的。</p>
+<p>🙋 <strong>我</strong> ：谢谢面试官！刚刚把这个给忘记了～</p>
+<h3 id="3-3-快表和多级页表"><a href="#3-3-快表和多级页表" class="headerlink" title="#3.3 快表和多级页表"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-3-%E5%BF%AB%E8%A1%A8%E5%92%8C%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8">#</a>3.3 快表和多级页表</h3><p>👨‍💻<strong>面试官</strong> ： 页表管理机制中有两个很重要的概念：快表和多级页表，这两个东西分别解决了页表管理中很重要的两个问题。你给我简单介绍一下吧！</p>
+<p>🙋 <strong>我</strong> ：在分页内存管理中，很重要的两点是：</p>
+<ol>
+<li>虚拟地址到物理地址的转换要快。</li>
+<li>解决虚拟地址空间大，页表也会很大的问题。</li>
+</ol>
+<h4 id="快表"><a href="#快表" class="headerlink" title="#快表"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E5%BF%AB%E8%A1%A8">#</a>快表</h4><p>为了解决虚拟地址到物理地址的转换速度，操作系统在 <strong>页表方案</strong> 基础之上引入了 <strong>快表</strong> 来加速虚拟地址到物理地址的转换。我们可以把快表理解为一种特殊的高速缓冲存储器（Cache），其中的内容是页表的一部分或者全部内容（虚拟页号，页面的修改位，修改位，保护位，页框号）。作为页表的 Cache，它的作用与页表相似，但是提高了访问速率。由于采用页表做地址转换，读写内存数据时 CPU 要访问两次主存。有了快表，有时只要访问一次高速缓冲存储器，一次主存，这样可加速查找并提高指令执行速度。</p>
+<p>使用快表之后的地址转换流程是这样的：</p>
+<ol>
+<li>根据虚拟地址中的页号查快表；</li>
+<li>如果该页在快表中，直接从快表中读取相应的物理地址；</li>
+<li>如果该页不在快表中，就访问内存中的页表，再从页表中得到物理地址，同时将页表中的该映射表项添加到快表中；</li>
+<li>当快表填满后，又要登记新页时，就按照一定的淘汰策略淘汰掉快表中的一个页。</li>
+</ol>
+<p>看完了之后你会发现快表和我们平时经常在我们开发的系统使用的缓存（比如 Redis）很像，的确是这样的，操作系统中的很多思想、很多经典的算法，你都可以在我们日常开发使用的各种工具或者框架中找到它们的影子。</p>
+<h4 id="多级页表"><a href="#多级页表" class="headerlink" title="#多级页表"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8">#</a>多级页表</h4><p>引入多级页表的主要目的是为了避免把全部页表一直放在内存中占用过多空间，特别是那些根本就不需要的页表就不需要保留在内存中。多级页表属于时间换空间的典型场景，具体可以查看下面这篇文章</p>
+<ul>
+<li>多级页表如何节约内存：<a target="_blank" rel="noopener" href="https://www.polarxiong.com/archives/%E5%A4%9A%E7%BA%A7%E9%A1%B5%E8%A1%A8%E5%A6%82%E4%BD%95%E8%8A%82%E7%BA%A6%E5%86%85%E5%AD%98.html">https://www.polarxiong.com/archives/多级页表如何节约内存.htmlopen in new window</a></li>
+</ul>
+<h4 id="总结"><a href="#总结" class="headerlink" title="#总结"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E6%80%BB%E7%BB%93">#</a>总结</h4><p>为了提高内存的空间性能，提出了多级页表的概念；但是提到空间性能是以浪费时间性能为基础的，因此为了补充损失的时间性能，提出了快表（即 TLB）的概念。 不论是快表还是多级页表实际上都利用到了<strong>程序的局部性原理</strong>，局部性原理在后面的虚拟内存这部分会介绍到。</p>
+<h3 id="3-4-分页机制和分段机制的共同点和区别"><a href="#3-4-分页机制和分段机制的共同点和区别" class="headerlink" title="#3.4 分页机制和分段机制的共同点和区别"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-4-%E5%88%86%E9%A1%B5%E6%9C%BA%E5%88%B6%E5%92%8C%E5%88%86%E6%AE%B5%E6%9C%BA%E5%88%B6%E7%9A%84%E5%85%B1%E5%90%8C%E7%82%B9%E5%92%8C%E5%8C%BA%E5%88%AB">#</a>3.4 分页机制和分段机制的共同点和区别</h3><p>👨‍💻<strong>面试官</strong> ： <strong>分页机制和分段机制有哪些共同点和区别呢？</strong></p>
+<p>🙋 <strong>我</strong> ：</p>
+<ol>
+<li><p>共同点</p>
+<p>：</p>
+<ul>
+<li>分页机制和分段机制都是为了提高内存利用率，减少内存碎片。</li>
+<li>页和段都是离散存储的，所以两者都是离散分配内存的方式。但是，每个页和段中的内存是连续的。</li>
+</ul>
+</li>
+<li><p>区别</p>
+<p>：</p>
+<ul>
+<li>页的大小是固定的，由操作系统决定；而段的大小不固定，取决于我们当前运行的程序。</li>
+<li>分页仅仅是为了满足操作系统内存管理的需求，而段是逻辑信息的单位，在程序中可以体现为代码段，数据段，能够更好满足用户的需要。</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-5-逻辑-虚拟-地址和物理地址"><a href="#3-5-逻辑-虚拟-地址和物理地址" class="headerlink" title="#3.5 逻辑(虚拟)地址和物理地址"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-5-%E9%80%BB%E8%BE%91-%E8%99%9A%E6%8B%9F-%E5%9C%B0%E5%9D%80%E5%92%8C%E7%89%A9%E7%90%86%E5%9C%B0%E5%9D%80">#</a>3.5 逻辑(虚拟)地址和物理地址</h3><p>👨‍💻<strong>面试官</strong> ：你刚刚还提到了<strong>逻辑地址和物理地址</strong>这两个概念，我不太清楚，你能为我解释一下不？</p>
+<p>🙋 <strong>我：</strong> em…好的嘛！我们编程一般只有可能和逻辑地址打交道，比如在 C 语言中，指针里面存储的数值就可以理解成为内存里的一个地址，这个地址也就是我们说的逻辑地址，逻辑地址由操作系统决定。物理地址指的是真实物理内存中地址，更具体一点来说就是内存地址寄存器中的地址。物理地址是内存单元真正的地址。</p>
+<h3 id="3-6-CPU-寻址了解吗-为什么需要虚拟地址空间"><a href="#3-6-CPU-寻址了解吗-为什么需要虚拟地址空间" class="headerlink" title="#3.6 CPU 寻址了解吗?为什么需要虚拟地址空间?"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_3-6-cpu-%E5%AF%BB%E5%9D%80%E4%BA%86%E8%A7%A3%E5%90%97-%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E8%99%9A%E6%8B%9F%E5%9C%B0%E5%9D%80%E7%A9%BA%E9%97%B4">#</a>3.6 CPU 寻址了解吗?为什么需要虚拟地址空间?</h3><p>👨‍💻<strong>面试官</strong> ：<strong>CPU 寻址了解吗?为什么需要虚拟地址空间?</strong></p>
+<p>🙋 <strong>我</strong> ：这部分我真不清楚！</p>
+<p>于是面试完之后我默默去查阅了相关文档！留下了没有技术的泪水。。。</p>
+<blockquote>
+<p>这部分内容参考了 Microsoft 官网的介绍，地址：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows-hardware/drivers/gettingstarted/virtual-address-spaces?redirectedfrom=MSDN">https://docs.microsoft.com/zh-cn/windows-hardware/drivers/gettingstarted/virtual-address-spaces?redirectedfrom=MSDNopen in new window</a></p>
+</blockquote>
+<p>现代处理器使用的是一种称为 <strong>虚拟寻址(Virtual Addressing)</strong> 的寻址方式。<strong>使用虚拟寻址，CPU 需要将虚拟地址翻译成物理地址，这样才能访问到真实的物理内存。</strong> 实际上完成虚拟地址转换为物理地址转换的硬件是 CPU 中含有一个被称为 <strong>内存管理单元（Memory Management Unit, MMU）</strong> 的硬件。如下图所示：</p>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/2b27dac8cc647f8aac989da2d1166db2.png" alt="MMU_principle_updated"></p>
+<p><strong>为什么要有虚拟地址空间呢？</strong></p>
+<p>先从没有虚拟地址空间的时候说起吧！没有虚拟地址空间的时候，<strong>程序都是直接访问和操作的都是物理内存</strong> 。但是这样有什么问题呢？</p>
+<ol>
+<li>用户程序可以访问任意内存，寻址内存的每个字节，这样就很容易（有意或者无意）破坏操作系统，造成操作系统崩溃。</li>
+<li>想要同时运行多个程序特别困难，比如你想同时运行一个微信和一个 QQ 音乐都不行。为什么呢？举个简单的例子：微信在运行的时候给内存地址 1xxx 赋值后，QQ 音乐也同样给内存地址 1xxx 赋值，那么 QQ 音乐对内存的赋值就会覆盖微信之前所赋的值，这就造成了微信这个程序就会崩溃。</li>
+</ol>
+<p><strong>总结来说：如果直接把物理地址暴露出来的话会带来严重问题，比如可能对操作系统造成伤害以及给同时运行多个程序造成困难。</strong></p>
+<p>通过虚拟地址访问内存有以下优势：</p>
+<ul>
+<li>程序可以使用一系列相邻的虚拟地址来访问物理内存中不相邻的大内存缓冲区。</li>
+<li>程序可以使用一系列虚拟地址来访问大于可用物理内存的内存缓冲区。当物理内存的供应量变小时，内存管理器会将物理内存页（通常大小为 4 KB）保存到磁盘文件。数据或代码页会根据需要在物理内存与磁盘之间移动。</li>
+<li>不同进程使用的虚拟地址彼此隔离。一个进程中的代码无法更改正在由另一进程或操作系统使用的物理内存。</li>
+</ul>
+<h2 id="四-虚拟内存"><a href="#四-虚拟内存" class="headerlink" title="#四 虚拟内存"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#%E5%9B%9B-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98">#</a>四 虚拟内存</h2><h3 id="4-1-什么是虚拟内存-Virtual-Memory"><a href="#4-1-什么是虚拟内存-Virtual-Memory" class="headerlink" title="#4.1 什么是虚拟内存(Virtual Memory)?"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-1-%E4%BB%80%E4%B9%88%E6%98%AF%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98-virtual-memory">#</a>4.1 什么是虚拟内存(Virtual Memory)?</h3><p>👨‍💻<strong>面试官</strong> ：再问你一个常识性的问题！<strong>什么是虚拟内存(Virtual Memory)?</strong></p>
+<p>🙋 <strong>我</strong> ：这个在我们平时使用电脑特别是 Windows 系统的时候太常见了。很多时候我们使用点开了很多占内存的软件，这些软件占用的内存可能已经远远超出了我们电脑本身具有的物理内存。<strong>为什么可以这样呢？</strong> 正是因为 <strong>虚拟内存</strong> 的存在，通过 <strong>虚拟内存</strong> 可以让程序可以拥有超过系统物理内存大小的可用内存空间。另外，<strong>虚拟内存为每个进程提供了一个一致的、私有的地址空间，它让每个进程产生了一种自己在独享主存的错觉（每个进程拥有一片连续完整的内存空间）</strong>。这样会更加有效地管理内存并减少出错。</p>
+<p><strong>虚拟内存</strong>是计算机系统内存管理的一种技术，我们可以手动设置自己电脑的虚拟内存。不要单纯认为虚拟内存只是“使用硬盘空间来扩展内存“的技术。<strong>虚拟内存的重要意义是它定义了一个连续的虚拟地址空间</strong>，并且 <strong>把内存扩展到硬盘空间</strong>。推荐阅读：<a target="_blank" rel="noopener" href="https://juejin.im/post/59f8691b51882534af254317">《虚拟内存的那点事儿》open in new window</a></p>
+<p>维基百科中有几句话是这样介绍虚拟内存的。</p>
+<blockquote>
+<p><strong>虚拟内存</strong> 使得应用程序认为它拥有连续的可用的内存（一个连续完整的地址空间），而实际上，它通常是被分隔成多个物理内存碎片，还有部分暂时存储在外部磁盘存储器上，在需要时进行数据交换。与没有使用虚拟内存技术的系统相比，使用这种技术的系统使得大型程序的编写变得更容易，对真正的物理内存（例如 RAM）的使用也更有效率。目前，大多数操作系统都使用了虚拟内存，如 Windows 家族的“虚拟内存”；Linux 的“交换空间”等。From:<a target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98">https://zh.wikipedia.org/wiki/虚拟内存open in new window</a></p>
+</blockquote>
+<h3 id="4-2-局部性原理"><a href="#4-2-局部性原理" class="headerlink" title="#4.2 局部性原理"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-2-%E5%B1%80%E9%83%A8%E6%80%A7%E5%8E%9F%E7%90%86">#</a>4.2 局部性原理</h3><p>👨‍💻<strong>面试官</strong> ：要想更好地理解虚拟内存技术，必须要知道计算机中著名的<strong>局部性原理</strong>。另外，局部性原理既适用于程序结构，也适用于数据结构，是非常重要的一个概念。</p>
+<p>🙋 <strong>我</strong> ：局部性原理是虚拟内存技术的基础，正是因为程序运行具有局部性原理，才可以只装入部分程序到内存就开始运行。</p>
+<blockquote>
+<p>以下内容摘自《计算机操作系统教程》 第 4 章存储器管理。</p>
+</blockquote>
+<p>早在 1968 年的时候，就有人指出我们的程序在执行的时候往往呈现局部性规律，也就是说在某个较短的时间段内，程序执行局限于某一小部分，程序访问的存储空间也局限于某个区域。</p>
+<p>局部性原理表现在以下两个方面：</p>
+<ol>
+<li><strong>时间局部性</strong> ：如果程序中的某条指令一旦执行，不久以后该指令可能再次执行；如果某数据被访问过，不久以后该数据可能再次被访问。产生时间局部性的典型原因，是由于在程序中存在着大量的循环操作。</li>
+<li><strong>空间局部性</strong> ：一旦程序访问了某个存储单元，在不久之后，其附近的存储单元也将被访问，即程序在一段时间内所访问的地址，可能集中在一定的范围之内，这是因为指令通常是顺序存放、顺序执行的，数据也一般是以向量、数组、表等形式簇聚存储的。</li>
+</ol>
+<p>时间局部性是通过将近来使用的指令和数据保存到高速缓存存储器中，并使用高速缓存的层次结构实现。空间局部性通常是使用较大的高速缓存，并将预取机制集成到高速缓存控制逻辑中实现。虚拟内存技术实际上就是建立了 “内存一外存”的两级存储器的结构，利用局部性原理实现髙速缓存。</p>
+<h3 id="4-3-虚拟存储器"><a href="#4-3-虚拟存储器" class="headerlink" title="#4.3 虚拟存储器"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-3-%E8%99%9A%E6%8B%9F%E5%AD%98%E5%82%A8%E5%99%A8">#</a>4.3 虚拟存储器</h3><blockquote>
+<p><strong>勘误：虚拟存储器又叫做虚拟内存，都是 Virtual Memory 的翻译，属于同一个概念。</strong></p>
+</blockquote>
+<p>👨‍💻<strong>面试官</strong> ：都说了虚拟内存了。你再讲讲<strong>虚拟存储器</strong>把！</p>
+<p>🙋 <strong>我</strong> ：</p>
+<blockquote>
+<p>这部分内容来自：<a target="_blank" rel="noopener" href="https://wizardforcel.gitbooks.io/wangdaokaoyan-os/content/13.html">王道考研操作系统知识点整理open in new window</a>。</p>
+</blockquote>
+<p>基于局部性原理，在程序装入时，可以将程序的一部分装入内存，而将其他部分留在外存，就可以启动程序执行。由于外存往往比内存大很多，所以我们运行的软件的内存大小实际上是可以比计算机系统实际的内存大小大的。在程序执行过程中，当所访问的信息不在内存时，由操作系统将所需要的部分调入内存，然后继续执行程序。另一方面，操作系统将内存中暂时不使用的内容换到外存上，从而腾出空间存放将要调入内存的信息。这样，计算机好像为用户提供了一个比实际内存大的多的存储器——<strong>虚拟存储器</strong>。</p>
+<p>实际上，我觉得虚拟内存同样是一种时间换空间的策略，你用 CPU 的计算时间，页的调入调出花费的时间，换来了一个虚拟的更大的空间来支持程序的运行。不得不感叹，程序世界几乎不是时间换空间就是空间换时间。</p>
+<h3 id="4-4-虚拟内存的技术实现"><a href="#4-4-虚拟内存的技术实现" class="headerlink" title="#4.4 虚拟内存的技术实现"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-4-%E8%99%9A%E6%8B%9F%E5%86%85%E5%AD%98%E7%9A%84%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0">#</a>4.4 虚拟内存的技术实现</h3><p>👨‍💻<strong>面试官</strong> ：<strong>虚拟内存技术的实现呢？</strong></p>
+<p>🙋 <strong>我</strong> ：<strong>虚拟内存的实现需要建立在离散分配的内存管理方式的基础上。</strong> 虚拟内存的实现有以下三种方式：</p>
+<ol>
+<li><strong>请求分页存储管理</strong> ：建立在分页管理之上，为了支持虚拟存储器功能而增加了请求调页功能和页面置换功能。请求分页是目前最常用的一种实现虚拟存储器的方法。请求分页存储管理系统中，在作业开始运行之前，仅装入当前要执行的部分段即可运行。假如在作业运行的过程中发现要访问的页面不在内存，则由处理器通知操作系统按照对应的页面置换算法将相应的页面调入到主存，同时操作系统也可以将暂时不用的页面置换到外存中。</li>
+<li><strong>请求分段存储管理</strong> ：建立在分段存储管理之上，增加了请求调段功能、分段置换功能。请求分段储存管理方式就如同请求分页储存管理方式一样，在作业开始运行之前，仅装入当前要执行的部分段即可运行；在执行过程中，可使用请求调入中断动态装入要访问但又不在内存的程序段；当内存空间已满，而又需要装入新的段时，根据置换功能适当调出某个段，以便腾出空间而装入新的段。</li>
+<li><strong>请求段页式存储管理</strong></li>
+</ol>
+<p><strong>这里多说一下？很多人容易搞混请求分页与分页存储管理，两者有何不同呢？</strong></p>
+<p>请求分页存储管理建立在分页管理之上。他们的根本区别是是否将程序全部所需的全部地址空间都装入主存，这也是请求分页存储管理可以提供虚拟内存的原因，我们在上面已经分析过了。</p>
+<p>它们之间的根本区别在于是否将一作业的全部地址空间同时装入主存。请求分页存储管理不要求将作业全部地址空间同时装入主存。基于这一点，请求分页存储管理可以提供虚存，而分页存储管理却不能提供虚存。</p>
+<p>不管是上面那种实现方式，我们一般都需要：</p>
+<ol>
+<li>一定容量的内存和外存：在载入程序的时候，只需要将程序的一部分装入内存，而将其他部分留在外存，然后程序就可以执行了；</li>
+<li><strong>缺页中断</strong>：如果<strong>需执行的指令或访问的数据尚未在内存</strong>（称为缺页或缺段），则由处理器通知操作系统将相应的页面或段<strong>调入到内存</strong>，然后继续执行程序；</li>
+<li><strong>虚拟地址空间</strong> ：逻辑地址到物理地址的变换。</li>
+</ol>
+<h3 id="4-5-页面置换算法"><a href="#4-5-页面置换算法" class="headerlink" title="#4.5 页面置换算法"></a><a target="_blank" rel="noopener" href="https://javaguide.cn/cs-basics/operating-system/operating-system-basic-questions-01.html#_4-5-%E9%A1%B5%E9%9D%A2%E7%BD%AE%E6%8D%A2%E7%AE%97%E6%B3%95">#</a>4.5 页面置换算法</h3><p>👨‍💻<strong>面试官</strong> ：虚拟内存管理很重要的一个概念就是页面置换算法。那你说一下 <strong>页面置换算法的作用?常见的页面置换算法有哪些?</strong></p>
+<p>🙋 <strong>我</strong> ：</p>
+<blockquote>
+<p>这个题目经常作为笔试题出现，网上已经给出了很不错的回答，我这里只是总结整理了一下。</p>
+</blockquote>
+<p>地址映射过程中，若在页面中发现所要访问的页面不在内存中，则发生缺页中断 。</p>
+<blockquote>
+<p><strong>缺页中断</strong> 就是要访问的<strong>页</strong>不在主存，需要操作系统将其调入主存后再进行访问。 在这个时候，被内存映射的文件实际上成了一个分页交换文件。</p>
+</blockquote>
+<p>当发生缺页中断时，如果当前内存中并没有空闲的页面，操作系统就必须在内存选择一个页面将其移出内存，以便为即将调入的页面让出空间。用来选择淘汰哪一页的规则叫做页面置换算法，我们可以把页面置换算法看成是淘汰页面的规则。</p>
+<p>相同例子：服务器可以把经常访问的一些Web页面存在存储器的高速缓存中。</p>
+<ul>
+<li><p><strong>OPT 页面置换算法（最佳页面置换算法）</strong> ：最佳(Optimal, OPT)置换算法所选择的被淘汰页面将是以后永不使用的，或者是在最长时间内不再被访问的页面,这样可以保证获得最低的缺页率。但由于人们目前无法预知进程在内存下的若千页面中哪个是未来最长时间内不再被访问的，因而该算法无法实现。一般作为衡量其他置换算法的方法。</p>
+</li>
+<li><p><strong>FIFO（First In First Out） 页面置换算法（先进先出页面置换算法）</strong> : 总是淘汰最先进入内存的页面，即选择在内存中驻留时间最久的页面进行淘汰。</p>
+</li>
+<li><p><strong>LRU （Least Recently Used）页面置换算法（最近最久未使用页面置换算法）</strong> ：LRU 算法赋予每个页面一个访问字段，用来记录一个页面自上次被访问以来所经历的时间 T，当须淘汰一个页面时，选择现有页面中其 T 值最大的，即最近最久未使用的页面予以淘汰。数据结构双重链表加哈希表。</p>
+</li>
+<li><p><strong>LFU （Least Frequently Used）页面置换算法（最少使用页面置换算法）</strong> : 该置换算法选择在之前时期使用最少的页面作为淘汰页</p>
+</li>
+<li><p>第二次机会算法FIFO 算法可能会把经常使用的页面置换出去，为了避免这一问题，对该算法做一个简单的修改：<br>当页面被访问 (读或写) 时设置该页面的 R 位为 1。当内存不足，需要页面替换的时候，检查链表中最老页面的 R 位。如果 R 位是 0，那么这个页面既老又没有被使用，可以立刻置换掉；如果是1，就将 R 位清 0，并把该页面放到链表的尾端，修改它的装入时间使它就像刚装入的一样，然后继续从链表的头部开始搜索。</p>
+</li>
+</ul>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220325110754388.png" alt="image-20220325110754388"></p>
+<ul>
+<li>第二次机会算需要在链表中移动页面，降低了效率。时钟算法使用和日使用一个指针指向最老的页面。</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
 
   
   <nav class="pagination">
@@ -526,7 +1921,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

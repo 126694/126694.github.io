@@ -20,21 +20,22 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="红黑树 R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊的二叉查找树。红黑树的每个节点上都有存储位表示节点的颜色，可以是红(Red)或黑(Black)。 红黑树的特性:  每个节点或者是黑色，或者是红色。 根节点是黑色。 每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！] 如果一个节点是红色的，则它的子节点必须是黑色的">
+  <meta name="description" content="Leetcode455 分发饼干 贪心算法 1234567891011121314151617class Solution &amp;#123;    public int findContentChildren(int[] g, int[] s) &amp;#123;          Arrays.sort(g);          Arrays.sort(s);          int i &#x3D; 0, j">
 <meta property="og:type" content="article">
-<meta property="og:title" content="数据结构">
-<meta property="og:url" content="http://example.com/2022/03/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html">
+<meta property="og:title" content="贪心算法#文章標題">
+<meta property="og:url" content="http://example.com/2022/03/01/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/index.html">
 <meta property="og:site_name" content="akurisu">
-<meta property="og:description" content="红黑树 R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊的二叉查找树。红黑树的每个节点上都有存储位表示节点的颜色，可以是红(Red)或黑(Black)。 红黑树的特性:  每个节点或者是黑色，或者是红色。 根节点是黑色。 每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！] 如果一个节点是红色的，则它的子节点必须是黑色的">
+<meta property="og:description" content="Leetcode455 分发饼干 贪心算法 1234567891011121314151617class Solution &amp;#123;    public int findContentChildren(int[] g, int[] s) &amp;#123;          Arrays.sort(g);          Arrays.sort(s);          int i &#x3D; 0, j">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220405160645933.png">
+<meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220510220256557.png">
+<meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220510221150077.png">
 <meta property="article:published_time" content="2022-03-01T15:47:44.000Z">
-<meta property="article:modified_time" content="2022-04-21T05:57:59.868Z">
+<meta property="article:modified_time" content="2022-05-10T14:40:22.388Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220405160645933.png">
+<meta name="twitter:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220510220256557.png">
 
-<link rel="canonical" href="http://example.com/2022/03/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+<link rel="canonical" href="http://example.com/2022/03/01/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">
 
 
 <script id="page-configurations">
@@ -47,7 +48,7 @@
   };
 </script>
 
-  <title>数据结构 | akurisu</title>
+  <title>贪心算法#文章標題 | akurisu</title>
   
 
 
@@ -152,7 +153,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/01/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -165,7 +166,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          数据结构
+          贪心算法#文章標題
         </h1>
 
         <div class="post-meta">
@@ -182,7 +183,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-21 13:57:59" itemprop="dateModified" datetime="2022-04-21T13:57:59+08:00">2022-04-21</time>
+                <time title="修改时间：2022-05-10 22:40:22" itemprop="dateModified" datetime="2022-05-10T22:40:22+08:00">2022-05-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -190,7 +191,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Java%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">Java知识</span></a>
+                  <a href="/categories/%E7%AE%97%E6%B3%95/" itemprop="url" rel="index"><span itemprop="name">算法</span></a>
                 </span>
             </span>
 
@@ -205,19 +206,13 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h3><p> R-B Tree，全称是Red-Black Tree，又称为“红黑树”，它一种特殊的<strong>二叉查找树</strong>。红黑树的每个节点上都有存储位表示节点的颜色，可以是红(Red)或黑(Black)。</p>
-<p><strong>红黑树的特性</strong>:</p>
-<ol>
-<li><strong>每个节点或者是黑色，或者是红色。</strong></li>
-<li><strong>根节点是黑色。</strong></li>
-<li><strong>每个叶子节点（NIL）是黑色。 [注意：这里叶子节点，是指为空(NIL或NULL)的叶子节点！]</strong></li>
-<li><strong>如果一个节点是红色的，则它的子节点必须是黑色的。</strong></li>
-<li><strong>从一个节点到该节点的子孙节点的所有路径上包含相同数目的黑节点</strong></li>
-<li><strong>对于任意节点而言，其到叶子点树NULL指针的每条路径都包含相同数目的黑节点</strong></li>
-</ol>
-<p>(01) 特性(3)中的叶子节点，是只为空(NIL或null)的节点。</p>
-<p>(02) 特性(5)，<strong>确保没有一条路径会比其他路径长出俩倍</strong>。因而，红黑树是相对是接近平衡的二叉树。</p>
-<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220405160645933.png" alt="image-20220405160645933"></p>
+        <h2 id="Leetcode455-分发饼干"><a href="#Leetcode455-分发饼干" class="headerlink" title="Leetcode455 分发饼干"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/assign-cookies/">Leetcode455 分发饼干</a></h2><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220510220256557.png" alt="image-20220510220256557"></p>
+<p>贪心算法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findContentChildren</span><span class="params">(<span class="type">int</span>[] g, <span class="type">int</span>[] s)</span> &#123;</span><br><span class="line">          Arrays.sort(g);</span><br><span class="line">          Arrays.sort(s);</span><br><span class="line">          <span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>, j = <span class="number">0</span>, sum = <span class="number">0</span>;</span><br><span class="line">          <span class="keyword">while</span>(i &lt; g.length &amp;&amp; j &lt;s.length)&#123;</span><br><span class="line">              <span class="keyword">if</span>(g[i] &lt;= s[j])&#123;</span><br><span class="line">                  sum++;</span><br><span class="line">                  j++;</span><br><span class="line">                  i++;</span><br><span class="line">              &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">                  j++;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="keyword">return</span> sum;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="Leetcode376-摆动序列"><a href="#Leetcode376-摆动序列" class="headerlink" title="Leetcode376 摆动序列"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/wiggle-subsequence/">Leetcode376 摆动序列</a></h2><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220510221150077.png" alt="image-20220510221150077"></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">wiggleMaxLength</span><span class="params">(<span class="type">int</span>[] nums)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">n</span> <span class="operator">=</span> nums.length;</span><br><span class="line">        <span class="keyword">if</span>(n == <span class="number">1</span>) <span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">curDiff</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">preDiff</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; nums.length; i++)&#123;</span><br><span class="line">            curDiff = nums[i] - nums[i -<span class="number">1</span>];</span><br><span class="line">            <span class="keyword">if</span>((curDiff &gt; <span class="number">0</span> &amp;&amp; preDiff &lt;= <span class="number">0</span>) || (curDiff &lt; <span class="number">0</span> &amp;&amp; preDiff &gt;= <span class="number">0</span>))&#123;</span><br><span class="line">                count++;</span><br><span class="line">                preDiff = curDiff;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 
     </div>
 
@@ -233,12 +228,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/01/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" rel="prev" title="贪心算法#文章標題">
-      <i class="fa fa-chevron-left"></i> 贪心算法#文章標題
+    <a href="/2022/03/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="prev" title="计算机网络">
+      <i class="fa fa-chevron-left"></i> 计算机网络
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/03/01/Redis/" rel="next" title="Redis">
-      Redis <i class="fa fa-chevron-right"></i>
+    <a href="/2022/03/01/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="next" title="数据结构">
+      数据结构 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -298,7 +293,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91"><span class="nav-number">1.</span> <span class="nav-text">红黑树</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Leetcode455-%E5%88%86%E5%8F%91%E9%A5%BC%E5%B9%B2"><span class="nav-number">1.</span> <span class="nav-text">Leetcode455 分发饼干</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Leetcode376-%E6%91%86%E5%8A%A8%E5%BA%8F%E5%88%97"><span class="nav-number">2.</span> <span class="nav-text">Leetcode376 摆动序列</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 

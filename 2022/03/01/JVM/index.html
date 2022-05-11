@@ -70,12 +70,15 @@
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220316113515282.png">
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220316113853294.png">
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220508164834470.png">
+<meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220509212409996.png">
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220316183823997.png">
+<meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220510164539739.png">
+<meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220510164626537.png">
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220317101838367.png">
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220317105643388.png">
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220508155610898.png">
 <meta property="article:published_time" content="2022-03-01T15:47:44.000Z">
-<meta property="article:modified_time" content="2022-05-08T09:09:47.977Z">
+<meta property="article:modified_time" content="2022-05-10T14:40:26.765Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220315164232268.png">
@@ -228,7 +231,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-08 17:09:47" itemprop="dateModified" datetime="2022-05-08T17:09:47+08:00">2022-05-08</time>
+                <time title="修改时间：2022-05-10 22:40:26" itemprop="dateModified" datetime="2022-05-10T22:40:26+08:00">2022-05-10</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -251,7 +254,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h3 id="Java内存区域"><a href="#Java内存区域" class="headerlink" title="Java内存区域"></a>Java内存区域</h3><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220315164232268.png" alt="image-20220315164232268"></p>
+        <h1 id="Java内存区域"><a href="#Java内存区域" class="headerlink" title="Java内存区域"></a>Java内存区域</h1><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220315164232268.png" alt="image-20220315164232268"></p>
 <p><strong>虚拟机栈</strong>描述的是Java方法执行的线程内存模型：每个方法被执行的时候，Java虚拟机都 会同步创建一个栈帧[1]（Stack Frame）用于<strong>存储局部变量表、操作数栈、动态连接、方法出口</strong>等信息。每一个方法被调用直至执行完毕的过程，就对应着一个栈帧在虚拟机栈中从入栈到出栈的过程。</p>
 <p>局部变量表存放了编译期可知的各种Java虚拟机基本数据类型（boolean、byte、char、short、int、 float、long、double）、对象引用（reference类型，它并不等同于对象本身，可能是一个指向对象起始 地址的引用指针，也可能是指向一个代表对象的句柄或者其他与此对象相关的位置）和returnAddress<br>类型（指向了一条字节码指令的地址）。</p>
 <p>Java<strong>堆</strong>是被所有线程共享的一块内存区域，在虚拟机启动时创建。此内存区域的唯一目的就是存放对象实例。</p>
@@ -316,7 +319,7 @@
 </ul>
 </li>
 </ul>
-<h3 id="Java垃圾回收器"><a href="#Java垃圾回收器" class="headerlink" title="Java垃圾回收器"></a>Java垃圾回收器</h3><h4 id="Java的四种引用"><a href="#Java的四种引用" class="headerlink" title="Java的四种引用"></a>Java的四种引用</h4><p>在JDK 1.2版之后，Java对引用的概念进行了扩充，将引用分为<strong>强引用（Strongly Re-ference）、软 引用（Soft Reference）、弱引用（Weak Reference）和虚引用（Phantom Reference）</strong>4种，这4种引用强 度依次逐渐减弱。</p>
+<h1 id="Java垃圾回收器"><a href="#Java垃圾回收器" class="headerlink" title="Java垃圾回收器"></a>Java垃圾回收器</h1><h4 id="Java的四种引用"><a href="#Java的四种引用" class="headerlink" title="Java的四种引用"></a>Java的四种引用</h4><p>在JDK 1.2版之后，Java对引用的概念进行了扩充，将引用分为<strong>强引用（Strongly Re-ference）、软 引用（Soft Reference）、弱引用（Weak Reference）和虚引用（Phantom Reference）</strong>4种，这4种引用强 度依次逐渐减弱。</p>
 <ul>
 <li>强引用是最传统的“引用”的定义，是指在程序代码之中普遍存在的引用赋值，即类似“Object  obj&#x3D;new Object()”这种引用关系。无论任何情况下，只要强引用关系还存在，垃圾收集器就永远不会回 收掉被引用的对象。</li>
 </ul>
@@ -645,11 +648,18 @@
 </ul>
 <h5 id="垃圾回收器-G1-GC"><a href="#垃圾回收器-G1-GC" class="headerlink" title="垃圾回收器 - G1 GC"></a>垃圾回收器 - G1 GC</h5><ul>
 <li><strong>响应时间与吞吐量兼顾</strong></li>
-<li>划分成多个区域，每个区域都可以充当 eden，survivor，old， humongous，其中 humongous 专为大对象准备，G1只要认定大小超过了一个Region容量一半的对象即可判定为大对象。对于那些超过了整个Region容量的超级大对象， 将会被存放在N个连续的Humongous Region之中，G1的大多数行为都把Humongous Region作为老年代。<br>的一部分来进行看待</li>
+<li>划分成多个区域，每个区域都可以充当 eden，survivor，old， humongous，其中 humongous 专为大对象准备，G1只要认定大小超过了一个Region容量一半的对象即可判定为大对象。对于那些超过了整个Region容量的超级大对象， 将会被存放在N个连续的Humongous Region之中，G1的大多数行为都把Humongous Region作为老年代的一部分来进行看待</li>
 <li>分成三个阶段：新生代回收、并发标记、混合收集</li>
 <li>如果并发失败（即回收速度赶不上创建新对象速度），会触发 Full GC</li>
 </ul>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220509212409996.png" alt="image-20220509212409996"></p>
 <p>-XX:G1HeapRegionSize 设定区域大小</p>
+<h6 id="回收巨型对象"><a href="#回收巨型对象" class="headerlink" title="回收巨型对象"></a>回收巨型对象</h6><ul>
+<li>一个对象大于 region 的一半时，称之为巨型对象 humongous</li>
+<li>G1 不会对巨型对象进行拷贝 </li>
+<li>回收时被优先考虑 </li>
+<li>G1 会跟踪老年代所有 incoming 引用，这样老年代 incoming 引用为0 的巨型对象就可以在新生 代垃圾回收时处理掉</li>
+</ul>
 <h3 id="面试题：项目什么情况下会内存溢出，怎么解决的"><a href="#面试题：项目什么情况下会内存溢出，怎么解决的" class="headerlink" title="面试题：项目什么情况下会内存溢出，怎么解决的"></a>面试题：项目什么情况下会内存溢出，怎么解决的</h3><p><strong>典型情况</strong></p>
 <ul>
 <li>误用线程池导致的内存溢出<ul>
@@ -665,37 +675,71 @@
 </ul>
 </li>
 </ul>
-<h3 id="虚拟机类加载机制"><a href="#虚拟机类加载机制" class="headerlink" title="虚拟机类加载机制"></a>虚拟机类加载机制</h3><h4 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h4><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220316183823997.png" alt="image-20220316183823997"></p>
+<h1 id="虚拟机类加载机制"><a href="#虚拟机类加载机制" class="headerlink" title="虚拟机类加载机制"></a>虚拟机类加载机制</h1><h4 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h4><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220316183823997.png" alt="image-20220316183823997"></p>
 <h4 id="类加载过程"><a href="#类加载过程" class="headerlink" title="类加载过程"></a>类加载过程</h4><ol>
 <li><p>加载</p>
 <ol>
-<li><p>将类的字节码载入方法区，并创建类.class 对象</p>
-</li>
-<li><p>如果此类的父类没有加载，先加载父类</p>
-</li>
-<li><p>加载是懒惰执行</p>
-</li>
+<li>将类的字节码载入方法区，并创建类.class 对象<img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220510164539739.png" alt="image-20220510164539739"></li>
+<li>如果此类的父类没有加载，先加载父类</li>
+<li>加载是懒惰执行，加载和链接可能是交替进行的</li>
+<li><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220510164626537.png" alt="image-20220510164626537"></li>
 </ol>
 </li>
 <li><p>链接</p>
-<ol>
+<ul>
 <li>验证 – 验证类是否符合 Class 规范，合法性、安全性检查</li>
-<li>准备 – 为 static 变量分配空间，设置默认值</li>
-<li>解析 – 将常量池的符号引用解析为直接引用</li>
-</ol>
+<li>准备 – 为 static 变量分配空间，设置默认值<ul>
+<li>static 变量在 JDK 7 之前存储于 instanceKlass 末尾，从 JDK 7 开始，存储于 _java_mirror 末尾 </li>
+<li>static 变量分配空间和赋值是两个步骤，分配空间在<strong>准备阶段</strong>完成，赋值<strong>在初始化阶段</strong>完成 </li>
+<li>如果 static 变量是 final 的基本类型，以及字符串常量，那么编译阶段值就确定了，赋值在准备阶段完成 </li>
+<li>如果 static 变量是 final 的，但属于引用类型，那么赋值也会在初始化阶段完成</li>
+<li>解析 – 将常量池的符号引用解析为直接引用，原来是只知道是个符号，解析后知道类D在内存中的实际地址</li>
+</ul>
+</li>
+</ul>
 </li>
 <li><p>初始化</p>
 <ol>
-<li>静态代码块、static 修饰的变量赋值、static final 修饰的引用类型变量赋值，会被合并成一个 <code>&lt;cinit&gt;</code> 方法，在初始化时被调用</li>
-<li>static final 修饰的基本类型变量赋值，在链接阶段就已完成</li>
-<li>初始化是懒惰执行</li>
+<li><p>静态代码块、static 修饰的变量赋值、static final 修饰的引用类型变量赋值，会被合并成一个 <code>&lt;cinit&gt;</code> 方法，在初始化时被调用</p>
+</li>
+<li><p>static final 修饰的基本类型变量赋值，在链接阶段就已完成</p>
+</li>
+<li><p>初始化是懒惰执行</p>
+<ul>
+<li><p>main 方法所在的类，总会被首先初始化 </p>
+</li>
+<li><p>首次访问这个类的静态变量或静态方法时 </p>
+</li>
+<li><p>子类初始化，如果父类还没初始化，会引发 </p>
+</li>
+<li><p>子类访问父类的静态变量，只会触发父类的初始化 </p>
+</li>
+<li><p>Class.forName </p>
+</li>
+<li><p>new 会导致初始化 </p>
+<p>不会导致类初始化的情况</p>
+</li>
+<li><p>访问类的 static final 静态常量（基本类型和字符串）不会触发初始化 </p>
+</li>
+<li><p>类对象.class 不会触发初始化 </p>
+</li>
+<li><p>创建该类的数组不会触发初始化 </p>
+</li>
+<li><p>类加载器的 loadClass 方法 </p>
+</li>
+<li><p>Class.forName 的参数 2 为 false 时</p>
+</li>
+</ul>
+</li>
 </ol>
 </li>
 </ol>
 <h4 id="类加载器"><a href="#类加载器" class="headerlink" title="类加载器"></a>类加载器</h4><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220317101838367.png" alt="image-20220317101838367"></p>
+<p>启动类加载器，拓展类加载器，应用程序类加载器</p>
 <h4 id="双亲委派模型"><a href="#双亲委派模型" class="headerlink" title="双亲委派模型"></a>双亲委派模型</h4><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220317105643388.png" alt="image-20220317105643388"></p>
+<p>所谓的双亲委派，就是指调用类加载器的 loadClass 方法时，查找类的规则</p>
 <p>代码实现</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">synchronized</span> Class&lt;?&gt; loadClass(String name, <span class="type">boolean</span> resolve) <span class="keyword">throws</span> ClassNotFoundException </span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">// 首先，检查请求的类是否已经被加载过了 </span></span><br><span class="line">    <span class="type">Class</span> <span class="variable">c</span> <span class="operator">=</span> findLoadedClass(name); </span><br><span class="line">    <span class="keyword">if</span> (c == <span class="literal">null</span>) &#123; </span><br><span class="line">        <span class="keyword">try</span> &#123; </span><br><span class="line">            <span class="keyword">if</span> (parent != <span class="literal">null</span>) &#123; </span><br><span class="line">                c = parent.loadClass(name, <span class="literal">false</span>);</span><br><span class="line">             &#125; </span><br><span class="line">            <span class="keyword">else</span> &#123; </span><br><span class="line">                c = findBootstrapClassOrNull(name);</span><br><span class="line">             &#125;        </span><br><span class="line">             &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123; </span><br><span class="line">             <span class="comment">// 如果父类加载器抛出ClassNotFoundException </span></span><br><span class="line">             <span class="comment">// 说明父类加载器无法完成加载请求</span></span><br><span class="line">             &#125; </span><br><span class="line">        <span class="keyword">if</span> (c == <span class="literal">null</span>) &#123; </span><br><span class="line">            <span class="comment">// 在父类加载器无法加载时 </span></span><br><span class="line">            <span class="comment">// 再调用本身的findClass方法来进行类加载 </span></span><br><span class="line">            c = findClass(name);</span><br><span class="line">             &#125;</span><br><span class="line">     &#125; </span><br><span class="line">    <span class="keyword">if</span> (resolve) &#123; </span><br><span class="line">        resolveClass(c);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> <span class="keyword">synchronized</span> Class&lt;?&gt; loadClass(String name, <span class="type">boolean</span> resolve) <span class="keyword">throws</span> ClassNotFoundException </span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">// 首先，检查请求的类是否已经被加载过了 </span></span><br><span class="line">    <span class="type">Class</span> <span class="variable">c</span> <span class="operator">=</span> findLoadedClass(name); </span><br><span class="line">    <span class="keyword">if</span> (c == <span class="literal">null</span>) &#123; </span><br><span class="line">        <span class="keyword">try</span> &#123; </span><br><span class="line">            <span class="keyword">if</span> (parent != <span class="literal">null</span>) &#123; </span><br><span class="line">                <span class="comment">//如果有上级，委派上级loadClass</span></span><br><span class="line">                c = parent.loadClass(name, <span class="literal">false</span>);</span><br><span class="line">             &#125; </span><br><span class="line">            <span class="keyword">else</span> &#123; </span><br><span class="line">                <span class="comment">//没有上级了，委启动类加载器</span></span><br><span class="line">                c = findBootstrapClassOrNull(name);</span><br><span class="line">             &#125;        </span><br><span class="line">             &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123; </span><br><span class="line">             <span class="comment">// 如果父类加载器抛出ClassNotFoundException </span></span><br><span class="line">             <span class="comment">// 说明父类加载器无法完成加载请求，不进行处理 </span></span><br><span class="line">             &#125; </span><br><span class="line">        <span class="keyword">if</span> (c == <span class="literal">null</span>) &#123; </span><br><span class="line">            <span class="comment">// 在父类加载器无法加载时 </span></span><br><span class="line">            <span class="comment">// 再调用本身的findClass方法来进行类加载 </span></span><br><span class="line">            c = findClass(name);</span><br><span class="line">             &#125;</span><br><span class="line">     &#125; </span><br><span class="line">    <span class="keyword">if</span> (resolve) &#123; </span><br><span class="line">        resolveClass(c);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> c;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
 
@@ -706,14 +750,30 @@
 </ul>
 <p>双亲委派的目的有两点</p>
 <ol>
-<li><p>让上级类加载器中的类对下级共享（反之不行），即能让你的类能依赖到 jdk 提供的核心类</p>
+<li>让上级类加载器中的类对下级共享（反之不行），即能让你的类能依赖到 jdk 提供的核心类</li>
+<li>让类的加载有优先次序，保证核心类优先加载</li>
+</ol>
+<h4 id="线程上下文类加载器"><a href="#线程上下文类加载器" class="headerlink" title="线程上下文类加载器"></a>线程上下文类加载器</h4><p>打破双亲委派规则。 </p>
+<h4 id="自定义类加载器"><a href="#自定义类加载器" class="headerlink" title="自定义类加载器"></a>自定义类加载器</h4><p>什么时候需要自定义类加载器？</p>
+<ol>
+<li>想加载非classpath随意路径中的类文件</li>
+<li>都是通过接口来使用实现，希望解耦时，常用在框架设计。</li>
+<li>这些类希望予以隔离，不同应用的同名类都可以加载，不冲突，常见于tomcat容器</li>
+</ol>
+<p> 步骤</p>
+<ol>
+<li>继承ClassLoader父类</li>
+<li>要遵从双亲委派机制，重写findClass方法<ul>
+<li>注意不是重写loadClass方法，否则不会走双亲委派机制</li>
+</ul>
 </li>
-<li><p>让类的加载有优先次序，保证核心类优先加载</p>
-</li>
+<li>读取类文件的字节码</li>
+<li>调用父类的defineClass方法来加载类</li>
+<li>使用者调用该类加载器的loadClass方法</li>
 </ol>
 <h3 id="跨代引用问题"><a href="#跨代引用问题" class="headerlink" title="跨代引用问题"></a>跨代引用问题</h3><p>使用卡表解决跨代引用问题</p>
 <p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220508155610898.png" alt="image-20220508155610898"></p>
-<p>只要卡页内有一个（或更多）对象的字段存在着跨代 指针，那就将对应卡表的数组元素的值标识为1，称为这个元素变脏（Dirty），没有则标识为0。在垃 圾收集发生时，只要筛选出卡表中变脏的元素，就能轻易得出哪些卡页内存块中包含跨代指针，把它们加入GC Roots中一并扫描。</p>
+<p>只要卡页内有一个（或更多）对象的字段存在着跨代指针，那就将对应卡表的数组元素的值标识为1，称为这个元素变脏（Dirty），没有则标识为0。在垃 圾收集发生时，只要筛选出卡表中变脏的元素，就能轻易得出哪些卡页内存块中包含跨代指针，把它们加入GC Roots中一并扫描。</p>
 
     </div>
 
@@ -794,7 +854,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F"><span class="nav-number">1.</span> <span class="nav-text">Java内存区域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%AA%E4%BA%9B%E5%8C%BA%E5%9F%9F%E4%BC%9A%E4%BA%A7%E7%94%9F%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="nav-number">2.</span> <span class="nav-text">哪些区域会产生内存溢出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A7%E7%94%9FOutOfMemoryError%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">2.1.</span> <span class="nav-text">产生OutOfMemoryError的情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A7%E7%94%9FStackOverFlowError%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">2.2.</span> <span class="nav-text">产生StackOverFlowError的情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA%E4%B8%8E%E6%B0%B8%E4%B9%85%E4%BB%A3%E3%80%81%E5%85%83%E7%A9%BA%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">3.</span> <span class="nav-text">方法区与永久代、元空间的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%8F%82%E6%95%B0"><span class="nav-number">4.</span> <span class="nav-text">Java虚拟机参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-number">5.</span> <span class="nav-text">Java垃圾回收器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8"><span class="nav-number">5.1.</span> <span class="nav-text">Java的四种引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#finalize%E6%96%B9%E6%B3%95"><span class="nav-number">5.2.</span> <span class="nav-text">finalize方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%E7%90%86%E8%AE%BA"><span class="nav-number">5.3.</span> <span class="nav-text">分代收集理论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><span class="nav-number">5.4.</span> <span class="nav-text">JVM垃圾回收算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC-%E4%B8%8E%E5%88%86%E4%BB%A3%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><span class="nav-number">5.5.</span> <span class="nav-text">GC 与分代回收算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E4%BB%A3%E5%9B%9E%E6%94%B6"><span class="nav-number">5.5.1.</span> <span class="nav-text">分代回收</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3VM%E5%8F%82%E6%95%B0"><span class="nav-number">5.5.2.</span> <span class="nav-text">相关VM参数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0"><span class="nav-number">5.6.</span> <span class="nav-text">三色标记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E6%BC%8F%E6%A0%87%E9%97%AE%E9%A2%98"><span class="nav-number">5.7.</span> <span class="nav-text">并发漏标问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-number">5.8.</span> <span class="nav-text">垃圾回收器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Serial%E6%94%B6%E9%9B%86%E5%99%A8"><span class="nav-number">5.8.1.</span> <span class="nav-text">Serial收集器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ParNew%E6%94%B6%E9%9B%86%E5%99%A8"><span class="nav-number">5.8.2.</span> <span class="nav-text">ParNew收集器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8-Parallel-GC"><span class="nav-number">5.8.3.</span> <span class="nav-text">垃圾回收器 - Parallel GC</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8-G1-GC"><span class="nav-number">5.8.4.</span> <span class="nav-text">垃圾回收器 - G1 GC</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%9A%E9%A1%B9%E7%9B%AE%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E4%BC%9A%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%EF%BC%8C%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3%E7%9A%84"><span class="nav-number">6.</span> <span class="nav-text">面试题：项目什么情况下会内存溢出，怎么解决的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6"><span class="nav-number">7.</span> <span class="nav-text">虚拟机类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">7.1.</span> <span class="nav-text">类的生命周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="nav-number">7.2.</span> <span class="nav-text">类加载过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">7.3.</span> <span class="nav-text">类加载器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B"><span class="nav-number">7.4.</span> <span class="nav-text">双亲委派模型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%A8%E4%BB%A3%E5%BC%95%E7%94%A8%E9%97%AE%E9%A2%98"><span class="nav-number">8.</span> <span class="nav-text">跨代引用问题</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F"><span class="nav-number">1.</span> <span class="nav-text">Java内存区域</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%93%AA%E4%BA%9B%E5%8C%BA%E5%9F%9F%E4%BC%9A%E4%BA%A7%E7%94%9F%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA"><span class="nav-number">1.0.1.</span> <span class="nav-text">哪些区域会产生内存溢出</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A7%E7%94%9FOutOfMemoryError%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">1.0.1.1.</span> <span class="nav-text">产生OutOfMemoryError的情况</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BA%A7%E7%94%9FStackOverFlowError%E7%9A%84%E6%83%85%E5%86%B5"><span class="nav-number">1.0.1.2.</span> <span class="nav-text">产生StackOverFlowError的情况</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95%E5%8C%BA%E4%B8%8E%E6%B0%B8%E4%B9%85%E4%BB%A3%E3%80%81%E5%85%83%E7%A9%BA%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.0.2.</span> <span class="nav-text">方法区与永久代、元空间的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E5%8F%82%E6%95%B0"><span class="nav-number">1.0.3.</span> <span class="nav-text">Java虚拟机参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Java%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-number">2.</span> <span class="nav-text">Java垃圾回收器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Java%E7%9A%84%E5%9B%9B%E7%A7%8D%E5%BC%95%E7%94%A8"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">Java的四种引用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#finalize%E6%96%B9%E6%B3%95"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">finalize方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E4%BB%A3%E6%94%B6%E9%9B%86%E7%90%86%E8%AE%BA"><span class="nav-number">2.0.0.3.</span> <span class="nav-text">分代收集理论</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JVM%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><span class="nav-number">2.0.0.4.</span> <span class="nav-text">JVM垃圾回收算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#GC-%E4%B8%8E%E5%88%86%E4%BB%A3%E5%9B%9E%E6%94%B6%E7%AE%97%E6%B3%95"><span class="nav-number">2.0.0.5.</span> <span class="nav-text">GC 与分代回收算法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%88%86%E4%BB%A3%E5%9B%9E%E6%94%B6"><span class="nav-number">2.0.0.5.1.</span> <span class="nav-text">分代回收</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%9B%B8%E5%85%B3VM%E5%8F%82%E6%95%B0"><span class="nav-number">2.0.0.5.2.</span> <span class="nav-text">相关VM参数</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%89%E8%89%B2%E6%A0%87%E8%AE%B0"><span class="nav-number">2.0.0.6.</span> <span class="nav-text">三色标记</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B9%B6%E5%8F%91%E6%BC%8F%E6%A0%87%E9%97%AE%E9%A2%98"><span class="nav-number">2.0.0.7.</span> <span class="nav-text">并发漏标问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8"><span class="nav-number">2.0.0.8.</span> <span class="nav-text">垃圾回收器</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Serial%E6%94%B6%E9%9B%86%E5%99%A8"><span class="nav-number">2.0.0.8.1.</span> <span class="nav-text">Serial收集器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#ParNew%E6%94%B6%E9%9B%86%E5%99%A8"><span class="nav-number">2.0.0.8.2.</span> <span class="nav-text">ParNew收集器</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8-Parallel-GC"><span class="nav-number">2.0.0.8.3.</span> <span class="nav-text">垃圾回收器 - Parallel GC</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E5%99%A8-G1-GC"><span class="nav-number">2.0.0.8.4.</span> <span class="nav-text">垃圾回收器 - G1 GC</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#%E5%9B%9E%E6%94%B6%E5%B7%A8%E5%9E%8B%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.0.0.8.4.1.</span> <span class="nav-text">回收巨型对象</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%A2%E8%AF%95%E9%A2%98%EF%BC%9A%E9%A1%B9%E7%9B%AE%E4%BB%80%E4%B9%88%E6%83%85%E5%86%B5%E4%B8%8B%E4%BC%9A%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%EF%BC%8C%E6%80%8E%E4%B9%88%E8%A7%A3%E5%86%B3%E7%9A%84"><span class="nav-number">2.0.1.</span> <span class="nav-text">面试题：项目什么情况下会内存溢出，怎么解决的</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%B1%BB%E5%8A%A0%E8%BD%BD%E6%9C%BA%E5%88%B6"><span class="nav-number">3.</span> <span class="nav-text">虚拟机类加载机制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-number">3.0.0.1.</span> <span class="nav-text">类的生命周期</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E8%BF%87%E7%A8%8B"><span class="nav-number">3.0.0.2.</span> <span class="nav-text">类加载过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">3.0.0.3.</span> <span class="nav-text">类加载器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8C%E4%BA%B2%E5%A7%94%E6%B4%BE%E6%A8%A1%E5%9E%8B"><span class="nav-number">3.0.0.4.</span> <span class="nav-text">双亲委派模型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E4%B8%8A%E4%B8%8B%E6%96%87%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">3.0.0.5.</span> <span class="nav-text">线程上下文类加载器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%8A%A0%E8%BD%BD%E5%99%A8"><span class="nav-number">3.0.0.6.</span> <span class="nav-text">自定义类加载器</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B7%A8%E4%BB%A3%E5%BC%95%E7%94%A8%E9%97%AE%E9%A2%98"><span class="nav-number">3.0.1.</span> <span class="nav-text">跨代引用问题</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -808,7 +868,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-count">26</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
