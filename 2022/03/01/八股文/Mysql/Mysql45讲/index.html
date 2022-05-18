@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220513193335801.png">
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220513193455825.png">
 <meta property="article:published_time" content="2022-03-01T15:47:44.000Z">
-<meta property="article:modified_time" content="2022-05-13T11:42:43.256Z">
+<meta property="article:modified_time" content="2022-05-16T11:11:10.898Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220511192737638.png">
@@ -185,7 +185,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-05-13 19:42:43" itemprop="dateModified" datetime="2022-05-13T19:42:43+08:00">2022-05-13</time>
+                <time title="修改时间：2022-05-16 19:11:10" itemprop="dateModified" datetime="2022-05-16T19:11:10+08:00">2022-05-16</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -331,6 +331,39 @@
 <li>把备库 B 改成可读写状态，也就是把 readonly 设置为 false；</li>
 <li>把业务请求切到备库 B。</li>
 </ol>
+<h2 id="读写分离有哪些坑"><a href="#读写分离有哪些坑" class="headerlink" title="读写分离有哪些坑"></a>读写分离有哪些坑</h2><p>这种“在从库上会读到系统的一个过期状态”的现象，在这篇文章里，我们暂且称之为“过期读”。</p>
+<h3 id="解决过期读的方案"><a href="#解决过期读的方案" class="headerlink" title="解决过期读的方案"></a>解决过期读的方案</h3><ul>
+<li>强制走主库方案；<ul>
+<li>强制走主库方案其实就是，将查询请求做分类。通常情况下，我们可以将查询请求分为这么两类：</li>
+<li>对于必须要拿到最新结果的请求，强制将其发到主库上。    </li>
+<li>对于可以读到旧数据的请求，才将其发到从库上。</li>
+</ul>
+</li>
+</ul>
+<p>当然，这个方案最大的问题在于，有时候你会碰到“所有查询都不能是过期读”的需求，比如一些金融类的业务。这样的话，你就要放弃读写分离，所有读写压力都在主库，等同于放弃了扩展性。</p>
+<ul>
+<li><p>sleep 方案；</p>
+<ul>
+<li>主库更新后，读从库之前先 sleep 一下。具体的方案就是，类似于执行一条 select sleep(1) 命令。</li>
+<li>如果这个查询请求本来 0.5 秒就可以在从库上拿到正确结果，也会等 1 秒；</li>
+<li>如果延迟超过 1 秒，还是会出现过期读。</li>
+</ul>
+</li>
+<li><p>判断主备无延迟方案；</p>
+<ul>
+<li>第一种确保主备无延迟的方法是，每次从库执行查询请求前，先判断 seconds_behind_master 是否已经等于 0。如果还不等于 0 ，那就必须等到这个参数变为 0 才能执行查询请求。   </li>
+<li>第二种方法，对比位点确保主备无延迟：</li>
+<li>第三种方法，对比 GTID 集合确保主备无延迟：</li>
+<li>trx1 和 trx2 已经传到从库，并且已经执行完成了；trx3 在主库执行完成，并且已经回复给客户端，但是还没有传到从库中。如果这时候你在从库 B 上执行查询请求，按照我们上面的逻辑，从库认为已经没有同步延迟，但还是查不到 trx3 的。严格地说，就是出现了过期读。</li>
+</ul>
+</li>
+<li><p>配合 semi-sync 方案；</p>
+</li>
+<li><p>等主库位点方案；</p>
+</li>
+<li><p>等 GTID 方案。</p>
+</li>
+</ul>
 
     </div>
 
@@ -345,7 +378,10 @@
 
         
     <div class="post-nav">
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2022/03/01/%E7%AE%97%E6%B3%95/%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/%E8%B4%AA%E5%BF%83%E7%AE%97%E6%B3%95/" rel="prev" title="贪心算法#文章標題">
+      <i class="fa fa-chevron-left"></i> 贪心算法#文章標題
+    </a></div>
       <div class="post-nav-item">
     <a href="/2022/03/01/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="next" title="计算机网络">
       计算机网络 <i class="fa fa-chevron-right"></i>
@@ -408,7 +444,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#count-%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">count(*)底层原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E6%95%B0%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">计数常用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E7%BC%93%E5%AD%98%E7%B3%BB%E7%BB%9F%E4%BF%9D%E5%AD%98%E8%AE%A1%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">用缓存系统保存计数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BF%9D%E5%AD%98%E8%AE%A1%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">在数据库保存计数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%90%8Ccount%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">不同count的用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#order-by%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84"><span class="nav-number">2.</span> <span class="nav-text">order by是怎么工作的</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rowid%E6%8E%92%E5%BA%8F"><span class="nav-number">2.1.</span> <span class="nav-text">rowid排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%AD%97%E6%AE%B5%E6%8E%92%E5%BA%8F-VS-rowid-%E6%8E%92%E5%BA%8F"><span class="nav-number">2.2.</span> <span class="nav-text">全字段排序 VS rowid 排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88SQL%E9%80%BB%E8%BE%91%E7%9B%B8%E5%90%8C%EF%BC%8C%E6%80%A7%E8%83%BD%E7%9B%B8%E5%B7%AE%E5%B7%A8%E5%A4%A7%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">为什么SQL逻辑相同，性能相差巨大？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%80%EF%BC%9A%E6%9D%A1%E4%BB%B6%E5%AD%97%E6%AE%B5%E5%87%BD%E6%95%B0%E6%93%8D%E4%BD%9C"><span class="nav-number">3.1.</span> <span class="nav-text">案例一：条件字段函数操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%8C%EF%BC%9A-%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.2.</span> <span class="nav-text">案例二： 隐式类型转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%9A%84%E8%A7%84%E5%88%99%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">3.2.1.</span> <span class="nav-text">数据类型转换的规则是什么？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%89%EF%BC%9A%E9%9A%90%E5%BC%8F%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.3.</span> <span class="nav-text">案例三：隐式字符编码转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E5%8F%AA%E6%9F%A5%E4%B8%80%E8%A1%8C%E7%9A%84%E8%AF%AD%E5%8F%A5%EF%BC%8C%E4%B9%9F%E6%89%A7%E8%A1%8C%E8%BF%99%E4%B9%88%E6%85%A2%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">为什么我只查一行的语句，也执行这么慢？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%B1%BB%EF%BC%9A%E6%9F%A5%E8%AF%A2%E9%95%BF%E6%97%B6%E9%97%B4%E4%B8%8D%E8%BF%94%E5%9B%9E"><span class="nav-number">4.0.0.1.</span> <span class="nav-text">第一类：查询长时间不返回</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BB%E8%AF%BB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E5%B9%BB%E8%AF%BB%E6%9C%89%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">幻读是什么，幻读有什么问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E5%8F%AA%E6%94%B9%E4%B8%80%E8%A1%8C%E7%9A%84%E8%AF%AD%E5%8F%A5%EF%BC%8C%E9%94%81%E8%BF%99%E4%B9%88%E5%A4%9A%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">为什么我只改一行的语句，锁这么多？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E6%9C%89%E5%93%AA%E4%BA%9B%E2%80%9C%E9%A5%AE%E9%B8%A9%E6%AD%A2%E6%B8%B4%E2%80%9D%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="nav-number">7.</span> <span class="nav-text">MySQL有哪些“饮鸩止渴”提高性能的方法？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%AD%E8%BF%9E%E6%8E%A5%E9%A3%8E%E6%9A%B4"><span class="nav-number">7.1.</span> <span class="nav-text">短连接风暴</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98"><span class="nav-number">7.2.</span> <span class="nav-text">慢查询性能问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E6%98%AF%E6%80%8E%E4%B9%88%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%A2%E7%9A%84"><span class="nav-number">8.</span> <span class="nav-text">MySQL是怎么保证数据不丢的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E6%98%AF%E6%80%8E%E4%B9%88%E4%BF%9D%E8%AF%81%E4%B8%BB%E5%A4%87%E4%B8%80%E8%87%B4%E7%9A%84%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">MySQL是怎么保证主备一致的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E6%98%AF%E6%80%8E%E4%B9%88%E4%BF%9D%E8%AF%81%E9%AB%98%E5%8F%AF%E7%94%A8%E7%9A%84%EF%BC%9F"><span class="nav-number">10.</span> <span class="nav-text">MySQL是怎么保证高可用的？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E5%A4%87%E5%BB%B6%E8%BF%9F%E7%9A%84%E6%9D%A5%E6%BA%90"><span class="nav-number">10.1.</span> <span class="nav-text">主备延迟的来源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%9D%A0%E6%80%A7%E4%BC%98%E5%85%88%E7%AD%96%E7%95%A5"><span class="nav-number">10.2.</span> <span class="nav-text">可靠性优先策略</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#count-%E5%BA%95%E5%B1%82%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">count(*)底层原理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E6%95%B0%E5%B8%B8%E7%94%A8%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">计数常用方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8%E7%BC%93%E5%AD%98%E7%B3%BB%E7%BB%9F%E4%BF%9D%E5%AD%98%E8%AE%A1%E6%95%B0"><span class="nav-number">1.2.</span> <span class="nav-text">用缓存系统保存计数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BF%9D%E5%AD%98%E8%AE%A1%E6%95%B0"><span class="nav-number">1.3.</span> <span class="nav-text">在数据库保存计数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%90%8Ccount%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">1.4.</span> <span class="nav-text">不同count的用法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#order-by%E6%98%AF%E6%80%8E%E4%B9%88%E5%B7%A5%E4%BD%9C%E7%9A%84"><span class="nav-number">2.</span> <span class="nav-text">order by是怎么工作的</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rowid%E6%8E%92%E5%BA%8F"><span class="nav-number">2.1.</span> <span class="nav-text">rowid排序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A8%E5%AD%97%E6%AE%B5%E6%8E%92%E5%BA%8F-VS-rowid-%E6%8E%92%E5%BA%8F"><span class="nav-number">2.2.</span> <span class="nav-text">全字段排序 VS rowid 排序</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88SQL%E9%80%BB%E8%BE%91%E7%9B%B8%E5%90%8C%EF%BC%8C%E6%80%A7%E8%83%BD%E7%9B%B8%E5%B7%AE%E5%B7%A8%E5%A4%A7%EF%BC%9F"><span class="nav-number">3.</span> <span class="nav-text">为什么SQL逻辑相同，性能相差巨大？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%80%EF%BC%9A%E6%9D%A1%E4%BB%B6%E5%AD%97%E6%AE%B5%E5%87%BD%E6%95%B0%E6%93%8D%E4%BD%9C"><span class="nav-number">3.1.</span> <span class="nav-text">案例一：条件字段函数操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%BA%8C%EF%BC%9A-%E9%9A%90%E5%BC%8F%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.2.</span> <span class="nav-text">案例二： 隐式类型转换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2%E7%9A%84%E8%A7%84%E5%88%99%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-number">3.2.1.</span> <span class="nav-text">数据类型转换的规则是什么？</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%88%E4%BE%8B%E4%B8%89%EF%BC%9A%E9%9A%90%E5%BC%8F%E5%AD%97%E7%AC%A6%E7%BC%96%E7%A0%81%E8%BD%AC%E6%8D%A2"><span class="nav-number">3.3.</span> <span class="nav-text">案例三：隐式字符编码转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.4.</span> <span class="nav-text">总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E5%8F%AA%E6%9F%A5%E4%B8%80%E8%A1%8C%E7%9A%84%E8%AF%AD%E5%8F%A5%EF%BC%8C%E4%B9%9F%E6%89%A7%E8%A1%8C%E8%BF%99%E4%B9%88%E6%85%A2%EF%BC%9F"><span class="nav-number">4.</span> <span class="nav-text">为什么我只查一行的语句，也执行这么慢？</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E7%B1%BB%EF%BC%9A%E6%9F%A5%E8%AF%A2%E9%95%BF%E6%97%B6%E9%97%B4%E4%B8%8D%E8%BF%94%E5%9B%9E"><span class="nav-number">4.0.0.1.</span> <span class="nav-text">第一类：查询长时间不返回</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B9%BB%E8%AF%BB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%8C%E5%B9%BB%E8%AF%BB%E6%9C%89%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98"><span class="nav-number">5.</span> <span class="nav-text">幻读是什么，幻读有什么问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%88%91%E5%8F%AA%E6%94%B9%E4%B8%80%E8%A1%8C%E7%9A%84%E8%AF%AD%E5%8F%A5%EF%BC%8C%E9%94%81%E8%BF%99%E4%B9%88%E5%A4%9A%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">为什么我只改一行的语句，锁这么多？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E6%9C%89%E5%93%AA%E4%BA%9B%E2%80%9C%E9%A5%AE%E9%B8%A9%E6%AD%A2%E6%B8%B4%E2%80%9D%E6%8F%90%E9%AB%98%E6%80%A7%E8%83%BD%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%9F"><span class="nav-number">7.</span> <span class="nav-text">MySQL有哪些“饮鸩止渴”提高性能的方法？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%AD%E8%BF%9E%E6%8E%A5%E9%A3%8E%E6%9A%B4"><span class="nav-number">7.1.</span> <span class="nav-text">短连接风暴</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%85%A2%E6%9F%A5%E8%AF%A2%E6%80%A7%E8%83%BD%E9%97%AE%E9%A2%98"><span class="nav-number">7.2.</span> <span class="nav-text">慢查询性能问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E6%98%AF%E6%80%8E%E4%B9%88%E4%BF%9D%E8%AF%81%E6%95%B0%E6%8D%AE%E4%B8%8D%E4%B8%A2%E7%9A%84"><span class="nav-number">8.</span> <span class="nav-text">MySQL是怎么保证数据不丢的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E6%98%AF%E6%80%8E%E4%B9%88%E4%BF%9D%E8%AF%81%E4%B8%BB%E5%A4%87%E4%B8%80%E8%87%B4%E7%9A%84%EF%BC%9F"><span class="nav-number">9.</span> <span class="nav-text">MySQL是怎么保证主备一致的？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#MySQL%E6%98%AF%E6%80%8E%E4%B9%88%E4%BF%9D%E8%AF%81%E9%AB%98%E5%8F%AF%E7%94%A8%E7%9A%84%EF%BC%9F"><span class="nav-number">10.</span> <span class="nav-text">MySQL是怎么保证高可用的？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E5%A4%87%E5%BB%B6%E8%BF%9F%E7%9A%84%E6%9D%A5%E6%BA%90"><span class="nav-number">10.1.</span> <span class="nav-text">主备延迟的来源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%AF%E9%9D%A0%E6%80%A7%E4%BC%98%E5%85%88%E7%AD%96%E7%95%A5"><span class="nav-number">10.2.</span> <span class="nav-text">可靠性优先策略</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BB%E5%86%99%E5%88%86%E7%A6%BB%E6%9C%89%E5%93%AA%E4%BA%9B%E5%9D%91"><span class="nav-number">11.</span> <span class="nav-text">读写分离有哪些坑</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E8%BF%87%E6%9C%9F%E8%AF%BB%E7%9A%84%E6%96%B9%E6%A1%88"><span class="nav-number">11.1.</span> <span class="nav-text">解决过期读的方案</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -422,7 +458,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
