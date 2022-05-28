@@ -28,10 +28,11 @@
 <meta property="og:description" content="线程有哪几种状态六种状态及转换  分别是  新建 当一个线程对象被创建，但还未调用 start 方法时处于新建状态 此时未与操作系统底层线程关联   可运行 调用了 start 方法，就会由新建进入可运行 此时与底层线程关联，由操作系统调度执行   终结 线程内代码已经执行完毕，由可运行进入终结 此时会取消与底层线程关联   阻塞 当获取锁失败后，由可运行进入 Monitor 的阻塞队列阻塞，此时">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20210831090722658.png">
+<meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220525153937993.png">
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220322100227889.png">
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220322111243513.png">
 <meta property="article:published_time" content="2022-03-01T15:47:44.000Z">
-<meta property="article:modified_time" content="2022-04-21T05:56:10.712Z">
+<meta property="article:modified_time" content="2022-05-25T08:02:56.317Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20210831090722658.png">
@@ -184,7 +185,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-21 13:56:10" itemprop="dateModified" datetime="2022-04-21T13:56:10+08:00">2022-04-21</time>
+                <time title="修改时间：2022-05-25 16:02:56" itemprop="dateModified" datetime="2022-05-25T16:02:56+08:00">2022-05-25</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -251,6 +252,12 @@
 <li>park，unpark 等方法也可以让线程等待和唤醒</li>
 </ul>
 </blockquote>
+<h1 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h1><h2 id="线程池的执行流程"><a href="#线程池的执行流程" class="headerlink" title="线程池的执行流程"></a>线程池的执行流程</h2><p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220525153937993.png" alt="image-20220525153937993"></p>
+<ol>
+<li>线程池判断核心线程池里的线程是否都在执行任务。如果不是，则创建一个新的工作线程来执行任务。如果核心线程池里的线程都在执行任务，则进入下个流程。</li>
+<li>线程池判断工作队列是否已经满。如果工作队列没有满，则将新提交的任务存储在这个工作队列里。如果工作队列满了，则进入下个流程。 </li>
+<li>线程池判断线程池的线程是否都处于工作状态。如果没有，则创建一个新的工作线程（救急线程）来执行任务。如果已经满了，则交给拒绝策略来处理这个任务</li>
+</ol>
 <h2 id="线程池的核心参数"><a href="#线程池的核心参数" class="headerlink" title="线程池的核心参数"></a>线程池的核心参数</h2><h3 id="七大参数"><a href="#七大参数" class="headerlink" title="七大参数"></a>七大参数</h3><ol>
 <li>corePoolSize 核心线程数目 - 池中会保留的最多线程数</li>
 <li>maximumPoolSize 最大线程数目 - 核心线程+救急线程的最大数目</li>
@@ -328,27 +335,30 @@
 </ul>
 <p>不同点</p>
 <ul>
-<li><p>方法归属不同</p>
-<ul>
+<li>方法归属不同<ul>
 <li>sleep(long) 是 Thread 的静态方法</li>
 <li>而 wait()，wait(long) 都是 Object 的成员方法，每个对象都有</li>
 </ul>
 </li>
-<li><p>醒来时机不同</p>
-<ul>
+<li>醒来时机不同<ul>
 <li>执行 sleep(long) 和 wait(long) 的线程都会在等待相应毫秒后醒来</li>
 <li>wait(long) 和 wait() 还可以被 notify 唤醒，wait() 如果不唤醒就一直等下去</li>
 <li>它们都可以被打断唤醒</li>
 </ul>
 </li>
-<li><p>锁特性不同（重点）</p>
-<ul>
+<li>锁特性不同（重点）<ul>
 <li>wait 方法的调用必须先获取 wait 对象的锁，而 sleep 则无此限制</li>
 <li>wait 方法执行后会释放对象锁，允许其它线程获得该对象锁（我放弃 cpu，但你们还可以用）</li>
 <li>而 sleep 如果在 synchronized 代码块中执行，并不会释放对象锁（我放弃 cpu，你们也用不了）</li>
 </ul>
 </li>
 </ul>
+<h3 id="sleep"><a href="#sleep" class="headerlink" title="sleep"></a>sleep</h3><ol>
+<li>调用 sleep 会让当前线程从 <strong>Running</strong> 进入 <strong>Timed Waiting</strong> 状态（阻塞）</li>
+<li>其它线程可以使用 <strong>interrupt 方法</strong>打断正在睡眠的线程，那么被打断的线程这时就会抛出 <code>InterruptedException</code>异常【注意：这里打断的是正在休眠的线程，而不是其它状态的线程】</li>
+<li>睡眠结束后的线程未必会立刻得到执行(需要分配到cpu时间片)</li>
+<li>建议用 TimeUnit 的 <code>sleep()</code> 代替 Thread 的 <code>sleep()</code>来获得更好的可读性</li>
+</ol>
 <h2 id="lock-vs-synchronized"><a href="#lock-vs-synchronized" class="headerlink" title="lock vs synchronized"></a>lock vs synchronized</h2><p>synchronized</p>
 <ul>
 <li>对于普通同步方法，锁是当前实例对象</li>
@@ -561,12 +571,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/03/01/JVM/" rel="prev" title="JVM">
-      <i class="fa fa-chevron-left"></i> JVM
+    <a href="/2022/03/01/MQ/" rel="prev" title="MQ">
+      <i class="fa fa-chevron-left"></i> MQ
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/03/29/%E7%AE%97%E6%B3%95/%E4%BB%A3%E7%A0%81%E9%9A%8F%E6%83%B3%E5%BD%95/%E9%93%BE%E8%A1%A8/" rel="next" title="链表">
-      链表 <i class="fa fa-chevron-right"></i>
+    <a href="/2022/03/01/Java%E5%9F%BA%E7%A1%80/" rel="next" title="Java基础">
+      Java基础 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -626,7 +636,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E7%8A%B6%E6%80%81"><span class="nav-number">1.</span> <span class="nav-text">线程有哪几种状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8F%82%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">线程池的核心参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%83%E5%A4%A7%E5%8F%82%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">七大参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8E%9F%E7%90%86"><span class="nav-number">2.2.</span> <span class="nav-text">线程池原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E4%B8%AA%E5%AE%9E%E7%8E%B0%E7%B1%BB"><span class="nav-number">2.3.</span> <span class="nav-text">三个实现类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#newFixedThreadPool"><span class="nav-number">2.3.1.</span> <span class="nav-text">newFixedThreadPool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#newCachedThreadPool"><span class="nav-number">2.3.2.</span> <span class="nav-text">newCachedThreadPool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#newSingleThreadExecutor"><span class="nav-number">2.3.3.</span> <span class="nav-text">newSingleThreadExecutor</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait-vs-sleep"><span class="nav-number">3.</span> <span class="nav-text">wait vs sleep</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lock-vs-synchronized"><span class="nav-number">4.</span> <span class="nav-text">lock vs synchronized</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile"><span class="nav-number">5.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%82%B2%E8%A7%82%E9%94%81-vs-%E4%B9%90%E8%A7%82%E9%94%81"><span class="nav-number">6.</span> <span class="nav-text">6. 悲观锁 vs 乐观锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Hashtable-vs-ConcurrentHashMap"><span class="nav-number">7.</span> <span class="nav-text">7. Hashtable vs ConcurrentHashMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-ThreadLocal"><span class="nav-number">8.</span> <span class="nav-text">8. ThreadLocal</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%9C%89%E5%93%AA%E5%87%A0%E7%A7%8D%E7%8A%B6%E6%80%81"><span class="nav-number">1.</span> <span class="nav-text">线程有哪几种状态</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="nav-number"></span> <span class="nav-text">线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%89%A7%E8%A1%8C%E6%B5%81%E7%A8%8B"><span class="nav-number">1.</span> <span class="nav-text">线程池的执行流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8F%82%E6%95%B0"><span class="nav-number">2.</span> <span class="nav-text">线程池的核心参数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%83%E5%A4%A7%E5%8F%82%E6%95%B0"><span class="nav-number">2.1.</span> <span class="nav-text">七大参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E5%8E%9F%E7%90%86"><span class="nav-number">2.2.</span> <span class="nav-text">线程池原理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E4%B8%AA%E5%AE%9E%E7%8E%B0%E7%B1%BB"><span class="nav-number">2.3.</span> <span class="nav-text">三个实现类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#newFixedThreadPool"><span class="nav-number">2.3.1.</span> <span class="nav-text">newFixedThreadPool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#newCachedThreadPool"><span class="nav-number">2.3.2.</span> <span class="nav-text">newCachedThreadPool</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#newSingleThreadExecutor"><span class="nav-number">2.3.3.</span> <span class="nav-text">newSingleThreadExecutor</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#wait-vs-sleep"><span class="nav-number">3.</span> <span class="nav-text">wait vs sleep</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#sleep"><span class="nav-number">3.1.</span> <span class="nav-text">sleep</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lock-vs-synchronized"><span class="nav-number">4.</span> <span class="nav-text">lock vs synchronized</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#volatile"><span class="nav-number">5.</span> <span class="nav-text">volatile</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-%E6%82%B2%E8%A7%82%E9%94%81-vs-%E4%B9%90%E8%A7%82%E9%94%81"><span class="nav-number">6.</span> <span class="nav-text">6. 悲观锁 vs 乐观锁</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Hashtable-vs-ConcurrentHashMap"><span class="nav-number">7.</span> <span class="nav-text">7. Hashtable vs ConcurrentHashMap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-ThreadLocal"><span class="nav-number">8.</span> <span class="nav-text">8. ThreadLocal</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -640,7 +650,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-count">32</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
