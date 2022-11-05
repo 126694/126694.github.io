@@ -32,8 +32,9 @@
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220330114300040.png">
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220330114732891.png">
 <meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220330115507603.png">
+<meta property="og:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20221030182758829.png">
 <meta property="article:published_time" content="2022-03-01T15:47:44.000Z">
-<meta property="article:modified_time" content="2022-04-21T05:55:06.000Z">
+<meta property="article:modified_time" content="2022-10-31T00:47:36.056Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220325121554889.png">
@@ -186,7 +187,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-04-21 13:55:06" itemprop="dateModified" datetime="2022-04-21T13:55:06+08:00">2022-04-21</time>
+                <time title="修改时间：2022-10-31 08:47:36" itemprop="dateModified" datetime="2022-10-31T08:47:36+08:00">2022-10-31</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -245,6 +246,36 @@
 <p>上面的 topic，partition，queue 的关系弄不清楚，所以我总结如下：</p>
 <p>修复原来生产者的问题，并停掉，然后新建一些生产者，快速消费消息，并不做耗时的处理，那么 这些消息如何快速消费呢？扩展集群，零时征用 10 倍的机器部署消费者，消费前边消费者转发过来 的消息，这样就很快消费掉队列里边堆积的消息了。</p>
 <p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220330115507603.png" alt="image-20220330115507603"></p>
+<h3 id="如何保证消息的幂等性？"><a href="#如何保证消息的幂等性？" class="headerlink" title="如何保证消息的幂等性？"></a>如何保证消息的幂等性？</h3><ol>
+<li>如何保证数据发送到rabbitmq时候丢失了可以继续（生产者丢失数据）<ul>
+<li>开启confirm模式，使用channel.confirmSelect()，每次写消息的时候都会分配一个唯一的id，如果写入mq中了，就会回传一个ack，如果没有处理则回传nack，这是一种异步的操作。</li>
+<li>用 ConcurrentLinkedQueue 这个队列在 confirm callbacks 与发布线程之间进行消息的传 递。</li>
+</ul>
+</li>
+<li>如何防止rabbitmq丢失了数据<ul>
+<li>创建rabbitmq时开启rabbitmq的持久化，创建队列时设置为durable</li>
+<li>发送消息的时候将deliveryMode设置为2，将消息设置为持久化</li>
+<li>可以结合生产者confirm机制配合起来，只有消息被持久化到磁盘后，才会通知生产者ack了，持久化到磁盘之前，rabbitmq挂了，收不到ack，也可以重发。</li>
+</ul>
+</li>
+<li>消费者端弄丢了数据<ul>
+<li>关闭rabbitmq的自动应答机制，每次代码确保处理完的时候，在程序内手动的ack</li>
+<li>在basicConsume()里面设置是否自动应答为false，将消息接受进来并且打印处理后，才会应答</li>
+<li>basicAck（）手动应答里面的multiple批量应答设置为false   参数 消息的标记（表示哪一个标记），是否批量应答（否）</li>
+</ul>
+</li>
+</ol>
+<p>topic动态路由</p>
+<p>下单业务中使用死信队列，保证订单业务不丢失，当超过ttl或者队列长度过长，或者被消费者拒绝的时候会进入到死信队列。</p>
+<h3 id="延时队列场景"><a href="#延时队列场景" class="headerlink" title="延时队列场景"></a>延时队列场景</h3><ol>
+<li>1.订单在十分钟之内未支付则自动取消 </li>
+<li>2.新创建的店铺，如果在十天内都没有上传过商品，则自动发送消息提醒。 </li>
+<li>3.用户注册成功后，如果三天内没有登陆则进行短信提醒。 </li>
+<li>4.用户发起退款，如果三天内没有得到处理则通知相关运营人员。</li>
+<li>5.预定会议后，需要在预定的时间点前十分钟通知各个与会人员参加会议</li>
+</ol>
+<p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20221030182758829.png" alt="image-20221030182758829"></p>
+<p>rabbitmq_delayed_message_exchange插件解决延时队列问题</p>
 
     </div>
 
@@ -325,7 +356,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81MQ%E6%AF%94%E8%BE%83"><span class="nav-number">1.</span> <span class="nav-text">常见MQ比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RabbitMQ%E9%AB%98%E5%8F%AF%E7%94%A8%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">RabbitMQ高可用的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RabbitMQ%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E4%B8%8D%E8%A2%AB%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9"><span class="nav-number">3.</span> <span class="nav-text">RabbitMQ如何保证消息不被重复消费</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7%E4%BC%A0%E8%BE%93"><span class="nav-number">4.</span> <span class="nav-text">如何保证消息的可靠性传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E7%9A%84%E6%B6%88%E8%B4%B9%E9%A1%BA%E5%BA%8F"><span class="nav-number">5.</span> <span class="nav-text">如何保证消息的消费顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%BB%B6%E6%97%B6%E4%BB%A5%E5%8F%8A%E8%BF%87%E6%9C%9F%E5%A4%B1%E6%95%88%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">如何解决消息队列的延时以及过期失效的问题？</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81MQ%E6%AF%94%E8%BE%83"><span class="nav-number">1.</span> <span class="nav-text">常见MQ比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RabbitMQ%E9%AB%98%E5%8F%AF%E7%94%A8%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">RabbitMQ高可用的实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RabbitMQ%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E4%B8%8D%E8%A2%AB%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9"><span class="nav-number">3.</span> <span class="nav-text">RabbitMQ如何保证消息不被重复消费</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%8F%AF%E9%9D%A0%E6%80%A7%E4%BC%A0%E8%BE%93"><span class="nav-number">4.</span> <span class="nav-text">如何保证消息的可靠性传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E7%9A%84%E6%B6%88%E8%B4%B9%E9%A1%BA%E5%BA%8F"><span class="nav-number">5.</span> <span class="nav-text">如何保证消息的消费顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97%E7%9A%84%E5%BB%B6%E6%97%B6%E4%BB%A5%E5%8F%8A%E8%BF%87%E6%9C%9F%E5%A4%B1%E6%95%88%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%9F"><span class="nav-number">6.</span> <span class="nav-text">如何解决消息队列的延时以及过期失效的问题？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E6%B6%88%E6%81%AF%E7%9A%84%E5%B9%82%E7%AD%89%E6%80%A7%EF%BC%9F"><span class="nav-number">7.</span> <span class="nav-text">如何保证消息的幂等性？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BB%B6%E6%97%B6%E9%98%9F%E5%88%97%E5%9C%BA%E6%99%AF"><span class="nav-number">8.</span> <span class="nav-text">延时队列场景</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -344,7 +375,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">7</span>
         <span class="site-state-item-name">分类</span>
       </div>
   </nav>
