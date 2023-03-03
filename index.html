@@ -176,7 +176,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2022-11-05 09:16:48" itemprop="dateModified" datetime="2022-11-05T09:16:48+08:00">2022-11-05</time>
+                <time title="修改时间：2022-11-05 22:01:34" itemprop="dateModified" datetime="2022-11-05T22:01:34+08:00">2022-11-05</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -2269,6 +2269,10 @@
 <p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220823142855164.png" alt="image-20220823142855164"></p>
 <p><img src="https://akurisu-blog.oss-cn-beijing.aliyuncs.com/blog/image-20220823142907256.png" alt="image-20220823142907256"></p>
 <p>图 4 跟图 3 的区别是，InnoDB 在 (name,age) 索引内部就判断了 age 是否等于 10，对于不等于 10 的记录，直接判断并跳过。在我们的这个例子中，只需要对 ID4、ID5 这两条记录回表取数据判断，就只需要回表 2 次。</p>
+<h3 id="前缀索引-1"><a href="#前缀索引-1" class="headerlink" title="前缀索引"></a>前缀索引</h3><ol>
+<li>无法使用覆盖索引带来的优化</li>
+<li>区分度如果不高的话可能容易查询过多数据</li>
+</ol>
 <h3 id="B-树高度计算"><a href="#B-树高度计算" class="headerlink" title="B+树高度计算"></a>B+树高度计算</h3><p>b+树能容纳的数据为（数据） ^(n - 1)次方</p>
 <h3 id="是否使用了索引"><a href="#是否使用了索引" class="headerlink" title="是否使用了索引"></a>是否使用了索引</h3><p>select * from table where a&#x3D;xx group by b order by c用到abc索引了</p>
 <h3 id="为什么采用自增主键？"><a href="#为什么采用自增主键？" class="headerlink" title="为什么采用自增主键？"></a>为什么采用自增主键？</h3><p>因为自增主键可以避免索引位置产生变动，导致逻辑上挪动后面数据影响效率，如果要插入的树的页子已经满了，就会申请一个新的数据页，挪动部分数据过去，导致页分裂，使得性能变差。</p>
@@ -2320,6 +2324,17 @@
 <p>当然，使用前缀索引很可能会损失区分度，所以你需要预先设定一个可以接受的损失比例，比如 5%。然后，在返回的 L4~L7 中，找出不小于 L * 95% 的值，假设这里 L6、L7 都满足，你就可以选择前缀长度为 6。前缀索引对覆盖索引的影响</p>
 <h3 id="is-null和is-not-null会走索引吗"><a href="#is-null和is-not-null会走索引吗" class="headerlink" title="is null和is not null会走索引吗"></a>is null和is not null会走索引吗</h3><p>is not null不管什么情况下都不会走索引,is null在字段允许为空时会使用索引</p>
 <h3 id="索引长度的限制"><a href="#索引长度的限制" class="headerlink" title="索引长度的限制"></a>索引长度的限制</h3><p>1、对于myisam表，组合索引的长度跟各个列总和长度有关。<br>字符编码为utf8,组合索引长度和不能超333，超过则创建失败。单列索引不能超过333，如果字段超过333，则最终创建的是前缀索引（即取前333个字节）。<br>字符编码为latin1，组合索引长度和不能超1000，超过则创建失败。单列索引不能超过1000，超过则最终创建的是前缀索引（即取前1000个字节）。<br>2、对于Innodb表，组合索引的长度跟各列的长度和无关，跟单列的长度有关，且能创建成功。<br>字符编码为utf8，组合索引长度最大为：列数<em>255（ name1(255),name2(255),name3(255)），单列索引长度最大为255。<br>字符编码为latin1，组合索引长度最大为：列数</em>767（例如：name1,name2,name3(767)），单列索引最大为767。<br>3、索引的长度跟数据引擎有关，还和字符编码有关。</p>
+<h3 id="MySQL怎么选取索引的？"><a href="#MySQL怎么选取索引的？" class="headerlink" title="MySQL怎么选取索引的？"></a>MySQL怎么选取索引的？</h3><p>show index可以看到索引的基数，也就是区分度。</p>
+<p>explain可以看到扫描行数，rows</p>
+<ol>
+<li>采样统计的时候，InnoDB 默认会选择 N 个数据页，统计这些页面上的不同值，得到一个平均值，然后乘以这个索引的页面数，就得到了这个索引的基数。</li>
+</ol>
+<p>索引选错解决方案</p>
+<ol>
+<li>使用analyze table t命令，重新统计索引信息</li>
+<li>使用force index强行选择一个索引。</li>
+<li>建立一个更合适的索引，来提供给优化器做选择。</li>
+</ol>
 <h2 id="事务"><a href="#事务" class="headerlink" title="事务"></a>事务</h2><h3 id="事务的特性？"><a href="#事务的特性？" class="headerlink" title="事务的特性？"></a>事务的特性？</h3><p>原子性（atomicity）：事务的所有操作在数据库中要么全部反映出来，要么完全不反映。</p>
 <p>一致性（consistency）：隔离执行事务时（换言之，在没有其他事务并发执行的情况下）保持数据库的一致性。</p>
 <p>隔离性（isolation）：尽管多个事务可能并发执行，但系统保证，对于任何一对事务Ti和Tj，在Ti看来，Tj或者在Ti开始之前已经完成执行，或者在Ti完成之后开始执行。因此，每个事务都感觉不到系统中有其他事务在并发执行。</p>
@@ -2744,11 +2759,12 @@
 <li>尽量不要使用*,只需要返回必要字段就可以</li>
 <li>使用limit进行字段的限制。</li>
 </ol>
-<h4 id="SQL优化的思路"><a href="#SQL优化的思路" class="headerlink" title="SQL优化的思路"></a>SQL优化的思路</h4><ol>
+<h3 id="SQL优化的思路"><a href="#SQL优化的思路" class="headerlink" title="SQL优化的思路"></a>SQL优化的思路</h3><ol>
 <li>第一原则是，如果通过调整顺序，可以少维护一个索引，那么这个顺序往往就是需要优先考虑采用的。</li>
 <li>这时候，我们要考虑的原则就是空间了。比如上面这个市民表的情况，name 字段是比 age 字段大的 ，那我就建议你创建一个（name,age) 的联合索引和一个 (age) 的单字段索引。</li>
 <li>事务需要锁多个行，要把最可能发生锁冲突，最可能英雄并发度的锁尽量往后放</li>
 <li>把一行改成逻辑上的多行来减少锁冲突，可以考虑放在多条记录上，影院的账户总额等于这10个记录的值的总和，但是退票时候就要特殊处理。</li>
+<li>在写多读少的情况下我们使用普通索引而不使用唯一索引，因为唯一索引必须需要判断数据是否唯一，所以无法使用change buff，可能会导致频繁的从磁盘中IO，导致速度减慢。</li>
 </ol>
 <h1 id="Java基础"><a href="#Java基础" class="headerlink" title="Java基础"></a>Java基础</h1><h2 id="基础问题"><a href="#基础问题" class="headerlink" title="基础问题"></a>基础问题</h2><h3 id="Java语言的特点？"><a href="#Java语言的特点？" class="headerlink" title="Java语言的特点？"></a>Java语言的特点？</h3><ol>
 <li>简单易学；</li>
@@ -3496,11 +3512,11 @@ name.set(p,&quot;Tom&quot;);
 <p>那 <code>ruiqingPOST</code>是个什么神仙方法??? 此时, 凭着多年开发(DEBUG)经验练就的敏感度, 我们大致可以猜出, <strong>上一次请求被截取剩下的消息。</strong></p>
 <p>导致这种情况的原因就是开启了<code>Connection:keep-alive</code>, 如果使用<code>Connection:close</code>, 所产生的现象就是每一次的请求都被截断, 但不会产生解析混乱(如将上一次剩下的消息拼接到后续的请求消息中).</p>
 <h4 id="get请求的参数怎么不在url里面"><a href="#get请求的参数怎么不在url里面" class="headerlink" title="get请求的参数怎么不在url里面"></a>get请求的参数怎么不在url里面</h4><p>可以放在请求头里面，进行请求，后端采用xx获取。</p>
-<h3 id="SMTP协议"><a href="#SMTP协议" class="headerlink" title="SMTP协议"></a>SMTP协议</h3><h4 id="电子邮件的发送过程？"><a href="#电子邮件的发送过程？" class="headerlink" title="电子邮件的发送过程？"></a><strong>电子邮件的发送过程？</strong></h4><p>比如我的邮箱是“<a href="mailto:&#100;&#x61;&#98;&#97;&#105;&#x40;&#x63;&#115;&#122;&#104;&#x69;&#110;&#97;&#x6e;&#x2e;&#99;&#x6f;&#109;">&#100;&#x61;&#98;&#97;&#105;&#x40;&#x63;&#115;&#122;&#104;&#x69;&#110;&#97;&#x6e;&#x2e;&#99;&#x6f;&#109;</a>”，我要向“<a href="mailto:&#x78;&#x69;&#x61;&#111;&#109;&#x61;&#x40;&#x71;&#x71;&#46;&#99;&#x6f;&#x6d;">&#x78;&#x69;&#x61;&#111;&#109;&#x61;&#x40;&#x71;&#x71;&#46;&#99;&#x6f;&#x6d;</a>”发送邮件，整个过程可以简单分为下面几步：</p>
+<h3 id="SMTP协议"><a href="#SMTP协议" class="headerlink" title="SMTP协议"></a>SMTP协议</h3><h4 id="电子邮件的发送过程？"><a href="#电子邮件的发送过程？" class="headerlink" title="电子邮件的发送过程？"></a><strong>电子邮件的发送过程？</strong></h4><p>比如我的邮箱是“<a href="mailto:&#100;&#x61;&#x62;&#97;&#x69;&#64;&#99;&#x73;&#x7a;&#104;&#105;&#x6e;&#97;&#110;&#x2e;&#99;&#x6f;&#x6d;">&#100;&#x61;&#x62;&#97;&#x69;&#64;&#99;&#x73;&#x7a;&#104;&#105;&#x6e;&#97;&#110;&#x2e;&#99;&#x6f;&#x6d;</a>”，我要向“<a href="mailto:&#x78;&#x69;&#x61;&#111;&#109;&#x61;&#x40;&#113;&#x71;&#x2e;&#x63;&#111;&#x6d;">&#x78;&#x69;&#x61;&#111;&#109;&#x61;&#x40;&#113;&#x71;&#x2e;&#x63;&#111;&#x6d;</a>”发送邮件，整个过程可以简单分为下面几步：</p>
 <ol>
 <li>通过 <strong>SMTP</strong> 协议，我将我写好的邮件交给163邮箱服务器（邮局）。</li>
 <li>163邮箱服务器发现我发送的邮箱是qq邮箱，然后它使用SMTP协议将我的邮件转发到 qq邮箱服务器。</li>
-<li>qq邮箱服务器接收邮件之后就通知邮箱为“<a href="mailto:&#120;&#105;&#x61;&#x6f;&#109;&#97;&#x40;&#113;&#x71;&#46;&#99;&#111;&#109;">&#120;&#105;&#x61;&#x6f;&#109;&#97;&#x40;&#113;&#x71;&#46;&#99;&#111;&#109;</a>”的用户来收邮件，然后用户就通过 <strong>POP3&#x2F;IMAP</strong> 协议将邮件取出。</li>
+<li>qq邮箱服务器接收邮件之后就通知邮箱为“<a href="mailto:&#x78;&#105;&#x61;&#111;&#109;&#x61;&#x40;&#x71;&#x71;&#x2e;&#99;&#x6f;&#109;">&#x78;&#105;&#x61;&#111;&#109;&#x61;&#x40;&#x71;&#x71;&#x2e;&#99;&#x6f;&#109;</a>”的用户来收邮件，然后用户就通过 <strong>POP3&#x2F;IMAP</strong> 协议将邮件取出。</li>
 </ol>
 <h4 id="如何判断邮箱是真正存在的？"><a href="#如何判断邮箱是真正存在的？" class="headerlink" title="如何判断邮箱是真正存在的？"></a>如何判断邮箱是真正存在的？</h4><p>很多场景(比如邮件营销)下面我们需要判断我们要发送的邮箱地址是否真的存在，这个时候我们可以利用 SMTP 协议来检测：</p>
 <ol>
@@ -5863,7 +5879,7 @@ name.set(p,&quot;Tom&quot;);
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
